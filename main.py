@@ -6,6 +6,7 @@ from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask import request
+from flask import jsonify
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -69,3 +70,18 @@ def add_user():
     db.session.add(newuser)
     db.session.commit()
     return "Success"
+
+
+@app.route('/view_info', methods=['GET'])
+def view_info():
+    user_name = "Bero"
+    user = User.query.filter_by(username=user_name).first()
+    x = {
+        "username": user.username,
+        "mail": user.mail,
+        "dob": user.dob,
+        "id": user.id,
+        "date_joined": user.date_joined,
+        "gender": user.gender
+    }
+    return jsonify(x)
