@@ -11,7 +11,7 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'Project_DB')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'Project_DB.db')
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
 # meta data required for creating table in sqlite, should not use anymore since db is already created LEAVE IT THOUGH
