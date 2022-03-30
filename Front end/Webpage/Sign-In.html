@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<script src = "sign_in_Script.js"></script>
 <html style="font-size: 16px;">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@
     <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
     <meta name="generator" content="Nicepage 4.6.5, nicepage.com">
-    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    
     
     
     <script type="application/ld+json">{
@@ -136,48 +137,51 @@
                 </a>
               </div>
             </div>
+            <!-- this is the section for the sign up. -->
+
+
             <div class="u-align-left u-container-style u-tab-pane u-white u-tab-pane-2" id="tab-14b7" role="tabpanel" aria-labelledby="link-tab-14b7">
               <div class="u-container-layout u-container-layout-2">
                 <div class="u-form u-form-2">
                   <form action="#" method="POST" class="u-clearfix u-form-spacing-10 u-form-vertical u-inner-form" source="custom" name="form" style="padding: 10px;">
                     <div class="u-form-group u-form-name">
-                      <label for="name-3a55" class="u-label">Username</label>
-                      <input type="text" id="name-3a55" name="name" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+                      <label for="name-3a55" class="u-label">Usernamea</label>
+                      <input type="text"  id="username_input" name="username_input" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                     </div>
                     <div class="u-form-email u-form-group">
                       <label for="email-3a55" class="u-label">Password</label>
-                      <input type="email" id="email-3a55" name="email" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+                      <input type="text" id="password_input" name="password_input" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                     </div>
                     <div class="u-form-group u-form-group-6">
                       <label for="text-6f2f" class="u-label">Confirm Password</label>
-                      <input type="text" placeholder="" id="text-6f2f" name="text" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
+                      <input type="text" placeholder="" id="re_password_input" name="re_password_input" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
                     </div>
                     <div class="u-form-date u-form-group u-form-group-7">
                       <label for="date-51ad" class="u-label">Date Of Birth</label>
-                      <input type="date" id="date-51ad" name="date" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+                      <input type="date" id="dob_input" name="dob_input" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                     </div>
                     <div class="u-form-email u-form-group u-form-group-8">
                       <label for="email-3852" class="u-label">Email</label>
-                      <input type="email" id="email-3852" name="email-1" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+                      <input type="text" id="email_input" name="email_input" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                     </div>
                     <div class="u-form-agree u-form-group u-form-group-9">
-                      <input type="checkbox" id="agree-95f3" name="agree" class="u-agree-checkbox" required="">
+                      <input type="checkbox" id="tos_input" name="tos_input" class="u-agree-checkbox" required="">
                       <label for="agree-95f3" class="u-label">I accept the <a href="#">Terms of Service</a>
                       </label>
                     </div>
                     <div class="u-align-left u-form-group u-form-submit">
-                      <a href="#" class="u-border-none u-btn u-btn-submit u-button-style u-text-white u-white u-btn-3">Sign Up</a>
-                      <input type="submit" value="submit" class="u-form-control-hidden">
+                     
                     </div>
-                    <div class="u-form-send-message u-form-send-success"> Thank you! Your message has been sent. </div>
-                    <div class="u-form-send-error u-form-send-message"> Unable to send your message. Please fix errors then try again. </div>
-                    <input type="hidden" value="" name="recaptchaResponse">
+                    
+                    <button class ="button button1" id = "signup_btn" onClick="create_user()">Sign Up</button>
                   </form>
                 </div>
-                <a href="https://nicepage.studio" class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-4">Sign Up<br>
+                
                 </a>
               </div>
             </div>
+
+            <!--admin sign in -->
             <div class="u-container-style u-tab-pane u-white u-tab-pane-3" id="tab-2917" role="tabpanel" aria-labelledby="link-tab-2917">
               <div class="u-container-layout u-container-layout-3">
                 <div class="u-form u-form-3">

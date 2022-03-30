@@ -24,9 +24,9 @@ meta = MetaData()
 userstable = Table('users', meta, Column('id', Integer, primary_key=True, autoincrement=True),
                    Column('username', String, unique=True), Column('password', String),Column('mail',String),Column('dob',String),Column('gender',String),Column('date_joined',String))
 itemstable = Table('items',meta,Column('id', Integer, primary_key=True, autoincrement=True),
-                   Column('name',String),Column('price',String),Column('stockleft',Integer),Column('kind',String),Column('sale',Boolean),Column('size',String))
+                   Column('name',String),Column('price',String),Column('stockleft',Integer),Column('kind',String),Column('sale',db.Boolean),Column('size',String))
 ticketstable = Table('tickets',meta,Column('id', Integer, primary_key=True, autoincrement=True),
-                   Column('t_index',Integer),Column('price',String),Column('ticketsleft',Integer),Column('sector',Integer),Column('vip',Boolean),Column('match',String),Column('competition',String))
+                   Column('t_index',Integer),Column('price',String),Column('ticketsleft',Integer),Column('sector',Integer),Column('vip',db.Boolean),Column('match',String),Column('competition',String))
 
 
 # user class
@@ -150,7 +150,7 @@ def add_ticket():   #t_index,price,ticketsleft,sector,vip,match,competition
     match=request.json['match']
     compete=request.json['competition']
     newticket=Ticket(index,pri,ticks,sector,vip,match,compete)
-    db.session.add(newitem)
+    db.session.add(newticket)
     db.session.commit()
     return "Ticket Added"
     
@@ -170,11 +170,12 @@ def add_user():
     not_unique = User.query.filter_by(username=name).first()
     # similar username exists
     if not_unique:
-        abort(406)  # not acceptable
-    newuser = User(name,pwd ,mail,dob,gender)
-    db.session.add(newuser)
-    db.session.commit()
-    return "Success"
+        abort(403)
+    else:
+        newuser = User(name,pwd ,mail,dob,gender)
+        db.session.add(newuser)
+        db.session.commit()
+        return "success"
 
 
 @app.route('/view_info', methods=['GET'])
