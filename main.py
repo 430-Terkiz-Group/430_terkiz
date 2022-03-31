@@ -26,7 +26,7 @@ userstable = Table('users', meta, Column('id', Integer, primary_key=True, autoin
 itemstable = Table('items',meta,Column('id', Integer, primary_key=True, autoincrement=True),
                    Column('name',String),Column('price',String),Column('stockleft',Integer),Column('kind',String),Column('sale',db.Boolean),Column('size',String))
 ticketstable = Table('tickets',meta,Column('id', Integer, primary_key=True, autoincrement=True),
-                   Column('t_index',Integer),Column('price',String),Column('ticketsleft',Integer),Column('sector',Integer),Column('vip',db.Boolean),Column('match',String),Column('competition',String))
+                   Column('price',String),Column('ticketsleft',Integer),Column('sector',Integer),Column('vip',db.String),Column('match',String),Column('competition',String))
 
 
 # user class
@@ -89,18 +89,18 @@ class Ticket(db.Model):
 
     #ticket columns
     id=db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    t_index=db.Column(db.Integer) #unique index of ticket in the stadium 
+
     price=db.Column(db.Integer)
     ticketsleft=db.Column(db.Integer)
     sector=db.Column(db.Integer)
-    vip=db.Column(db.Boolean)  #indicates if the ticket is in the vip section or not
+    vip=db.Column(db.String)  #indicates if the ticket is in the vip section or not
     match=db.Column(db.String(64)) #indicates if the match is home or away 
     competition=db.Column(db.String(100)) #type of competition in the match
 
 
-    def __init__(self,t_index,price,ticketsleft,sector,vip,match,competition):
+    def __init__(self,price,ticketsleft,sector,vip,match,competition):
         #self.id=id
-        self.t_index=t_index
+
         self.price=price
         self.ticketsleft=ticketsleft
         self.sector=sector
@@ -127,8 +127,8 @@ def add_item():
 
 @app.route('/view_tickets', methods=['GET'])
 def view_tickets():
-    indextick=1;
-    ticket=Ticket.query.filter_by(t_index=indextick).first()
+    my_id=request.json["id"]
+    ticket=Ticket.query.filter_by(id=my_id).first()
     x = {
         "price": ticket.price,
         "ticketsleft": ticket.ticketsleft,
@@ -142,14 +142,14 @@ def view_tickets():
 
 @app.route('/add_ticket',methods=['POST'])
 def add_ticket():   #t_index,price,ticketsleft,sector,vip,match,competition
-    index=request.json['t_index']
+
     pri=request.json['price']
     ticks=request.json['ticketsleft']
     sector=request.json['sector']
     vip=request.json['vip']
     match=request.json['match']
     compete=request.json['competition']
-    newticket=Ticket(index,pri,ticks,sector,vip,match,compete)
+    newticket=Ticket(pri,ticks,sector,vip,match,compete)
     db.session.add(newticket)
     db.session.commit()
     return "Ticket Added"
