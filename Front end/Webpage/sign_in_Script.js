@@ -58,6 +58,13 @@ function sign_in(){
 
         }
 }
+function log_out(){
+    
+    clearUserToken();
+    
+    window.location.replace("Home.html")
+
+}
 function saveUserToken(userToken) {
     localStorage.setItem("TOKEN", userToken);
    }
@@ -67,4 +74,3 @@ function getUserToken() {
 function clearUserToken() {
     return localStorage.removeItem("TOKEN");
    }
-   
