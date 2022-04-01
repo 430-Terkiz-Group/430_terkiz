@@ -111,6 +111,7 @@
               <a class="u-active-white u-button-style u-tab-link u-tab-link-3" id="link-tab-2917" href="#tab-2917" role="tab" aria-controls="tab-2917" aria-selected="false">Administrator Sign In</a>
             </li>
           </ul>
+          <!-- this is the section for the sign in user-->
           <div class="u-tab-content">
             <div class="u-container-style u-tab-active u-tab-pane u-white u-tab-pane-1" id="tab-0da5" role="tabpanel" aria-labelledby="link-tab-0da5">
               <div class="u-container-layout u-container-layout-1">
@@ -118,22 +119,20 @@
                   <form action="#" method="POST" class="u-clearfix u-form-spacing-10 u-form-vertical u-inner-form" source="custom" name="form" style="padding: 10px;">
                     <div class="u-form-group u-form-name">
                       <label for="name-3a55" class="u-label">Username</label>
-                      <input type="text" id="name-3a55" name="name" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+                      <input type="text" id="user_signup" name="name" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                     </div>
                     <div class="u-form-email u-form-group">
                       <label for="email-3a55" class="u-label">Password</label>
-                      <input type="email" id="email-3a55" name="email" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+                      <input type="email" id="user_pwd" name="email" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                     </div>
                     <div class="u-align-left u-form-group u-form-submit">
-                      <a href="#" class="u-border-none u-btn u-btn-submit u-button-style u-none u-text-white u-btn-1">Sign In</a>
-                      <input type="submit" value="submit" class="u-form-control-hidden">
+                      <a href="#" class="u-border-none u-btn u-btn-submit u-button-style u-none u-text-white u-btn-1">Signs In</a>
+                      <input type="submit" value="submit" class="u-form-control-hidden"  >
                     </div>
-                    <div class="u-form-send-message u-form-send-success"> Thank you! Your message has been sent. </div>
-                    <div class="u-form-send-error u-form-send-message"> Unable to send your message. Please fix errors then try again. </div>
-                    <input type="hidden" value="" name="recaptchaResponse">
+                    
                   </form>
                 </div>
-                <a href="About_User.html" class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Sign In<br>
+                <a  class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2" id="sign_in_btn" onclick="sign_in()">Sign In<br>
                 </a>
               </div>
             </div>
@@ -145,7 +144,7 @@
                 <div class="u-form u-form-2">
                   <form action="#" method="POST" class="u-clearfix u-form-spacing-10 u-form-vertical u-inner-form" source="custom" name="form" style="padding: 10px;">
                     <div class="u-form-group u-form-name">
-                      <label for="name-3a55" class="u-label">Usernamea</label>
+                      <label for="name-3a55" class="u-label">Username</label>
                       <input type="text"  id="username_input" name="username_input" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                     </div>
                     <div class="u-form-email u-form-group">
