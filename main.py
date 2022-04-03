@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
+from flask_marshmallow import Marshmallow
 from flask import request
 from flask import jsonify
 import os
@@ -14,6 +15,7 @@ SECRET_KEY = "b'|\xe7\xbfU3`\xc4\xec\xa7\xa9zf:}\xb5\xc7\xb9\x139^3@Dv'"
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+ma = Marshmallow(app)
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'Project_DB.db')
@@ -33,8 +35,7 @@ ticketstable = Table('tickets', meta, Column('id', Integer, primary_key=True, au
                      Column('price', String), Column('ticketsleft', Integer), Column('sector', Integer),
                      Column('vip', db.String), Column('match', String), Column('competition', String))
 
-
-#for afif, use string for dates that are inputted manually so that no issue arise when using sqlite
+# for afif, use string for dates that are inputted manually so that no issue arise when using sqlite GOTIT
 matchestable = Table('matches', meta, Column('id', Integer, primary_key=True, autoincrement=True),
                      Column('opponent', String), Column('result_terkiz', Integer), Column('result_opponent', Integer),
                      Column('home', Integer), Column('match_type', String), Column('date_played', String))
@@ -61,7 +62,7 @@ class User(db.Model):
         self.mail = mail
         self.dob = dob
         self.gender = gender
-        self.date_joined = datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S")
+        self.date_joined = datetime.datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S")
 
 
 # item class
@@ -117,25 +118,36 @@ class Ticket(db.Model):
         self.match = match
 
 
-# class Match(db.Model):
-#     __tablename__ = "matches"
-#
-#     # user columns
-#     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-#     opponent = db.Column(db.String(64))
-#     result_terkiz = db.Column(db.Integer())
-#     result_opponent = db.Column(db.Integer())
-#     home = db.Column(db.Boolean)
-#     match_type = db.Column(db.String(64))
-#     date_played = db.Column(db.DateTime)
-#
-#     def __init__(self,opponent, result_terkiz, result_opponent,home, date_played, match_type ):
-#         self.opponent = opponent
-#         self.result_terkiz = result_terkiz
-#         self.result_opponent = result_opponent
-#         self.home = home
-#         self.date_played = date_played
-# 	    self.match_type = match_type
+class Match(db.Model):
+    __tablename__ = "matches"
+
+    # user columns
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    opponent = db.Column(db.String(64))
+    result_terkiz = db.Column(db.Integer())
+    result_opponent = db.Column(db.Integer())
+    home = db.Column(db.Integer())
+    match_type = db.Column(db.String(64))
+    date_played = db.Column(db.String(16))
+
+    def __init__(self, opponent, result_terkiz, result_opponent, home, date_played, match_type):
+        self.opponent = opponent
+        self.result_terkiz = result_terkiz
+        self.result_opponent = result_opponent
+        self.home = home
+        self.date_played = date_played
+        self.match_type = match_type
+
+
+class MatchSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "opponent", "result_terkiz", "result_opponent", "home", "match_type", "date_played")
+        model = Match
+
+
+matches_schema = MatchSchema(many=True)
+
+
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size
 @app.route('/add_item', methods=['POST'])
@@ -155,10 +167,10 @@ def add_item():
     return "Item Added"
 
 
-# @app.route('/view_matches', methods=['GET'])
-# def view_matches():
-#     lastFiveMatches = Match.query.order_by(Match.date_played.desc()).limit(5).all()
-#     #return jsonify(matches_schema.dump( lastFiveMatches ))
+@app.route('/view_matches', methods=['GET'])
+def view_matches():
+    lastFiveMatches = Match.query.order_by(Match.date_played.desc()).limit(5).all()
+    return jsonify(matches_schema.dump(lastFiveMatches))
 
 
 @app.route('/view_tickets', methods=['GET'])
@@ -230,6 +242,7 @@ def view_info():
     }
     return jsonify(x)
 
+
 # api to authenticate user on log in
 # expects username and password
 # returns token
@@ -251,8 +264,9 @@ def authenticate():
     dicto = {'token': token}
     return jsonify(dicto)
 
-#method to test extracting token and getting user id
-@app.route('/test',methods=['GET'])
+
+# method to test extracting token and getting user id
+@app.route('/test', methods=['GET'])
 def test():
     token = extract_auth_token(request)
 
@@ -263,8 +277,9 @@ def test():
         abort(403)
     except jwt.InvalidTokenError as error:
         abort(403)
-    dicto={"token":token,"id":usid}
+    dicto = {"token": token, "id": usid}
     return jsonify(dicto)
+
 
 # get token from header
 def extract_auth_token(authenticated_request):
@@ -273,6 +288,7 @@ def extract_auth_token(authenticated_request):
         return auth_header.split(" ")[1]
     else:
         return None
+
 
 # decode token to get user id
 def decode_token(token):
