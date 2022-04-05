@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Flask, abort
+from flask import Flask, abort,session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from flask_bcrypt import Bcrypt
@@ -19,6 +19,8 @@ ma = Marshmallow(app)
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'Project_DB.db')
+app.secret_key="b'|\xe7\xbfU3`\xc4\xec\xa7\xa9zf:}\xb5\xc7\xb9\x139^3@Dv'"
+
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
 # meta data required for creating table in sqlite, should not use anymore since db is already created LEAVE IT THOUGH
@@ -261,11 +263,16 @@ def authenticate():
         abort(403)
     # create token
     token = create_token(user_db.id)
-    dicto = {'token': token}
-    return jsonify(dicto)
+    session["token"]=token
+    print(session["token"])
+    return jsonify({"tkn":token})
 
-
-# method to test extracting token and getting user id
+@app.route('/logout',methods=['POST'])
+def logout():
+    print(session["token"])
+    if(session["token"]):
+        session["token"]= None
+    return "LOGOUT SUCCESSFUL"
 @app.route('/test', methods=['GET'])
 def test():
     token = extract_auth_token(request)

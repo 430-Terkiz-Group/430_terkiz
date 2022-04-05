@@ -52,15 +52,22 @@ function sign_in(){
                 'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data),
-              }).then(response=>response.json()).then(body=>{saveUserToken(body.token);alert("login successful");window.location.replace("home_signed.html");})
+              }).then(response=>{if (!response.ok){alert("Wrong username or password!")}
+                                else{alert("Sign in successful!");window.location.replace("home_signed.html");}})
 
 
-
+              
         }
 }
 function log_out(){
     
-    clearUserToken();
+    fetch(`${SERVER_URL}/logout`, {
+        method: 'POST', 
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"test":"test"}),
+      })
     
     window.location.replace("Home.html")
 
