@@ -270,9 +270,10 @@ def authenticate():
 @app.route('/logout',methods=['POST'])
 def logout():
     print(session["token"])
-    if(session["token"]):
+    if("token" in session):
         session["token"]= None
     return "LOGOUT SUCCESSFUL"
+
 @app.route('/test', methods=['GET'])
 def test():
     token = extract_auth_token(request)
