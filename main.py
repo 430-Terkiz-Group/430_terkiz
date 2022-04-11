@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Flask, abort,session
+from flask import Flask, abort, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from flask_bcrypt import Bcrypt
@@ -19,7 +19,7 @@ ma = Marshmallow(app)
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'Project_DB.db')
-app.secret_key="b'|\xe7\xbfU3`\xc4\xec\xa7\xa9zf:}\xb5\xc7\xb9\x139^3@Dv'"
+app.secret_key = "b'|\xe7\xbfU3`\xc4\xec\xa7\xa9zf:}\xb5\xc7\xb9\x139^3@Dv'"
 
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
@@ -27,15 +27,15 @@ db = SQLAlchemy(app)
 # AS i am not sure
 meta = MetaData()
 # same as meta data
-userstable = Table('users', meta, Column('id', Integer, primary_key=True, autoincrement=True),
-                   Column('username', String, unique=True), Column('password', String), Column('mail', String),
-                   Column('dob', String), Column('gender', String), Column('date_joined', String))
-itemstable = Table('items', meta, Column('id', Integer, primary_key=True, autoincrement=True),
-                   Column('name', String), Column('price', String), Column('stockleft', Integer),
-                   Column('kind', String), Column('sale', db.Boolean), Column('size', String))
-ticketstable = Table('tickets', meta, Column('id', Integer, primary_key=True, autoincrement=True),
-                     Column('price', String), Column('ticketsleft', Integer), Column('sector', Integer),
-                     Column('vip', db.String), Column('match', String), Column('competition', String))
+# userstable = Table('users', meta, Column('id', Integer, primary_key=True, autoincrement=True),
+#                    Column('username', String, unique=True), Column('password', String), Column('mail', String),
+#                    Column('dob', String), Column('gender', String), Column('date_joined', String))
+# itemstable = Table('items', meta, Column('id', Integer, primary_key=True, autoincrement=True),
+#                    Column('name', String), Column('price', String), Column('stockleft', Integer),
+#                    Column('kind', String), Column('sale', db.Boolean), Column('size', String))
+# ticketstable = Table('tickets', meta, Column('id', Integer, primary_key=True, autoincrement=True),
+#                      Column('price', String), Column('ticketsleft', Integer), Column('sector', Integer),
+#                      Column('vip', db.String), Column('match', String), Column('competition', String))
 
 # for afif, use string for dates that are inputted manually so that no issue arise when using sqlite GOTIT
 matchestable = Table('matches', meta, Column('id', Integer, primary_key=True, autoincrement=True),
@@ -82,6 +82,7 @@ class Item(db.Model):
     sale = db.Column(db.Boolean)
     size = db.Column(db.String(64))  # indicatees the size of the item if it is clothing
 
+
     # if item is not a piece of clothing, size = "NA"
 
     def __init__(self, name, price, stockleft, kind, sale, size):
@@ -92,6 +93,10 @@ class Item(db.Model):
         self.kind = kind
         self.sale = sale
         self.size = size
+
+
+
+
 
 
 # ticket class
@@ -167,6 +172,94 @@ def add_item():
     db.session.add(newitem)
     db.session.commit()
     return "Item Added"
+
+
+# remove/add items from the cart
+@app.route('/update_cart', methods=['POST'])
+# expects item added + qtty
+def update_cart():
+    # need to check if cart dictionary exists first in session
+    item_id = request.json["id"]
+    qtty = request.json["qtty"]
+    exists = False
+    if "token" in session:
+        if session["token"]:
+            if "cart" not in session:
+                # create cart to store temporarly items in session
+                session["cart"]={}
+                session["cart"][item_id]=qtty
+            else:  # cart is alreadsy there, check if item already in cart, if yes just add/substract the qtty, else create new entry in session storage
+                for id in session["cart"]:
+                    if id == item_id:
+                        session["cart"][id] += qtty
+                        exists = True
+                        break
+                if (exists == False):  # create new entry
+                    session["cart"][item_id] = qtty
+                return jsonify({"item":item_id,"qtty":qtty})
+
+
+        else:
+            abort(403)
+    else:
+        abort(403)
+
+
+# api to get items added to cart by id
+# makes use of
+@app.route('/get_items', methods=['GET'])
+def get_item():
+    # check if token is in session dictionary
+    if ("token" in session):
+        # check if token is not null in case user logged out
+        if (session["token"]):
+            # here user is logged in and we will return the items he has bought
+
+            if ("cart" in session):  # check if cart exists
+                item_ids = []
+                qtty = []
+                for id in session["cart"]:  # GET IDS oof items + qtty
+                    item_ids.append(item_ids)
+                    qtty.append(session)
+                # now fetch items and store them in list
+
+                # get list of items whos ids are in the list above
+                item = Item.query.filter_by(Item.id.in_(item_ids)).all()
+                #create dictionary to return
+                dicto={}
+                increment =0
+                for i in item:
+                    #create a temp dictionary to add to main one to be returned
+                    name = i.name
+                    price = i.price
+                    kind = i.kind
+                    size = i.size
+                    quantity = qtty[i]
+                    temp ={"name":name,"price":price,"kind":kind,"size":size,"quantity":quantity}
+                    dicto[i]=temp
+                    increment +=1
+                #now return main dictionry
+                return jsonify(dicto)
+
+
+
+
+
+
+
+            else:
+                abort(400)  # no items added in cart
+
+
+
+
+
+
+
+        else:
+            abort(403)
+    else:
+        abort(403)
 
 
 @app.route('/view_matches', methods=['GET'])
@@ -263,16 +356,18 @@ def authenticate():
         abort(403)
     # create token
     token = create_token(user_db.id)
-    session["token"]=token
+    session["token"] = token
     print(session["token"])
-    return jsonify({"tkn":token})
+    return jsonify({"tkn": token})
 
-@app.route('/logout',methods=['POST'])
+
+@app.route('/logout', methods=['POST'])
 def logout():
     print(session["token"])
-    if("token" in session):
-        session["token"]= None
+    if ("token" in session):
+        session["token"] = None
     return "LOGOUT SUCCESSFUL"
+
 
 @app.route('/test', methods=['GET'])
 def test():
