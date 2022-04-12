@@ -325,7 +325,7 @@ def add_user():
 
 @app.route('/view_info', methods=['GET'])
 def view_info():
-    user_name = "Bero"
+    user_name = "Aziz"
     user = User.query.filter_by(username=user_name).first()
     x = {
         "username": user.username,
@@ -363,7 +363,6 @@ def authenticate():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    print(session["token"])
     if ("token" in session):
         session["token"] = None
     return "LOGOUT SUCCESSFUL"
