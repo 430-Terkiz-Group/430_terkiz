@@ -1,13 +1,14 @@
 import datetime
 
-from flask import Flask, abort, session
+from flask import Flask, abort,session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from flask_bcrypt import Bcrypt
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 from flask_marshmallow import Marshmallow
 from flask import request
 from flask import jsonify
+from flask_session import Session
 import os
 import jwt
 
@@ -16,17 +17,25 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 ma = Marshmallow(app)
-CORS(app)
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'Project_DB.db')
 app.secret_key = "b'|\xe7\xbfU3`\xc4\xec\xa7\xa9zf:}\xb5\xc7\xb9\x139^3@Dv'"
-
+app.config['SESSION_TYPE']='sqlalchemy'
+app.config['SESSION_REFRESH_EACH_REQUEST']=False
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
+app.config['SESSION_SQLALCHEMY']=db
+
+
+CORS(app,supports_credentials=True,withCredentials = True)
+Session(app)
+
 # meta data required for creating table in sqlite, should not use anymore since db is already created LEAVE IT THOUGH
 # AS i am not sure
 meta = MetaData()
 # same as meta data
+
 # userstable = Table('users', meta, Column('id', Integer, primary_key=True, autoincrement=True),
 #                    Column('username', String, unique=True), Column('password', String), Column('mail', String),
 #                    Column('dob', String), Column('gender', String), Column('date_joined', String))
@@ -38,12 +47,12 @@ meta = MetaData()
 #                      Column('vip', db.String), Column('match', String), Column('competition', String))
 
 # for afif, use string for dates that are inputted manually so that no issue arise when using sqlite GOTIT
-matchestable = Table('matches', meta, Column('id', Integer, primary_key=True, autoincrement=True),
-                     Column('opponent', String), Column('result_terkiz', Integer), Column('result_opponent', Integer),
-                     Column('home', Integer), Column('match_type', String), Column('date_played', String))
-
+# matchestable = Table('matches', meta, Column('id', Integer, primary_key=True, autoincrement=True),
+#                      Column('opponent', String), Column('result_terkiz', Integer), Column('result_opponent', Integer),
+#                      Column('home', Integer), Column('match_type', String), Column('date_played', String))
 
 # user class
+
 class User(db.Model):
     # table name for User model
     __tablename__ = "users"
@@ -158,6 +167,7 @@ matches_schema = MatchSchema(many=True)
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size
 @app.route('/add_item', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def add_item():
     nom = request.json['name']
     pri = request.json['price']
@@ -176,6 +186,7 @@ def add_item():
 
 # remove/add items from the cart
 @app.route('/update_cart', methods=['POST'])
+@cross_origin(supports_credentials=True)
 # expects item added + qtty
 def update_cart():
     # need to check if cart dictionary exists first in session
@@ -203,6 +214,10 @@ def update_cart():
             abort(403)
     else:
         abort(403)
+
+#api to get all items for sale
+
+
 
 
 # api to get items added to cart by id
@@ -302,6 +317,7 @@ def add_ticket():  # t_index,price,ticketsleft,sector,vip,match,competition
 # api to add user to db
 # expects json file with username , password , mail , dob and gender fields create time is automatic
 @app.route('/add_user', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def add_user():
     name = request.json['username']
     pwd = request.json['password']
@@ -320,13 +336,19 @@ def add_user():
         newuser = User(name, pwd, mail, dob, gender)
         db.session.add(newuser)
         db.session.commit()
+        authenticate(name,pwd)
         return "success"
 
 
-@app.route('/view_info', methods=['GET'])
+@app.route('/view_info', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def view_info():
-    user_name = "Aziz"
-    user = User.query.filter_by(username=user_name).first()
+
+    print(request.json["token"])
+    if request.json["token"] is None:
+        abort(403)
+    my_id=decode_token(request.json["token"])
+    user = User.query.filter_by(id=my_id).first()
     x = {
         "username": user.username,
         "mail": user.mail,
@@ -335,6 +357,7 @@ def view_info():
         "date_joined": user.date_joined,
         "gender": user.gender
     }
+
     return jsonify(x)
 
 
@@ -342,6 +365,7 @@ def view_info():
 # expects username and password
 # returns token
 @app.route('/authentication', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def authenticate():
     usname = request.json['username']
     pwd = request.json['password']
@@ -356,31 +380,29 @@ def authenticate():
         abort(403)
     # create token
     token = create_token(user_db.id)
-    session["token"] = token
-    print(session["token"])
-    return jsonify({"tkn": token})
+    session["id"] = user_db.id
+    session.modified=True
+
+
+
+    return jsonify({"token": token})
 
 
 @app.route('/logout', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def logout():
-    if ("token" in session):
-        session["token"] = None
+    session.clear()
     return "LOGOUT SUCCESSFUL"
 
-
+#method to test token at different points
 @app.route('/test', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def test():
-    token = extract_auth_token(request)
+    if "token" in session:
+        return session["token"]
+    else :
+        return "no token"
 
-    try:
-        usid = decode_token(token)
-
-    except jwt.ExpiredSignatureError as error:
-        abort(403)
-    except jwt.InvalidTokenError as error:
-        abort(403)
-    dicto = {"token": token, "id": usid}
-    return jsonify(dicto)
 
 
 # get token from header

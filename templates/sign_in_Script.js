@@ -27,6 +27,7 @@ function create_user() {
     } else {
         var data = { "username": usn, "password": pwd, "mail": email, "dob": dob, "gender": gender }
         fetch(`${SERVER_URL}/add_user`, {
+            credentials: 'inc',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,14 +49,22 @@ function sign_in() {
     else {
         data = { "username": usn, "password": pwd }
         fetch(`${SERVER_URL}/authentication`, {
+            
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data),
         }).then(response => {
-            if (!response.ok) { alert("Wrong username or password!") }
-            else { alert("Sign in successful!"); window.location.replace("home_signed.html"); }
+            if (!response.ok) {
+                alert("Wrong username or password!")
+            }
+            return response.json();
+        })
+        .then(data => {
+            saveUserToken(data.token)
+            alert("Sign in Successful!")
+            window.location.replace("home_signed.html")
         })
 
 
@@ -66,6 +75,7 @@ function log_out() {
 
     fetch(`${SERVER_URL}/logout`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
