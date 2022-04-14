@@ -339,7 +339,6 @@ def add_user():
         authenticate(name,pwd)
         return "success"
 
-
 @app.route('/view_info', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def view_info():
