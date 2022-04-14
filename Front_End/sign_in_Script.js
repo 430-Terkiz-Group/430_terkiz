@@ -91,3 +91,34 @@ function getUserToken() {
 function clearUserToken() {
     return localStorage.removeItem("TOKEN");
 }
+
+function sign_in_admin() {
+    var id = document.getElementById("Admin_id").value
+    var pwd = document.getElementById("Admin_pwd").value
+    if (!id || !pwd) { alert("Please fill all the fields") }
+
+    else {
+        data = { "id": id, "password": pwd }
+        fetch(`${SERVER_URL}/authentication_admin`, {
+            
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        }).then(response => {
+            if (!response.ok) {
+                alert("Wrong id or password!")
+            }
+            return response.json();
+        })
+        .then(data => {
+            saveUserToken(data.token)
+            alert("Sign in Successful!")
+            window.location.replace("home_signed.html")
+        })
+
+
+
+    }
+}
