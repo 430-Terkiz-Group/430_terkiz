@@ -38,7 +38,7 @@ mail = Mail(app)
 
 
 from .model.item import Item
-from .model.user import User
+from .model.user import User, UserSchema
 from .model.ticket import Ticket
 from .model.match import Match,MatchSchema
 
@@ -66,7 +66,7 @@ meta = MetaData()
 #                      Column('home', Integer), Column('match_type', String), Column('date_played', String))
 
 matches_schema = MatchSchema(many=True)
-
+user_schema = UserSchema(many=True)
 
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size
@@ -285,10 +285,47 @@ def authenticate():
     token = create_token(user_db.id)
     session["id"] = user_db.id
     session.modified=True
-
-
-
     return jsonify({"token": token})
+
+
+@app.route('/authentication_admin', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def authenticate_admin():
+    admin_id = request.json['id']
+    pwd = request.json['password']
+    if not id or not pwd:
+        abort(400)
+    admin_db = Admin.query.filter_by(id=admin_id).first()
+    # no username exists
+    if admin_db is None:
+        abort(403)
+    # password dont match
+    if not bcrypt.check_password_hash(admin_db.password, pwd):
+        abort(403)
+    # create token
+    token = create_token(admin_db.id)
+    session["id"] = admin_db.id
+    session.modified = True
+    return jsonify({"token": token})
+
+
+@app.route('/view_info_admin', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def view_info_admin():
+    if request.json["token"] is None:
+        abort(403)
+    my_id = decode_token(request.json["token"])
+    admin = Admin.query.filter_by(id=my_id).first()
+    x = {
+        "username": admin.username,
+        "mail": admin.mail,
+        "dob": admin.dob,
+        "id": admin.id,
+        "date_joined": admin.date_joined,
+        "gender": admin.gender
+    }
+
+    return jsonify(x)
 
 
 @app.route('/logout', methods=['POST'])
@@ -353,3 +390,59 @@ def delete_account():
     db.session.delete(user_delete)
     db.session.commit()
     return "User Deleted!"
+
+
+@app.route('/all_user', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def all_user():
+    users = User.query.all()
+    success = jsonify(user_schema.dump(users))
+    return success
+
+
+@app.route('/edit_user', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def edit_user():
+    field = request.json['field']
+    value = request.json['value']
+    field = str(field)
+    if request.json["token"] is None:
+        abort(403)
+    my_id = decode_token(request.json["token"])
+    user = User.query.filter_by(id=my_id).first()
+    setattr(user, field, value)
+    db.session.add(user)
+    db.session.commit()
+    x = {
+        "username": user.username,
+        "field": getattr(user, field)
+    }
+    return jsonify(x)
+
+
+@app.route('/all_admin', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def all_admin():
+    admins = Admin.query.all()
+    success = jsonify(user_schema.dump(admins))
+    return success
+
+
+@app.route('/edit_admin', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def edit_admin():
+    field = request.json['field']
+    value = request.json['value']
+    field = str(field)
+    if request.json["token"] is None:
+        abort(403)
+    my_id = decode_token(request.json["token"])
+    admin = Admin.query.filter_by(id=my_id).first()
+    setattr(admin, field, value)
+    db.session.add(admin)
+    db.session.commit()
+    x = {
+        "username": admin.username,
+        "field": getattr(admin, field)
+    }
+    return jsonify(x)
