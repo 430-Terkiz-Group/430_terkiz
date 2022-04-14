@@ -23,3 +23,9 @@ class User(db.Model):
         self.dob = dob
         self.gender = gender
         self.date_joined = datetime.datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S")
+        
+        
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ("username", "mail", "dob", "gender", "date_joined")
+        model = User
