@@ -41,6 +41,7 @@ from .model.item import Item
 from .model.user import User, UserSchema
 from .model.ticket import Ticket
 from .model.match import Match,MatchSchema
+from .model.admin import Admin, AdminSchema
 
 CORS(app,supports_credentials=True,withCredentials = True)
 Session(app)
@@ -67,6 +68,7 @@ meta = MetaData()
 
 matches_schema = MatchSchema(many=True)
 user_schema = UserSchema(many=True)
+admin_schema = UserSchema(many=True)
 
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size
