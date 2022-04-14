@@ -27,6 +27,10 @@ engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
 app.config['SESSION_SQLALCHEMY']=db
 
+from .model.item import Item
+from .model.user import User
+from .model.ticket import Ticket
+from .model.match import Match,MatchSchema
 
 CORS(app,supports_credentials=True,withCredentials = True)
 Session(app)
@@ -50,116 +54,6 @@ meta = MetaData()
 # matchestable = Table('matches', meta, Column('id', Integer, primary_key=True, autoincrement=True),
 #                      Column('opponent', String), Column('result_terkiz', Integer), Column('result_opponent', Integer),
 #                      Column('home', Integer), Column('match_type', String), Column('date_played', String))
-
-# user class
-
-class User(db.Model):
-    # table name for User model
-    __tablename__ = "users"
-
-    # user columns
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    username = db.Column(db.String(64), unique=True)
-    password = db.Column(db.String(128))
-    mail = db.Column(db.String(128))
-    dob = db.Column(db.String(100))
-    gender = Column(db.String(50))
-    date_joined = Column(db.String(50))
-
-    def __init__(self, username, password, mail, dob, gender):
-        # self.id=id
-        self.username = username
-        self.password = bcrypt.generate_password_hash(password)
-        self.mail = mail
-        self.dob = dob
-        self.gender = gender
-        self.date_joined = datetime.datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S")
-
-
-# item class
-# used to access merchandise in the shop section
-class Item(db.Model):
-    # table name for Item model
-    __tablename__ = "items"
-
-    # item columns
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    name = db.Column(db.String(100))
-    price = db.Column(db.Integer)
-    stockleft = db.Column(db.Integer)
-    kind = db.Column(db.String(100))
-    sale = db.Column(db.Boolean)
-    size = db.Column(db.String(64))  # indicatees the size of the item if it is clothing
-
-
-    # if item is not a piece of clothing, size = "NA"
-
-    def __init__(self, name, price, stockleft, kind, sale, size):
-        # self.id=id
-        self.name = name
-        self.price = price
-        self.stockleft = stockleft
-        self.kind = kind
-        self.sale = sale
-        self.size = size
-
-
-
-
-
-
-# ticket class
-# used to access ticket information in the shop section
-class Ticket(db.Model):
-    # table name for Ticket model
-    __tablename__ = "tickets"
-
-    # ticket columns
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-
-    price = db.Column(db.Integer)
-    ticketsleft = db.Column(db.Integer)
-    sector = db.Column(db.Integer)
-    vip = db.Column(db.String)  # indicates if the ticket is in the vip section or not
-    match = db.Column(db.String(64))  # indicates if the match is home or away
-    competition = db.Column(db.String(100))  # type of competition in the match
-
-    def __init__(self, price, ticketsleft, sector, vip, match, competition):
-        # self.id=id
-
-        self.price = price
-        self.ticketsleft = ticketsleft
-        self.sector = sector
-        self.vip = vip
-        self.match = match
-
-
-class Match(db.Model):
-    __tablename__ = "matches"
-
-    # user columns
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    opponent = db.Column(db.String(64))
-    result_terkiz = db.Column(db.Integer())
-    result_opponent = db.Column(db.Integer())
-    home = db.Column(db.Integer())
-    match_type = db.Column(db.String(64))
-    date_played = db.Column(db.String(16))
-
-    def __init__(self, opponent, result_terkiz, result_opponent, home, date_played, match_type):
-        self.opponent = opponent
-        self.result_terkiz = result_terkiz
-        self.result_opponent = result_opponent
-        self.home = home
-        self.date_played = date_played
-        self.match_type = match_type
-
-
-class MatchSchema(ma.Schema):
-    class Meta:
-        fields = ("id", "opponent", "result_terkiz", "result_opponent", "home", "match_type", "date_played")
-        model = Match
-
 
 matches_schema = MatchSchema(many=True)
 
