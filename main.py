@@ -9,6 +9,7 @@ from flask_marshmallow import Marshmallow
 from flask import request
 from flask import jsonify
 from flask_session import Session
+from flask_mail import Mail,Message
 import os
 import jwt
 
@@ -26,6 +27,15 @@ app.config['SESSION_REFRESH_EACH_REQUEST']=False
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
 app.config['SESSION_SQLALCHEMY']=db
+
+app.config['MAIL_SERVER']= 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'terkiz.club@gmail.com'
+app.config['MAIL_PASSWORD'] = 'terkiz123'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+
 
 from .model.item import Item
 from .model.user import User
@@ -325,3 +335,21 @@ def create_token(user_id):
         SECRET_KEY,
         algorithm='HS256'
     )
+
+@app.route('/email', methods = ['GET'])
+def send_email():
+ sender = 'terkiz.club@gmail.com'
+ recipients = request.json["recipients"]
+ subject = request.json["subject"]
+ msg = Message(subject, sender=sender, recipients=recipients)
+ msg.body = request.json["body"]
+ mail.send(msg)
+ return "Message sent!"
+
+@app.route('/delete_user', methods=['GET'])
+def delete_account():
+    id = request.json["ID"]
+    user_delete = User.query.get_or_404(id)
+    db.session.delete(user_delete)
+    db.session.commit()
+    return "User Deleted!"
