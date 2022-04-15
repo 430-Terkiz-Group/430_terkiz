@@ -37,7 +37,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-from .model.item import Item
+from .model.item import Item,ItemSchema
 from .model.user import User, UserSchema
 from .model.ticket import Ticket
 from .model.match import Match,MatchSchema
@@ -69,6 +69,7 @@ meta = MetaData()
 matches_schema = MatchSchema(many=True)
 user_schema = UserSchema(many=True)
 admin_schema = UserSchema(many=True)
+item_schema=ItemSchema(many=True)
 
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size
@@ -89,98 +90,105 @@ def add_item():
     db.session.commit()
     return "Item Added"
 
+#OLD CODE FOR CART NOT BEING USED
+# # remove/add items from the cart
+# @app.route('/update_cart', methods=['POST'])
+# @cross_origin(supports_credentials=True)
+# # expects item added + qtty
+# def update_cart():
+#     # need to check if cart dictionary exists first in session
+#     item_id = request.json["id"]
+#     qtty = request.json["qtty"]
+#     exists = False
+#     if "token" in session:
+#         if session["token"]:
+#             if "cart" not in session:
+#                 # create cart to store temporarly items in session
+#                 session["cart"]={}
+#                 session["cart"][item_id]=qtty
+#             else:  # cart is alreadsy there, check if item already in cart, if yes just add/substract the qtty, else create new entry in session storage
+#                 for id in session["cart"]:
+#                     if id == item_id:
+#                         session["cart"][id] += qtty
+#                         exists = True
+#                         break
+#                 if (exists == False):  # create new entry
+#                     session["cart"][item_id] = qtty
+#                 return jsonify({"item":item_id,"qtty":qtty})
+#
+#
+#         else:
+#             abort(403)
+#     else:
+#         abort(403)
+#
+# #api to get all items for sale
+#
+#
+#
+#
+# # api to get items added to cart by id
+# # makes use of
+# @app.route('/get_items', methods=['GET'])
+# def get_item():
+#     # check if token is in session dictionary
+#     if ("token" in session):
+#         # check if token is not null in case user logged out
+#         if (session["token"]):
+#             # here user is logged in and we will return the items he has bought
+#
+#             if ("cart" in session):  # check if cart exists
+#                 item_ids = []
+#                 qtty = []
+#                 for id in session["cart"]:  # GET IDS oof items + qtty
+#                     item_ids.append(item_ids)
+#                     qtty.append(session)
+#                 # now fetch items and store them in list
+#
+#                 # get list of items whos ids are in the list above
+#                 item = Item.query.filter_by(Item.id.in_(item_ids)).all()
+#                 #create dictionary to return
+#                 dicto={}
+#                 increment =0
+#                 for i in item:
+#                     #create a temp dictionary to add to main one to be returned
+#                     name = i.name
+#                     price = i.price
+#                     kind = i.kind
+#                     size = i.size
+#                     quantity = qtty[i]
+#                     temp ={"name":name,"price":price,"kind":kind,"size":size,"quantity":quantity}
+#                     dicto[i]=temp
+#                     increment +=1
+#                 #now return main dictionry
+#                 return jsonify(dicto)
+#
+#
+#
+#
+#
+#
+#
+#             else:
+#                 abort(400)  # no items added in cart
+#
+#
+#
+#
+#
+#
+#
+#         else:
+#             abort(403)
+#     else:
+#         abort(403)
 
-# remove/add items from the cart
-@app.route('/update_cart', methods=['POST'])
-@cross_origin(supports_credentials=True)
-# expects item added + qtty
-def update_cart():
-    # need to check if cart dictionary exists first in session
-    item_id = request.json["id"]
-    qtty = request.json["qtty"]
-    exists = False
-    if "token" in session:
-        if session["token"]:
-            if "cart" not in session:
-                # create cart to store temporarly items in session
-                session["cart"]={}
-                session["cart"][item_id]=qtty
-            else:  # cart is alreadsy there, check if item already in cart, if yes just add/substract the qtty, else create new entry in session storage
-                for id in session["cart"]:
-                    if id == item_id:
-                        session["cart"][id] += qtty
-                        exists = True
-                        break
-                if (exists == False):  # create new entry
-                    session["cart"][item_id] = qtty
-                return jsonify({"item":item_id,"qtty":qtty})
 
-
-        else:
-            abort(403)
-    else:
-        abort(403)
-
-#api to get all items for sale
-
-
-
-
-# api to get items added to cart by id
-# makes use of
-@app.route('/get_items', methods=['GET'])
-def get_item():
-    # check if token is in session dictionary
-    if ("token" in session):
-        # check if token is not null in case user logged out
-        if (session["token"]):
-            # here user is logged in and we will return the items he has bought
-
-            if ("cart" in session):  # check if cart exists
-                item_ids = []
-                qtty = []
-                for id in session["cart"]:  # GET IDS oof items + qtty
-                    item_ids.append(item_ids)
-                    qtty.append(session)
-                # now fetch items and store them in list
-
-                # get list of items whos ids are in the list above
-                item = Item.query.filter_by(Item.id.in_(item_ids)).all()
-                #create dictionary to return
-                dicto={}
-                increment =0
-                for i in item:
-                    #create a temp dictionary to add to main one to be returned
-                    name = i.name
-                    price = i.price
-                    kind = i.kind
-                    size = i.size
-                    quantity = qtty[i]
-                    temp ={"name":name,"price":price,"kind":kind,"size":size,"quantity":quantity}
-                    dicto[i]=temp
-                    increment +=1
-                #now return main dictionry
-                return jsonify(dicto)
-
-
-
-
-
-
-
-            else:
-                abort(400)  # no items added in cart
-
-
-
-
-
-
-
-        else:
-            abort(403)
-    else:
-        abort(403)
+@app.route('/get_all_items',methods=['GET'])
+def get_all_items():
+    items = Item.query.all()
+    success = jsonify(item_schema.dump(items))
+    return success
 
 
 @app.route('/view_matches', methods=['GET'])
@@ -249,7 +257,7 @@ def add_user():
 @cross_origin(supports_credentials=True)
 def view_info():
 
-    print(request.json["token"])
+
     if request.json["token"] is None:
         abort(403)
     my_id=decode_token(request.json["token"])

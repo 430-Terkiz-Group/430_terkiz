@@ -1,4 +1,4 @@
-from ..main import db
+from ..main import db,ma
 
 # item class
 # used to access merchandise in the shop section
@@ -26,3 +26,9 @@ class Item(db.Model):
         self.kind = kind
         self.sale = sale
         self.size = size
+
+
+class ItemSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "name", "price", "stockleft", "kind","sale","size")
+        model = Item

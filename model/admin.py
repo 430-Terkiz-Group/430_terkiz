@@ -1,4 +1,4 @@
-from ..main import db, bcrypt
+from ..main import db, bcrypt,ma
 import datetime
 
 
