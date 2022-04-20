@@ -2,23 +2,41 @@
 var SERVER_URL = "http://127.0.0.1:5000"
 
 
-var item_list=[] //used to get all items available from db using api call
+//used to get all items available from db using api call
                  //use list to show available items (required so that i know the id of the item added to cart)
 
 
 //storing all items in the list
+
+
+var changed = false
+
+
 fetch(`${SERVER_URL}/get_all_items`,{method:'GET'})
-                  .then(response => response.json())
+                  .then(response => {return response.json()})
                   .then(data => {
+                    //clear_items()
+                     
                    for (x in data){
-                       item_list.push(data[x])
+                        
+                       //console.log(data[x])
+                     
+                       
+                      
+                       store_item(data[x])
+                       
+                       
+                       
+                        
                        
                    }
+                   
+                  
 
                   })
 
-for (x in item_list){console.log(x)}
-
+var items= get_items()
+console.log("new cart",items)
 
 //this function takes in the item ID and the amount to add 
 //stored in local storage
@@ -77,7 +95,24 @@ function remove_from_cart(itemID,ammount){
 
 
 }
+function store_item(item){
+        if (changed == false) {clear_items();changed = true}
+        var id=item.id
+        
+        var items=get_items()
+        if (items==null){
+            items={}
+            console.log(id)
+            items[id]=item
+        }
+        else{
+            items[id]=item
+        }
+        put_item(items)
 
+
+
+}
 //function to clear cart
 function clear_cart(){
     var cart = get_cart()
@@ -96,16 +131,32 @@ function put_dict(item){
 function get_cart(){
     return JSON.parse(localStorage.getItem("cart"));
 }
-/*
-clear_cart()
-function test(){
+
+function clear_items(){
+    var items = get_items()
+    items={}
+    put_item(items)
+}
+
+//helper function to save dict to localstorage
+function put_item(item){
+    localStorage.setItem("items", JSON.stringify(item));
+}
+
+
+
+//helper function since dict stored as string in localstorage
+function get_items(){
+    return JSON.parse(localStorage.getItem("items"));
+}
+
+/*function test(){
      add_to_cart(1,3)
      
      add_to_cart(1,3)
      add_to_cart(2,3)
      
-     remove_from_cart(1,4)
-     remove_from_cart(1,2)
+    
 
 
 
