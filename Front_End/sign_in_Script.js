@@ -27,7 +27,7 @@ function create_user() {
     } else {
         var data = { "username": usn, "password": pwd, "mail": email, "dob": dob, "gender": gender }
         fetch(`${SERVER_URL}/add_user`, {
-            credentials: 'inc',
+            credentials: 'same-origin',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
