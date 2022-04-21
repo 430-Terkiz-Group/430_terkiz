@@ -392,13 +392,16 @@ def send_email():
  mail.send(msg)
  return "Message sent!"
 
-@app.route('/delete_user', methods=['GET'])
+@app.route('/delete_user', methods=['POST'])
 def delete_account():
-    id = request.json["ID"]
-    user_delete = User.query.get_or_404(id)
+    username = request.json["username"]
+    user_delete = User.query.filter_by(username=username).first()
     db.session.delete(user_delete)
     db.session.commit()
-    return "User Deleted!"
+    x = {
+        "success": "Success"
+    }
+    return jsonify(x)
 
 
 @app.route('/all_user', methods=['GET'])
@@ -412,13 +415,13 @@ def all_user():
 @app.route('/edit_user', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def edit_user():
+    username = request.json['username']
     field = request.json['field']
     value = request.json['value']
     field = str(field)
     if request.json["token"] is None:
         abort(403)
-    my_id = decode_token(request.json["token"])
-    user = User.query.filter_by(id=my_id).first()
+    user = User.query.filter_by(username=username).first()
     setattr(user, field, value)
     db.session.add(user)
     db.session.commit()
