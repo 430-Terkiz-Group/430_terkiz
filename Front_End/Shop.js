@@ -35,8 +35,8 @@ fetch(`${SERVER_URL}/get_all_items`,{method:'GET'})
 
                   })
 
-var items= get_items()
-console.log("new cart",items)
+var ite = get_items()
+console.log(ite)
 
 //this function takes in the item ID and the amount to add 
 //stored in local storage
@@ -151,6 +151,7 @@ function get_items(){
 }
 
 /*function test(){
+    clear_cart()
      add_to_cart(1,3)
      
      add_to_cart(1,3)

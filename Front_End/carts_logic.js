@@ -1,17 +1,11 @@
 
 
 
-
-
-
 function GenerateTable() {
     //Build an array containing Customer records.
     var customers = new Array();
-    customers.push(["item id", "qtty"]);
-    customers.push([1, "John Hammond", "United States"]);
-    customers.push([2, "Mudassar Khan", "India"]);
-    customers.push([3, "Suzanne Mathews", "France"]);
-    customers.push([4, "Robert Schidner", "Russia"]);
+    customers.push(["Item Name ", "Kind" ,"Size","Price per Unit","Amount","Total"]);
+    
 
     //Create a HTML Table element.
     var table = document.createElement("TABLE");
@@ -21,7 +15,7 @@ function GenerateTable() {
     //Get the count of columns.
     let cart =get_cart()
     console.log(cart)
-    var columnCount = 2
+    var columnCount = customers[0].length
     
     //Add the header row.
     var row = table.insertRow(-1);
@@ -32,11 +26,16 @@ function GenerateTable() {
         headerCell.innerHTML = customers[0][i];
         row.appendChild(headerCell);
     }
+    
+    let item_list=get_items()
+
+
 
     for (var x in cart) {
+        console.log(x)
         row = table.insertRow(-1);
         row.classList.add("cartrows");
-        var arr = [x,cart[x]]
+        var arr = [item_list[x].name,item_list[x].kind,item_list[x].size,item_list[x].price.toString()+"$",cart[x],item_list[x].price*cart[x].toString()+"$"]
         for (var j = 0; j < columnCount; j++) {
             var cell = row.insertCell(-1);
             
@@ -64,4 +63,7 @@ function GenerateTable() {
     //helper function since dict stored as string in localstorage
     function get_cart(){
         return JSON.parse(localStorage.getItem("cart"));
+    }
+    function get_items(){
+        return JSON.parse(localStorage.getItem("items"));
     }

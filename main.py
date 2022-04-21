@@ -250,7 +250,7 @@ def add_user():
         newuser = User(name, pwd, mail, dob, gender)
         db.session.add(newuser)
         db.session.commit()
-        authenticate(name,pwd)
+        
         return "success"
 
 @app.route('/view_info', methods=['POST'])
@@ -278,7 +278,6 @@ def view_info():
 # expects username and password
 # returns token
 @app.route('/authentication', methods=['POST'])
-@cross_origin(supports_credentials=True)
 def authenticate():
     usname = request.json['username']
     pwd = request.json['password']
