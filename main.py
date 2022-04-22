@@ -39,7 +39,7 @@ from .model.item import Item, ItemSchema
 from .model.user import User, UserSchema
 from .model.ticket import Ticket
 from .model.match import Match, MatchSchema
-from .model.admin import Admin, AdminSchema
+from .model.staff import Admin, AdminSchema
 
 CORS(app, supports_credentials=True, withCredentials=True)
 Session(app)
@@ -64,9 +64,15 @@ meta = MetaData()
 #                      Column('opponent', String), Column('result_terkiz', Integer), Column('result_opponent', Integer),
 #                      Column('home', Integer), Column('match_type', String), Column('date_played', String))
 
+staffTable = Table('admins', meta, Column('id', Integer, primary_key=True, autoincrement=True),
+                    Column('username', String, unique=True), Column('password', String), Column('mail', String),
+                    Column('dob', String), Column('gender', String), Column('date_joined', String), Column('position' , String),
+                    Column('phone', String))
+
+
 matches_schema = MatchSchema(many=True)
 user_schema = UserSchema(many=True)
-admin_schema = UserSchema(many=True)
+staff_schema = StaffSchema(many=True)
 item_schema = ItemSchema(many=True)
 
 
@@ -420,8 +426,8 @@ def edit_user():
     field = request.json['field']
     value = request.json['value']
     field = str(field)
-    #if request.json["token"] is None:
-        #abort(403)
+    if request.json["token"] is None:
+        abort(403)
     user = User.query.filter_by(username=username).first()
     setattr(user, field, value)
     db.session.add(user)
