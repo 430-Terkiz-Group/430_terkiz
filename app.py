@@ -358,6 +358,12 @@ def all_user():
     success = jsonify(user_schema.dump(users))
     return success
 
+@app.route('/all_item', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def all_item():
+    items = Item.query.all()
+    success = jsonify(item_schema.dump(items))
+    return success
 
 @app.route('/edit_user', methods=['POST'])
 @cross_origin(supports_credentials=True)
