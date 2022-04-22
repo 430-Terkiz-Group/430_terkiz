@@ -1,4 +1,4 @@
-from ..main import db,ma
+from ..app import db,ma
 
 # item class
 # used to access merchandise in the shop section

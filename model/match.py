@@ -1,4 +1,4 @@
-from ..main import db,ma
+from ..app import db,ma
 
 # match class
 class Match(db.Model):
