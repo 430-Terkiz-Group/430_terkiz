@@ -1,15 +1,15 @@
 import datetime
 
-from flask import Flask, abort,session
+from flask import Flask, abort, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from flask_bcrypt import Bcrypt
-from flask_cors import CORS,cross_origin
+from flask_cors import CORS, cross_origin
 from flask_marshmallow import Marshmallow
 from flask import request
 from flask import jsonify
 from flask_session import Session
-from flask_mail import Mail,Message
+from flask_mail import Mail, Message
 import os
 import jwt
 
@@ -19,35 +19,33 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 ma = Marshmallow(app)
 
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'Project_DB.db')
 app.secret_key = "b'|\xe7\xbfU3`\xc4\xec\xa7\xa9zf:}\xb5\xc7\xb9\x139^3@Dv'"
-app.config['SESSION_TYPE']='sqlalchemy'
-app.config['SESSION_REFRESH_EACH_REQUEST']=False
+app.config['SESSION_TYPE'] = 'sqlalchemy'
+app.config['SESSION_REFRESH_EACH_REQUEST'] = False
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
-app.config['SESSION_SQLALCHEMY']=db
+app.config['SESSION_SQLALCHEMY'] = db
 
-app.config['MAIL_SERVER']= 'smtp.gmail.com'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'terkiz.club@gmail.com'
 app.config['MAIL_PASSWORD'] = 'terkiz123'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-mail = Mail(app)
+Email = Mail(app)
 
-
-from .model.item import Item,ItemSchema
+from .model.item import Item, ItemSchema
 from .model.user import User, UserSchema
 from .model.ticket import Ticket
-from .model.match import Match,MatchSchema
+from .model.match import Match, MatchSchema
 from .model.admin import Admin, AdminSchema
 
-CORS(app,supports_credentials=True,withCredentials = True)
+CORS(app, supports_credentials=True, withCredentials=True)
 Session(app)
 
-# meta data required for creating table in sqlite, should not use anymore since db is already created LEAVE IT THOUGH
-# AS i am not sure
+# metadata required for creating table in sqlite, should not use anymore since db is already created LEAVE IT
+# AS I am not sure
 meta = MetaData()
 # same as meta data
 
@@ -69,7 +67,8 @@ meta = MetaData()
 matches_schema = MatchSchema(many=True)
 user_schema = UserSchema(many=True)
 admin_schema = UserSchema(many=True)
-item_schema=ItemSchema(many=True)
+item_schema = ItemSchema(many=True)
+
 
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size
@@ -90,7 +89,8 @@ def add_item():
     db.session.commit()
     return "Item Added"
 
-#OLD CODE FOR CART NOT BEING USED
+
+# OLD CODE FOR CART NOT BEING USED
 # # remove/add items from the cart
 # @app.route('/update_cart', methods=['POST'])
 # @cross_origin(supports_credentials=True)
@@ -103,7 +103,7 @@ def add_item():
 #     if "token" in session:
 #         if session["token"]:
 #             if "cart" not in session:
-#                 # create cart to store temporarly items in session
+#                 # create cart to store temporarily items in session
 #                 session["cart"]={}
 #                 session["cart"][item_id]=qtty
 #             else:  # cart is alreadsy there, check if item already in cart, if yes just add/substract the qtty, else create new entry in session storage
@@ -184,7 +184,7 @@ def add_item():
 #         abort(403)
 
 
-@app.route('/get_all_items',methods=['GET'])
+@app.route('/get_all_items', methods=['GET'])
 def get_all_items():
     items = Item.query.all()
     success = jsonify(item_schema.dump(items))
@@ -250,21 +250,20 @@ def add_user():
         newuser = User(name, pwd, mail, dob, gender)
         db.session.add(newuser)
         db.session.commit()
-        
+
         return "success"
+
 
 @app.route('/view_info', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def view_info():
-
-
     if request.json["token"] is None:
         abort(403)
-    my_id=decode_token(request.json["token"])
+    my_id = decode_token(request.json["token"])
     user = User.query.filter_by(id=my_id).first()
     x = {
         "username": user.username,
-        "mail": user.mail,
+        "mail": user.Email,
         "dob": user.dob,
         "id": user.id,
         "date_joined": user.date_joined,
@@ -287,13 +286,13 @@ def authenticate():
     # no username exists
     if user_db is None:
         abort(403)
-    # password dont match
+    # password don't match
     if not bcrypt.check_password_hash(user_db.password, pwd):
         abort(403)
     # create token
     token = create_token(user_db.id)
     session["id"] = user_db.id
-    session.modified=True
+    session.modified = True
     return jsonify({"token": token})
 
 
@@ -308,7 +307,7 @@ def authenticate_admin():
     # no username exists
     if admin_db is None:
         abort(403)
-    # password dont match
+    # password don't match
     if not bcrypt.check_password_hash(admin_db.password, pwd):
         abort(403)
     # create token
@@ -327,7 +326,7 @@ def view_info_admin():
     admin = Admin.query.filter_by(id=my_id).first()
     x = {
         "username": admin.username,
-        "mail": admin.mail,
+        "mail": admin.Email,
         "dob": admin.dob,
         "id": admin.id,
         "date_joined": admin.date_joined,
@@ -343,15 +342,15 @@ def logout():
     session.clear()
     return "LOGOUT SUCCESSFUL"
 
-#method to test token at different points
+
+# method to test token at different points
 @app.route('/test', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def test():
     if "token" in session:
         return session["token"]
-    else :
+    else:
         return "no token"
-
 
 
 # get token from header
@@ -382,15 +381,17 @@ def create_token(user_id):
         algorithm='HS256'
     )
 
-@app.route('/email', methods = ['GET'])
+
+@app.route('/email', methods=['GET'])
 def send_email():
- sender = 'terkiz.club@gmail.com'
- recipients = request.json["recipients"]
- subject = request.json["subject"]
- msg = Message(subject, sender=sender, recipients=recipients)
- msg.body = request.json["body"]
- mail.send(msg)
- return "Message sent!"
+    sender = 'terkiz.club@gmail.com'
+    recipients = request.json["recipients"]
+    subject = request.json["subject"]
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = request.json["body"]
+    Email.send(msg)
+    return "Message sent!"
+
 
 @app.route('/delete_user', methods=['POST'])
 def delete_account():

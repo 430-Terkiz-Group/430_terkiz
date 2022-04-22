@@ -3,7 +3,7 @@
 
 function GenerateTable() {
     //Build an array containing Customer records.
-    var customers = new Array();
+    var customers = [];
     customers.push(["Item Name ", "Kind" ,"Size","Price per Unit","Amount","Total"]);
     
 
