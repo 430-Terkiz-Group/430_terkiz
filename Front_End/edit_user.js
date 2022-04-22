@@ -42,7 +42,7 @@ function edit_user(){
     })
         .then(response => {
             if (!response.ok) { alert("Edit failed!") }
-            else { alert("The user was changed successfully")}
+            else { alert("The user was changed successfully"); location.reload()}
         })
 }
 function delete_user(){
@@ -57,6 +57,6 @@ function delete_user(){
     })
         .then(response => {
             if (!response.ok) { alert("Delete failed!") }
-            else { alert("The user was deleted successfully")}
+            else { alert("The user was deleted successfully"); location.reload()}
         })
 }
