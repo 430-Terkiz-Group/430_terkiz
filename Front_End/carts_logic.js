@@ -1,9 +1,20 @@
-
+const SERVER_URL = "http://127.0.0.1:5000"
 
 
 function GenerateTable() {
+    
     //Build an array containing Customer records.
-    var customers = [];
+    let cart =get_cart()
+    if (Object.keys(cart).length==0){
+        let empty = document.createElement("p")
+        empty.innerHTML= "No items in Cart! Please go back to the shop and add items to the cart!"
+        var dvTable = document.getElementById("carts_table");
+        dvTable.innerHTML = "";
+        dvTable.appendChild(empty);
+        
+    }
+    else{
+    var customers = new Array();
     customers.push(["Item Name ", "Kind" ,"Size","Price per Unit","Amount","Total"]);
     
 
@@ -13,8 +24,8 @@ function GenerateTable() {
     table.border = "1";
 
     //Get the count of columns.
-    let cart =get_cart()
-    console.log(cart)
+    
+    
     var columnCount = customers[0].length
     
     //Add the header row.
@@ -45,25 +56,65 @@ function GenerateTable() {
     var dvTable = document.getElementById("carts_table");
         dvTable.innerHTML = "";
         dvTable.appendChild(table);
+        var submit = document.createElement("button")
+        submit.innerHTML="Confirm Order"
+        submit.onclick= function(){send_order()}
+        dvTable.appendChild(submit)
+        }
     }
 
-    function clear_cart(){
-        var cart = get_cart()
-        cart={}
-        put_dict(cart)
-    }
+
     
-    //helper function to save dict to localstorage
-    function put_dict(item){
+    
+function put_dict(item){
         localStorage.setItem("cart", JSON.stringify(item));
     }
     
-    
+function send_order(){
+        
+        cart= get_cart()
+        if (cart ==null){
+           alert("No items in cart!")
+        }else{
+            console.log(cart)
+
+            fetch(`${SERVER_URL}/add_order`, {
+            
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getUserToken()}`
+                },
+                body: JSON.stringify(cart),
+            }).then(response => {
+                if (!response.ok) {
+                    alert("Something went Wring")
+                }
+                else{
+                    alert("Order Successful!")
+                    clear_cart()
+                    location.reload()
+                }
+            })
+        
+            
+        
+    }
+
+
+ }   
     
     //helper function since dict stored as string in localstorage
-    function get_cart(){
+function get_cart(){
         return JSON.parse(localStorage.getItem("cart"));
     }
-    function get_items(){
+function get_items(){
         return JSON.parse(localStorage.getItem("items"));
+    }
+function getUserToken() {
+        return localStorage.getItem("TOKEN");
+    }
+function clear_cart(){
+        cart={}
+        put_dict(cart)
     }

@@ -115,7 +115,7 @@ function store_item(item){
 }
 //function to clear cart
 function clear_cart(){
-    var cart = get_cart()
+    
     cart={}
     put_dict(cart)
 }
@@ -133,7 +133,7 @@ function get_cart(){
 }
 
 function clear_items(){
-    var items = get_items()
+    
     items={}
     put_item(items)
 }
@@ -150,7 +150,7 @@ function get_items(){
     return JSON.parse(localStorage.getItem("items"));
 }
 
-/*function test(){
+function test(){
     clear_cart()
      add_to_cart(1,3)
      
@@ -162,4 +162,4 @@ function get_items(){
 
 
 }
-test()*/
+test()

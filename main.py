@@ -40,7 +40,7 @@ from .model.user import User, UserSchema
 from .model.ticket import Ticket
 from .model.match import Match, MatchSchema
 from .model.staff import Staff, StaffSchema
-
+from .model.order import Orders
 CORS(app, supports_credentials=True, withCredentials=True)
 Session(app)
 
@@ -468,7 +468,7 @@ def edit_user():
 @app.route('/all_admin', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def all_admin():
-    admins = Admin.query.all()
+    admins = Staff.query.all()
     success = jsonify(user_schema.dump(admins))
     return success
 
@@ -482,7 +482,7 @@ def edit_admin():
     if request.json["token"] is None:
         abort(403)
     my_id = decode_token(request.json["token"])
-    admin = Admin.query.filter_by(id=my_id).first()
+    admin = Staff.query.filter_by(id=my_id).first()
     setattr(admin, field, value)
     db.session.add(admin)
     db.session.commit()
@@ -491,3 +491,16 @@ def edit_admin():
         "field": getattr(admin, field)
     }
     return jsonify(x)
+@app.route('/add_order',methods=['POST'])
+def add_order():
+    token =extract_auth_token(request)
+    if not token or token ==None:
+        abort(403)
+    else:
+
+        id =decode_token(token)
+        for itemid in request.json:
+            item=Orders(id,itemid,request.json[itemid])
+            db.session.add(item)
+            db.session.commit()
+        return "Success"
