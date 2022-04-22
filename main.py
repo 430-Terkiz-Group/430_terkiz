@@ -96,98 +96,6 @@ def add_item():
     return "Item Added"
 
 
-# OLD CODE FOR CART NOT BEING USED
-# # remove/add items from the cart
-# @app.route('/update_cart', methods=['POST'])
-# @cross_origin(supports_credentials=True)
-# # expects item added + qtty
-# def update_cart():
-#     # need to check if cart dictionary exists first in session
-#     item_id = request.json["id"]
-#     qtty = request.json["qtty"]
-#     exists = False
-#     if "token" in session:
-#         if session["token"]:
-#             if "cart" not in session:
-#                 # create cart to store temporarily items in session
-#                 session["cart"]={}
-#                 session["cart"][item_id]=qtty
-#             else:  # cart is alreadsy there, check if item already in cart, if yes just add/substract the qtty, else create new entry in session storage
-#                 for id in session["cart"]:
-#                     if id == item_id:
-#                         session["cart"][id] += qtty
-#                         exists = True
-#                         break
-#                 if (exists == False):  # create new entry
-#                     session["cart"][item_id] = qtty
-#                 return jsonify({"item":item_id,"qtty":qtty})
-#
-#
-#         else:
-#             abort(403)
-#     else:
-#         abort(403)
-#
-# #api to get all items for sale
-#
-#
-#
-#
-# # api to get items added to cart by id
-# # makes use of
-# @app.route('/get_items', methods=['GET'])
-# def get_item():
-#     # check if token is in session dictionary
-#     if ("token" in session):
-#         # check if token is not null in case user logged out
-#         if (session["token"]):
-#             # here user is logged in and we will return the items he has bought
-#
-#             if ("cart" in session):  # check if cart exists
-#                 item_ids = []
-#                 qtty = []
-#                 for id in session["cart"]:  # GET IDS oof items + qtty
-#                     item_ids.append(item_ids)
-#                     qtty.append(session)
-#                 # now fetch items and store them in list
-#
-#                 # get list of items whos ids are in the list above
-#                 item = Item.query.filter_by(Item.id.in_(item_ids)).all()
-#                 #create dictionary to return
-#                 dicto={}
-#                 increment =0
-#                 for i in item:
-#                     #create a temp dictionary to add to main one to be returned
-#                     name = i.name
-#                     price = i.price
-#                     kind = i.kind
-#                     size = i.size
-#                     quantity = qtty[i]
-#                     temp ={"name":name,"price":price,"kind":kind,"size":size,"quantity":quantity}
-#                     dicto[i]=temp
-#                     increment +=1
-#                 #now return main dictionry
-#                 return jsonify(dicto)
-#
-#
-#
-#
-#
-#
-#
-#             else:
-#                 abort(400)  # no items added in cart
-#
-#
-#
-#
-#
-#
-#
-#         else:
-#             abort(403)
-#     else:
-#         abort(403)
 
 
 @app.route('/get_all_items', methods=['GET'])
@@ -256,6 +164,12 @@ def add_user():
         newuser = User(name, pwd, mail, dob, gender)
         db.session.add(newuser)
         db.session.commit()
+        sender = 'terkiz.club@gmail.com'
+        recipients = [mail]
+        subject ="Welcome to TerkiFC"
+        msg = Message(subject, sender=sender, recipients=recipients)
+        msg.body = "Thank you for joining TerkizFC, " + name+ " \n We hope that you will like it here! \n Feel free to look through the site and don't forget to visit our shop! \n Best,\n The Terkiz Team. "
+        Email.send(msg)
 
         return "success"
 
@@ -503,4 +417,23 @@ def add_order():
             item=Orders(id,itemid,request.json[itemid])
             db.session.add(item)
             db.session.commit()
+        sender = 'terkiz.club@gmail.com'
+
+        subject = "Order Summary"
+        user = User.query.filter_by(id=id).first()
+        recipients = [user.mail]
+        msg = Message(subject, sender=sender, recipients=recipients)
+        name = User
+        body=""
+        body += "Thank you for you purhcase " + user.username+ ", \n" + "You have ordered: \n"
+        summary =''
+        for itemid in request.json:
+            item = Item.query.filter_by(id=itemid).first()
+            order = "    -"+str(request.json[itemid]) + " " + item.name + " for " + str(item.price) +"$ each"+" for a total of "+ str(int(request.json[itemid])*int(item.price)) +"$ \n"
+            summary +=order
+        body+= summary
+        body+="We Hope you Like it! \n" + "Best, \n"+"The Terkiz Team."
+        msg.body=body
+        Email.send(msg)
+
         return "Success"
