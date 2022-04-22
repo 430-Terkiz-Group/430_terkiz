@@ -92,14 +92,14 @@ function clearUserToken() {
     return localStorage.removeItem("TOKEN");
 }
 
-function sign_in_admin() {
-    var id = document.getElementById("Admin_id").value
-    var pwd = document.getElementById("Admin_pwd").value
-    if (!id || !pwd) { alert("Please fill all the fields") }
+function sign_in_staff() {
+    var username = document.getElementById("Staff_username").value
+    var pwd = document.getElementById("Staff_pwd").value
+    if (!username || !pwd) { alert("Please fill all the fields") }
 
     else {
-        data = { "id": id, "password": pwd }
-        fetch(`${SERVER_URL}/authentication_admin`, {
+        data = { "username": username, "password": pwd }
+        fetch(`${SERVER_URL}/authentication_staff`, {
             
             method: 'POST',
             headers: {

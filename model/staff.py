@@ -1,3 +1,5 @@
+import random
+
 from ..main import db, bcrypt,ma
 import datetime
 
@@ -18,7 +20,6 @@ class Staff(db.Model):
     phone = db.Column(db.String(32))
 
     def __init__(self, username, password, mail, dob, gender, position, phone):
-        # self.id=id
         self.username = username
         self.password = bcrypt.generate_password_hash(password)
         self.mail = mail
@@ -32,4 +33,4 @@ class Staff(db.Model):
 class StaffSchema(ma.Schema):
     class Meta:
         fields = ("username", "mail", "dob", "gender", "date_joined", "position", "phone")
-        model = staff
+        model = Staff

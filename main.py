@@ -39,7 +39,7 @@ from .model.item import Item, ItemSchema
 from .model.user import User, UserSchema
 from .model.ticket import Ticket
 from .model.match import Match, MatchSchema
-from .model.staff import Admin, AdminSchema
+from .model.staff import Staff, StaffSchema
 
 CORS(app, supports_credentials=True, withCredentials=True)
 Session(app)
@@ -302,44 +302,70 @@ def authenticate():
     return jsonify({"token": token})
 
 
-@app.route('/authentication_admin', methods=['POST'])
+@app.route('/authentication_staff', methods=['POST'])
 @cross_origin(supports_credentials=True)
-def authenticate_admin():
-    admin_id = request.json['id']
+def authenticate_staff():
+    staff_username = request.json['username']
     pwd = request.json['password']
     if not id or not pwd:
         abort(400)
-    admin_db = Admin.query.filter_by(id=admin_id).first()
+    staff_db = Staff.query.filter_by(username=staff_username).first()
     # no username exists
-    if admin_db is None:
+    if staff_db is None:
         abort(403)
     # password don't match
-    if not bcrypt.check_password_hash(admin_db.password, pwd):
+    if not bcrypt.check_password_hash(staff_db.password, pwd):
         abort(403)
     # create token
-    token = create_token(admin_db.id)
-    session["id"] = admin_db.id
+    token = create_token(staff_db.id)
+    session["id"] = staff_db.id
     session.modified = True
     return jsonify({"token": token})
 
+@app.route('/check_staff' , methods=['POST'])
+@cross_origin(supports_credentials=True)
+def check_staff():
+    if request.json["token"] is None:
+        abort(403)
+    signed_in_ID = decode_token(request.json["token"])
 
-@app.route('/view_info_admin', methods=['POST'])
+    staff = Staff.query.filter_by(id=signed_in_ID ).first()
+    user = User.query.filter_by(id=signed_in_ID).first()
+
+
+
+    return jsonify( { 'staffCheck' : staff is not None })
+
+@app.route('/view_info_staff', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def view_info_admin():
     if request.json["token"] is None:
         abort(403)
     my_id = decode_token(request.json["token"])
-    admin = Admin.query.filter_by(id=my_id).first()
+    admin = Staff.query.filter_by(id=my_id).first()
     x = {
         "username": admin.username,
-        "mail": admin.Email,
+        "mail": admin.mail,
         "dob": admin.dob,
         "id": admin.id,
         "date_joined": admin.date_joined,
-        "gender": admin.gender
+        "gender": admin.gender,
+        "position": admin.position,
+        "phone": admin.phone
     }
 
     return jsonify(x)
+
+@app.route('/check_admin' , methods=['POST'])
+@cross_origin(supports_credentials=True)
+def check_admin():
+    if request.json["token"] is None:
+        abort(403)
+    signed_in_ID = decode_token(request.json["token"])
+    admin = Staff.query.filter_by(id=signed_in_ID , position='Admin' ).first()
+
+
+    return jsonify( { 'adminCheck' : admin is not None })
 
 
 @app.route('/logout', methods=['POST'])
