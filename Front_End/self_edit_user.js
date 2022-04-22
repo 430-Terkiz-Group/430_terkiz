@@ -1,38 +1,62 @@
 var SERVER_URL = "http://127.0.0.1:5000"
-let user_list=[] 
+let user_list = []
 var select = document.getElementById("all_user");
 var select1 = document.getElementById("all_users");
 var newOption;
 var newOption1;
-function get_all_users(){
-    fetch(`${SERVER_URL}/all_user`,{method:'GET'})
+
+var username = document.getElementById("username");
+
+var mail = document.getElementById("mail");
+
+var dob = document.getElementById("dob-type");
+
+var id = document.getElementById("id");
+
+var date_joined = document.getElementById("date_joined");
+
+var gender = document.getElementById("gender");
+
+var SERVER_URL = "http://127.0.0.1:5000"
+
+function view_user() {
+
+    fetch(`${SERVER_URL}/view_info`, {
+        method: 'POST', headers: {
+            'Content-Type': 'application/json'
+        }, body: JSON.stringify({ "token": getUserToken() })
+    }
+    )
         .then(response => response.json())
         .then(data => {
-        for (x in data){
-            newOption = document.createElement("option"); 
-            newOption.value = data[x]["username"];  
-            newOption.text=data[x]["username"];
-            newOption1 = document.createElement("option"); 
-            newOption1.value = data[x]["username"];  
-            newOption1.text=data[x]["username"];
-        try { 
-            select.add(newOption); 
-            select1.add(newOption1); 
-            } 
-        catch (e) { 
-            select.appendChild(newOption);
-            select1.appendChild(newOption1);
-            } 
-    }
-    })
+            document.getElementById("username").innerHTML = data["username"]
+            document.getElementById("mail").innerHTML = data["mail"]
+            document.getElementById("dob").innerHTML = data["dob"]
+            document.getElementById("id").innerHTML = data["id"]
+            document.getElementById("date_joined").innerHTML = data["date_joined"]
+            document.getElementById("gender").innerHTML = data["gender"]
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
-get_all_users()
+view_user();
 
-function edit_user(){
-    var username = document.getElementById("all_user").value
+function saveUserToken(userToken) {
+    localStorage.setItem("TOKEN", userToken);
+}
+function getUserToken() {
+    return localStorage.getItem("TOKEN");
+}
+function clearUserToken() {
+    return localStorage.removeItem("TOKEN");
+}
+
+function edit_user() {
+    var username = document.getElementById("username").innerHTML
     var field = document.getElementById("field").value
     var value = document.getElementById("value").value
-    var data = { "username": username, "field": field, "value": value}
+    var data = { "username": username, "field": field, "value": value }
     fetch(`${SERVER_URL}/edit_user`, {
         method: 'POST',
         headers: {
@@ -42,10 +66,10 @@ function edit_user(){
     })
         .then(response => {
             if (!response.ok) { alert("Edit failed!") }
-            else { alert("The user was changed successfully"); location.reload()}
+            else { alert("The user was changed successfully"); location.reload() }
         })
 }
-function delete_user(){
+function delete_user() {
     var username = document.getElementById("all_users").value
     var data = { "username": username }
     fetch(`${SERVER_URL}/delete_user`, {
@@ -57,6 +81,6 @@ function delete_user(){
     })
         .then(response => {
             if (!response.ok) { alert("Delete failed!") }
-            else { alert("The user was deleted successfully"); location.reload()}
+            else { alert("The user was deleted successfully"); location.reload() }
         })
 }

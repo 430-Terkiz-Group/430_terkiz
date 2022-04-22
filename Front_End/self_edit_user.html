@@ -113,15 +113,18 @@
             <div class="u-form u-form-1">
               <td>
                   <form action="self_edit_user.html", method="POST" onsubmit="edit_user()">
-                      <label for="type">Choose the username of the user you want to edit:</label><br><br>
-                    <select id="all_user">
-                    </select>
-                    <br><br>
+                      <label for="type">Current User Information:</label><br>
+                      <h6>User id: <span id="id"></span></h4>
+                      <h6>Name: <span id="username"></span></h4>
+                      <h6>Gender: <span id="gender"></span></h4>
+                      <h6>Date of birth: <span id="dob"></span></h4>
+                      <h6>Email: <span id="mail"></span></h4>
+                      <h6>Date joined: <span id="date_joined"></span></h4>
                       <label for="type">Choose the field you want to edit</label><br><br>
                     <select id="field">
                       <option value="username">Username</option>
                       <option value="password">Password</option>
-                      <option value="mail">Mail</option>
+                      <option value="mail">Email</option>
                       <option value="dob">Date of Birth</option>
                       <option value="gender">Gender</option>
                     </select>
@@ -139,15 +142,10 @@
             <div class="u-form u-form-2">
               <td>
                   <form action="self_edit_user.html", method="POST">
-                    <br><br><br>
-                      <label for="type">Choose the username of the user you want to delete:</label><br><br><br>
-                    <select id="all_users" class="center">
-                    </select>
-                    <br><br><br><br><br>
-                    <a id="Edit" onclick="delete_user()" class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Submit</a><br><br><br>
                     <b>
                       Warning: By deleting this user, you will be deleting all save data associated to the account. Save data cannot be restored once it is deleted.
                     </b>
+                    <a id="Edit" onclick="delete_user()" class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Submit</a>
              </td>
             </div> 
           </div>

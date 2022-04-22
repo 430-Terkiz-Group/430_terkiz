@@ -22,7 +22,6 @@ var SERVER_URL = "http://127.0.0.1:5000"
           document.getElementById("username").innerHTML=data["username"]
           document.getElementById("mail").innerHTML=data["mail"]
           document.getElementById("dob").innerHTML=data["dob"]
-          document.getElementById("id").innerHTML=data["id"]
           document.getElementById("date_joined").innerHTML=data["date_joined"]
           document.getElementById("gender").innerHTML=data["gender"]
         })
