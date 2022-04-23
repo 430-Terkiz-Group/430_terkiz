@@ -385,6 +385,18 @@ def edit_user():
     return jsonify(x)
 
 
+@app.route('/delete_staff', methods=['POST'])
+def delete_staff():
+    username = request.json["username"]
+    staff_delete = Staff.query.filter_by(username=username).first()
+    db.session.delete(staff_delete)
+    db.session.commit()
+    x = {
+        "success": "Success"
+    }
+    return jsonify(x)
+
+
 @app.route('/all_staff', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def all_admin():
@@ -396,13 +408,13 @@ def all_admin():
 @app.route('/edit_staff', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def edit_admin():
+    username = request.json['username']
     field = request.json['field']
     value = request.json['value']
     field = str(field)
-    if request.json["token"] is None:
-        abort(403)
-    my_id = decode_token(request.json["token"])
-    admin = Staff.query.filter_by(id=my_id).first()
+    #if request.json["token"] is None:
+    #    abort(403)
+    admin = Staff.query.filter_by(username=username).first()
     setattr(admin, field, value)
     db.session.add(admin)
     db.session.commit()
