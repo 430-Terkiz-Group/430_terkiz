@@ -97,7 +97,7 @@ def cart():
     return render_template('Cart.html')
 
 @app.route('/edit_item.html')
-def edit_item():
+def edit_item_():
     return render_template('edit_item.html')
 
 @app.route('/edit_staff.html')
@@ -157,7 +157,10 @@ def add_item():
     pri = request.json['price']
     stock = request.json['stockleft']
     kind = request.json['kind']
-    sale = request.json['sale']
+    if request.json['sale']=="True": 
+       sale=True
+    else: 
+       sale=False
     size = request.json['size']
     if not pri or not stock or not kind or not sale or not size:
         # empty fields
@@ -469,6 +472,18 @@ def delete_staff():
     return jsonify(x)
 
 
+@app.route('/delete_item', methods=['POST'])
+def delete_item():
+    name = request.json["name"]
+    item_delete = Item.query.filter_by(name=name).first()
+    db.session.delete(item_delete)
+    db.session.commit()
+    x = {
+        "success": "Success"
+    }
+    return jsonify(x)
+
+
 @app.route('/all_staff', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def all_admin():
@@ -495,6 +510,27 @@ def edit_admin():
         "field": getattr(admin, field)
     }
     return jsonify(x)
+
+@app.route('/edit_item', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def edit_item():
+    name = request.json['name']
+    field = request.json['field']
+    value = request.json['value']
+    field = str(field)
+    #if request.json["token"] is None:
+    #    abort(403)
+    item = Item.query.filter_by(name=name).first()
+    setattr(item, field, value)
+    db.session.add(item)
+    db.session.commit()
+    x = {
+        "name": item.name,
+        "field": getattr(item, field)
+    }
+    return jsonify(x)
+
+
 @app.route('/add_order',methods=['POST'])
 def add_order():
     token =extract_auth_token(request)
