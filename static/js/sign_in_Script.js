@@ -36,7 +36,7 @@ function create_user() {
         })
             .then(response => {
                 if (!response.ok) { alert("Username already in use!") }
-                else { alert("Sign up Successful!"); window.location.replace("home_signed.html"); }
+                else { alert("Sign up Successful!"); window.location.replace("Home_signed.html"); }
             })
     }
 
@@ -64,7 +64,7 @@ function sign_in() {
         .then(data => {
             saveUserToken(data.token)
             alert("Sign in Successful!")
-            window.location.replace("home_signed.html")
+            window.location.replace("Home_signed.html")
         })
 
 
@@ -106,7 +106,7 @@ function sign_in_staff() {
         .then(data => {
             saveUserToken(data.token)
             alert("Sign in Successful!")
-            window.location.replace("home_signed.html")
+            window.location.replace("Home_signed.html")
         })
 
 

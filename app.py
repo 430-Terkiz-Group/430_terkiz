@@ -112,7 +112,7 @@ def edit_user_():
 def edit():
     return render_template('edit.html')
 
-@app.route('/home_signed.html')
+@app.route('/Home_signed.html')
 def home_signed():
     return render_template('Home_signed.html')
 
