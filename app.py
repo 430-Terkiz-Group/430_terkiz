@@ -403,7 +403,7 @@ def create_token(user_id):
     )
 
 
-@app.route('/email', methods=['GET'])
+@app.route('/email', methods=['POST'])
 def send_email():
     sender = 'terkiz.club@gmail.com'
     recipients = request.json["recipients"]
