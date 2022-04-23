@@ -372,8 +372,8 @@ def edit_user():
     field = request.json['field']
     value = request.json['value']
     field = str(field)
-    if request.json["token"] is None:
-        abort(403)
+    #if request.json["token"] is None:
+    #    abort(403)
     user = User.query.filter_by(username=username).first()
     setattr(user, field, value)
     db.session.add(user)
