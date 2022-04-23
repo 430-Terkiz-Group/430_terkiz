@@ -146,7 +146,7 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
           <ul class="u-nav u-spacing-30 u-unstyled u-nav-3">
             <li class="u-nav-item"><a
                 class="u-border-2 u-border-active-palette-1-base u-border-grey-90 u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-90 u-text-hover-palette-1-base"
-                href="self_edit_user.html" style="padding: 10px 0px;">Edit Info</a>
+                href="edit.html" style="padding: 10px 0px;">Edit/Delete</a>
             </li>
             <li class="u-nav-item"><a
                 class="u-border-2 u-border-active-palette-1-base u-border-grey-90 u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-90 u-text-hover-palette-1-base"
@@ -204,7 +204,7 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
                 <td>
                   <form action="edit_user.html" , method="POST" onsubmit="edit_user()">
                     <label for="type">Choose the username of the user you want to edit:</label><br><br>
-                    <select id="all_user" onselect="view_user()">
+                    <select id="all_user" onchange="view_user()">
                     </select>
                     <br><br>
                     <label for="type">Current User Information:</label><br>
@@ -239,13 +239,19 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
               <div class="u-form u-form-2">
                 <td>
                   <form action="edit_user.html" , method="POST">
-                    <br><br><br>
-                    <label for="type">Choose the username of the user you want to delete:</label><br><br><br>
-                    <select id="all_users" class="center">
+                    <label for="type">Choose the username of the user you want to delete:</label>
+                    <select id="all_user1" onchange="del_view_user()">
                     </select>
-                    <br><br><br><br><br>
+                    <br><br>
+                    <label for="type">Current User Information:</label><br>
+                    <h5>User id: <span id="id1"></span></h5>
+                    <h5>Name: <span id="username1"></span></h5>
+                    <h5>Gender: <span id="gender1"></span></h5>
+                    <h5>Date of birth: <span id="dob1"></span></h5>
+                    <h5>Email: <span id="mail1"></span></h5>
+                    <h5>Date joined: <span id="date_joined1"></span></h5>
                     <a id="Edit" onclick="delete_user()"
-                      class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Submit</a><br><br><br>
+                      class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Submit</a>
                     <b>
                       Warning: By deleting this user, you will be deleting all save data associated to the account. Save
                       data cannot be restored once it is deleted.
