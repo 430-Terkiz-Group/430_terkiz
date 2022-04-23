@@ -74,7 +74,7 @@ function delete_user() {
     if (!check) {
         alert("Please check field")
     }
-    var username = document.getElementById("all_users").value
+    var username = document.getElementById("username").innerHTML
     var data = { "username": username }
     fetch(`${SERVER_URL}/delete_user`, {
         method: 'POST',

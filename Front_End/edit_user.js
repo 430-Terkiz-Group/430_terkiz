@@ -28,6 +28,28 @@ function get_all_users(){
 }
 get_all_users()
 
+function view_user() {
+
+    fetch(`${SERVER_URL}/view_info`, {
+        method: 'POST', headers: {
+            'Content-Type': 'application/json'
+        }, body: JSON.stringify({ "token": getUserToken() })
+    }
+    )
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("username").innerHTML = data["username"]
+            document.getElementById("mail").innerHTML = data["mail"]
+            document.getElementById("dob").innerHTML = data["dob"]
+            document.getElementById("id").innerHTML = data["id"]
+            document.getElementById("date_joined").innerHTML = data["date_joined"]
+            document.getElementById("gender").innerHTML = data["gender"]
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 function edit_user(){
     var username = document.getElementById("all_user").value
     var field = document.getElementById("field").value
