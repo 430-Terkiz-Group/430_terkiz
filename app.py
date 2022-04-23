@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Flask, abort, session
+from flask import Flask, abort, session , render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from flask_bcrypt import Bcrypt
@@ -76,6 +76,77 @@ staff_schema = StaffSchema(many=True)
 item_schema = ItemSchema(many=True)
 orders_schema= OrdersSchema(many=True)
 
+@app.route('/Home.html')
+def index():
+    return render_template('Home.html')
+
+@app.route('/About_User.html')
+def about_user():
+    return render_template('About_User.html')
+
+@app.route('/About.html')
+def about():
+    return render_template('About.html')
+
+@app.route('/Bookings.html')
+def bookings():
+    return render_template('Bookings.html')
+
+@app.route('/Cart.html')
+def cart():
+    return render_template('Cart.html')
+
+@app.route('/edit_item.html')
+def edit_item():
+    return render_template('edit_item.html')
+
+@app.route('/edit_staff.html')
+def edit_staff():
+    return render_template('edit_staff.html')
+
+@app.route('/edit_user.html')
+def edit_user_():
+    return render_template('edit_user.html')
+
+@app.route('/edit.html')
+def edit():
+    return render_template('edit.html')
+
+@app.route('/home_signed.html')
+def home_signed():
+    return render_template('Home_signed.html')
+
+@app.route('/Mailing-.html')
+def mailing():
+    return render_template('Mailing-.html')
+
+@app.route('/Order-History.html')
+def order_history():
+    return render_template('Order-History.html')
+
+@app.route('/self_edit_user.html')
+def self_edit_user():
+    return render_template('self_edit_user.html')
+
+@app.route('/Shop_unsigned.html')
+def shop_unsigned():
+    return render_template('Shop_unsigned.html')
+
+@app.route('/Shop.html')
+def shop():
+    return render_template('Shop.html')
+
+@app.route('/Sign-In.html')
+def sign_in():
+    return render_template('Sign-In.html')
+
+@app.route('/Staff-Calendar.html')
+def staff_calendar():
+    return render_template('Staff-Calendar.html')
+
+@app.route('/Ticket-Sale.html')
+def ticket_sale():
+    return render_template('/Ticket-Sale.html')
 
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size

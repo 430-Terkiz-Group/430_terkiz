@@ -1,27 +1,30 @@
 <!DOCTYPE html>
+<script src="static/js/sign_in_Script.js"></script>
 <html style="font-size: 16px;">
-<Script src ="Order-History.js"></Script>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
-  <meta name="keywords" content="">
+  <meta name="keywords" content="Pricing Plans, $199.95, $239.95, $249.99, $299.95">
   <meta name="description" content="">
   <meta name="page_type" content="np-template-header-footer-from-plugin">
-  <title>Order History</title>
-  <link rel="stylesheet" href="nicepage.css" media="screen">
-  <link rel="stylesheet" href="Order-History.css" media="screen">
-  <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
-  <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
-  <meta name="generator" content="Nicepage 4.7.1, nicepage.com">
+  <title>Ticket Sale</title>
+  <link rel="stylesheet" href="/static/css/nicepage.css" media="screen">
+  <link rel="stylesheet" href="/static/css/Ticket-Sale.css" media="screen">
+  <script class="u-script" type="text/javascript" src="static/js/jquery.js" defer=""></script>
+  <script class="u-script" type="text/javascript" src="static/js/nicepage.js" defer=""></script>
+  <meta name="generator" content="Nicepage 4.6.5, nicepage.com">
   <link id="u-theme-google-font" rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+
+
 
 
   <script type="application/ld+json">{
 		"@context": "http://schema.org",
 		"@type": "Organization",
-		"name": "User",
-		"logo": "images/Capture.PNG",
+		"name": "Shop",
+		"logo": "/static/images/Capture.PNG",
 		"sameAs": [
 				"https://facebook.com/",
 				"https://twitter.com/",
@@ -32,10 +35,9 @@
   <meta name="theme-color" content="#478ac9">
   <meta name="twitter:site" content="@">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Order History">
-  <meta name="twitter:description" content="User">
-  <meta property="og:title" content="Order History">
-  <meta property="og:description" content="">
+  <meta name="twitter:title" content="Ticket Sale">
+  <meta name="twitter:description" content="Shop">
+  <meta property="og:title" content="Ticket Sale">
   <meta property="og:type" content="website">
 </head>
 
@@ -44,7 +46,7 @@
     <div class="u-clearfix u-sheet u-sheet-1">
       <a href="Home_signed.html" data-page-id="1051909312" class="u-image u-logo u-image-1" data-image-width="315"
         data-image-height="278" title="Home_signed">
-        <img src="images/Capture.PNG" class="u-logo-image u-logo-image-1">
+        <img src="/static/images/Capture.PNG" class="u-logo-image u-logo-image-1">
       </a><span class="u-icon u-text-palette-1-base u-icon-1" data-href="About_User.html"><svg class="u-svg-link"
           preserveAspectRatio="xMidYMin slice" viewBox="0 0 55 55" style="">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-4c02"></use>
@@ -101,7 +103,7 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
             </li>
             <li class="u-nav-item"><a
                 class="u-border-2 u-border-active-palette-2-base u-border-hover-palette-2-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-2-base u-text-grey-90 u-text-hover-grey-90"
-                href="Home.html" style="padding: 10px 0px;">Log Out</a>
+                href="Home.html" style="padding: 10px 0px;" onclick="log_out()">Log Out</a>
             </li>
           </ul>
         </div>
@@ -116,7 +118,7 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
                 </li>
                 <li class="u-nav-item"><a class="u-button-style u-nav-link" href="Ticket-Sales.html">Tickets</a>
                 </li>
-                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="Home.html">Log Out</a>
+                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="Home.html" onclick="log_out()">Log Out</a>
                 </li>
               </ul>
             </div>
@@ -158,7 +160,7 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
             </li>
             <li class="u-nav-item"><a
                 class="u-border-2 u-border-active-palette-1-base u-border-grey-90 u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-90 u-text-hover-palette-1-base"
-                href="Home.html" style="padding: 10px 0px;">Log Out</a>
+                href="Home.html" style="padding: 10px 0px;" onclick="log_out()">Log Out</a>
             </li>
           </ul>
         </div>
@@ -171,7 +173,7 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
                 </li>
                 <li class="u-nav-item"><a class="u-button-style u-nav-link" href="Ticket-Sale.html">Tickets</a>
                 </li>
-                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="Home.html">Log Out</a>
+                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="Home.html" onclick="log_out()">Log Out</a>
                 </li>
               </ul>
             </div>
@@ -181,38 +183,77 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
       </nav>
     </div>
   </header>
-  <section class="u-clearfix u-section-1" id="sec-bfde">
-    <div class="u-clearfix u-sheet u-sheet-1">
-      <img class="u-image u-image-default u-preserve-proportions u-image-1" src="images/2528717436-0.jpeg" alt="">
-      <h4 class="u-text u-text-default u-text-1">Name:</h4>
-      <h4 class="u-text u-text-default u-text-2">Aziz</h4>
-      <h4 class="u-text u-text-default u-text-3">Gender:</h4>
-      <h4 class="u-text u-text-default u-text-4">Male</h4>
-      <h4 class="u-text u-text-default u-text-7">Date Of Birth:</h4>
-      <h4 class="u-text u-text-default u-text-8">2000-10-08</h4>
-      <div  id = "history_table">
-        <body onload="GenerateTable()">
-        
+  <section class="u-clearfix u-section-1" id="sec-a6c6">
+    <div class="u-clearfix u-sheet u-valign-top u-sheet-1">
+      <img class="u-expanded-width u-image u-image-default u-image-1" src="/static/images/stadium.jpg" alt=""
+        data-image-width="2560" data-image-height="1600">
+    </div>
+  </section>
+  <section class="u-clearfix u-section-2" id="sec-928e">
+    <div class="u-align-left u-clearfix u-sheet u-sheet-1">
+      <img class="u-absolute-hcenter u-expanded-height u-image u-image-default u-image-1" src="/static/images/ticketmap.jpg"
+        alt="" data-image-width="708" data-image-height="704">
+    </div>
+  </section>
+  <section class="u-align-center u-clearfix u-section-3" id="sec-344c">
+    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+      <h2 class="u-text u-text-default u-text-1">Pricing Plans</h2>
+      <div class="u-clearfix u-expanded-width u-gutter-20 u-layout-wrap u-layout-wrap-1">
+        <div class="u-gutter-0 u-layout">
+          <div class="u-layout-row">
+            <div
+              class="u-align-center u-border-no-bottom u-border-no-left u-border-no-right u-border-no-top u-container-style u-layout-cell u-left-cell u-palette-4-base u-size-15 u-size-30-md u-layout-cell-1">
+              <div class="u-container-layout u-valign-middle u-container-layout-1">
+                <h4 class="u-text u-text-3">Green</h4>
+                <h2 class="u-text u-text-4">$199.95</h2>
+                <a href="Cart.html" data-page-id="2683823483"
+                  class="u-btn u-btn-round u-button-style u-grey-40 u-radius-50 u-btn-1">Order Now</a>
+              </div>
+            </div>
+            <div
+              class="u-border-no-bottom u-border-no-left u-border-no-right u-border-no-top u-container-style u-layout-cell u-palette-2-base u-size-15 u-size-30-md u-layout-cell-2">
+              <div class="u-container-layout u-valign-middle u-container-layout-2">
+                <h4 class="u-align-center u-text u-text-5">Red</h4>
+                <h2 class="u-align-center u-text u-text-6">$239.95</h2>
+                <a href="Cart.html" data-page-id="2683823483"
+                  class="u-btn u-btn-round u-button-style u-grey-40 u-radius-50 u-btn-2">Order Now</a>
+              </div>
+            </div>
+            <div
+              class="u-align-center u-container-style u-layout-cell u-palette-1-base u-size-15 u-size-30-md u-layout-cell-3">
+              <div class="u-container-layout u-container-layout-3">
+                <h4 class="u-text u-text-7">Blue(<span class="u-text-palette-2-base">Sold out</span>)
+                </h4>
+                <h2 class="u-text u-text-8">$249.99</h2>
+                <a href="Cart.html" data-page-id="2683823483"
+                  class="u-border-none u-btn u-btn-round u-button-style u-palette-5-light-3 u-radius-50 u-btn-3">Order
+                  Now</a>
+              </div>
+            </div>
+            <div
+              class="u-align-center u-border-no-bottom u-border-no-left u-border-no-right u-border-no-top u-container-style u-layout-cell u-palette-3-base u-right-cell u-size-15 u-size-30-md u-layout-cell-4">
+              <div class="u-container-layout u-valign-middle u-container-layout-4">
+                <h4 class="u-text u-text-9">Yellow</h4>
+                <h2 class="u-text u-text-10">$299.95</h2>
+                <a href="Cart.html" data-page-id="2683823483"
+                  class="u-btn u-btn-round u-button-style u-grey-40 u-radius-50 u-btn-4">Order Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <a href="About_User.html"
-        class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-1">About</a>
-      <a href="Bookings.html"
-        class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-2">Bookings</a>
-      <a href="Order-History.html"
-        class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-3">Order
-        History</a>
     </div>
   </section>
 
 
-  <footer class="u-align-center u-clearfix u-footer u-palette-1-base u-footer" id="sec-32f2">
-    <div class="u-clearfix u-sheet u-sheet-1">
+  <footer class="u-align-center u-clearfix u-footer u-palette-1-base u-footer" id="sec-768a">
+    <div class="u-align-left u-clearfix u-sheet u-sheet-1">
       <div class="u-social-icons u-spacing-20 u-social-icons-1">
         <a class="u-social-url" title="facebook" target="_blank" href="https://facebook.com/"><span
             class="u-icon u-social-facebook u-social-icon u-text-white"><svg class="u-svg-link"
               preserveAspectRatio="xMidYMin slice" viewBox="0 0 97.75 97.75" style="">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-83ba"></use>
-            </svg><svg class="u-svg-content" viewBox="0 0 97.75 97.75" x="0px" y="0px" id="svg-83ba"
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-b3c6"></use>
+            </svg><svg class="u-svg-content" viewBox="0 0 97.75 97.75" x="0px" y="0px" id="svg-b3c6"
               style="enable-background:new 0 0 97.75 97.75;">
               <g>
                 <path
@@ -224,8 +265,8 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
         <a class="u-social-url" title="twitter" target="_blank" href="https://twitter.com/"><span
             class="u-icon u-social-icon u-social-twitter u-text-white"><svg class="u-svg-link"
               preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style="">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-9df7"></use>
-            </svg><svg class="u-svg-content" viewBox="0 0 512 512" id="svg-9df7">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-457a"></use>
+            </svg><svg class="u-svg-content" viewBox="0 0 512 512" id="svg-457a">
               <path
                 d="m256 0c-141.363281 0-256 114.636719-256 256s114.636719 256 256 256 256-114.636719 256-256-114.636719-256-256-256zm116.886719 199.601562c.113281 2.519532.167969 5.050782.167969 7.59375 0 77.644532-59.101563 167.179688-167.183594 167.183594h.003906-.003906c-33.183594 0-64.0625-9.726562-90.066406-26.394531 4.597656.542969 9.277343.8125 14.015624.8125 27.53125 0 52.867188-9.390625 72.980469-25.152344-25.722656-.476562-47.410156-17.464843-54.894531-40.8125 3.582031.6875 7.265625 1.0625 11.042969 1.0625 5.363281 0 10.558593-.722656 15.496093-2.070312-26.886718-5.382813-47.140624-29.144531-47.140624-57.597657 0-.265624 0-.503906.007812-.75 7.917969 4.402344 16.972656 7.050782 26.613281 7.347657-15.777343-10.527344-26.148437-28.523438-26.148437-48.910157 0-10.765624 2.910156-20.851562 7.957031-29.535156 28.976563 35.554688 72.28125 58.9375 121.117187 61.394532-1.007812-4.304688-1.527343-8.789063-1.527343-13.398438 0-32.4375 26.316406-58.753906 58.765625-58.753906 16.902344 0 32.167968 7.144531 42.890625 18.566406 13.386719-2.640625 25.957031-7.53125 37.3125-14.261719-4.394531 13.714844-13.707031 25.222657-25.839844 32.5 11.886719-1.421875 23.214844-4.574219 33.742187-9.253906-7.863281 11.785156-17.835937 22.136719-29.308593 30.429687zm0 0">
               </path>
@@ -234,8 +275,8 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
         <a class="u-social-url" title="instagram" target="_blank" href="https://instagram.com/"><span
             class="u-icon u-social-icon u-social-instagram u-text-white"><svg class="u-svg-link"
               preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style="">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-3bc2"></use>
-            </svg><svg class="u-svg-content" viewBox="0 0 512 512" id="svg-3bc2">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-83fc"></use>
+            </svg><svg class="u-svg-content" viewBox="0 0 512 512" id="svg-83fc">
               <path d="m305 256c0 27.0625-21.9375 49-49 49s-49-21.9375-49-49 21.9375-49 49-49 49 21.9375 49 49zm0 0">
               </path>
               <path
@@ -247,11 +288,11 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
             </svg></span>
         </a>
         <a class="u-social-url" target="_blank" data-type="Custom" title="Custom" href="youtube.com/"><span
-            class="u-file-icon u-icon u-social-custom u-social-icon u-text-white u-icon-4"><img src="images/4.png"
+            class="u-file-icon u-icon u-social-custom u-social-icon u-text-white u-icon-4"><img src="/static/images/4.png"
               alt=""></span>
         </a>
       </div>
-      <p class="u-small-text u-text u-text-variant u-text-1">Terkiz FC ©&nbsp;2022<br>All rights reserved
+      <p class="u-align-center u-small-text u-text u-text-variant u-text-1">Terkiz FC ©&nbsp;2022<br>All rights reserved
       </p>
     </div>
   </footer>

@@ -1,5 +1,5 @@
  .u-section-1 {
-  background-image: url("images/307-3072504_champions-league-background.jpg");
+  background-image: url("../images/307-3072504_champions-league-background.jpg");
   background-position: 39.75% 50%;
 }
 
@@ -306,20 +306,14 @@
 
 @media (max-width: 1199px) {
   .u-section-2 .u-repeater-1 {
-    grid-template-columns: calc(33.3333% - 13.3333px) calc(33.3333% - 13.3333px) calc(33.3333% - 13.3333px);
     min-height: 389px;
-  }
-}
-
-@media (max-width: 991px) {
-  .u-section-2 .u-repeater-1 {
-    grid-template-columns: 100%;
+    grid-auto-columns: calc(50% - 10px);
   }
 }
 
 @media (max-width: 767px) {
   .u-section-2 .u-repeater-1 {
-    grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+    grid-auto-columns: calc(100% - 0px);
   }
 
   .u-section-2 .u-container-layout-1 {
@@ -346,6 +340,7 @@
 @media (max-width: 575px) {
   .u-section-2 .u-repeater-1 {
     grid-template-columns: 100%;
+    grid-auto-columns: 100%;
   }
 }.u-section-3 .u-sheet-1 {
   min-height: 519px;
@@ -362,7 +357,7 @@
 
 .u-section-3 .u-image-1 {
   min-height: 400px;
-  background-image: url("images/55ad59fcebe0051f811283ba5db249008e5194d87961034b27df254c35a3624f7ecd0f9fce8b71b8e68a8ba965ab17502de2261bfb5c4f96cf44f7_1280.jpg");
+  background-image: url("../images/55ad59fcebe0051f811283ba5db249008e5194d87961034b27df254c35a3624f7ecd0f9fce8b71b8e68a8ba965ab17502de2261bfb5c4f96cf44f7_1280.jpg");
   background-position: 45.46% 50%;
 }
 
@@ -391,7 +386,7 @@
 
 .u-section-3 .u-image-2 {
   min-height: 400px;
-  background-image: url("images/aa24d5cda998a50f4308aa8d6da613b5059b61d6f5f4f7a635ec27beed9132086d080801dfb8f49076f625c089f5cf054d7b0a84f36c66e8801ed7_1280.jpg");
+  background-image: url("../images/aa24d5cda998a50f4308aa8d6da613b5059b61d6f5f4f7a635ec27beed9132086d080801dfb8f49076f625c089f5cf054d7b0a84f36c66e8801ed7_1280.jpg");
   background-position: 50% 50%;
 }
 
@@ -420,7 +415,7 @@
 
 .u-section-3 .u-image-3 {
   min-height: 400px;
-  background-image: url("images/bef26da2fec9c29321addb8626237dc36697fce8a65657c49726665c04617bbdcc934e400bf61dcfb3f8c442c663d53bdd99295b6d62dd3b486042_1280.jpg");
+  background-image: url("../images/bef26da2fec9c29321addb8626237dc36697fce8a65657c49726665c04617bbdcc934e400bf61dcfb3f8c442c663d53bdd99295b6d62dd3b486042_1280.jpg");
   background-position: 83.21% 50%;
 }
 
@@ -541,17 +536,17 @@
   .u-section-3 .u-image-3 {
     min-height: 358px;
   }
-}.u-block-2a04-2 {
+}.u-block-db78-2 {
   position: absolute;
   bottom: 10px;
 }
 
-.u-block-2a04-3 {
+.u-block-db78-3 {
   position: absolute;
   left: 0;
 }
 
-.u-block-2a04-4 {
+.u-block-db78-4 {
   position: absolute;
   right: 0;
 }
@@ -560,18 +555,18 @@
   background-image: none;
 }
 
+.u-section-4-1 .u-sheet-1 {
+  min-height: 520px;
+}
+
 .u-section-4-1 .u-text-1 {
   font-size: 3rem;
   margin: 14px auto 0;
 }
 
-.u-section-4-1 .u-sheet-1 {
-  min-height: 500px;
-}
-
 .u-section-4-1 .u-list-1 {
   margin-bottom: 60px;
-  margin-top: 60px;
+  margin-top: 14px;
 }
 
 .u-section-4-1 .u-repeater-1 {
@@ -581,7 +576,7 @@
 }
 
 .u-section-4-1 .u-image-1 {
-  background-image: url("images/Thai_premier_league_trophy.png");
+  background-image: url("../images/Thai_premier_league_trophy.png");
   background-position: 50% 17.13%;
 }
 
@@ -590,7 +585,7 @@
 }
 
 .u-section-4-1 .u-image-2 {
-  background-image: url("images/kisspng-premier-league-uefa-champions-league-manchester-ci-premier-league-trophy-5b20d0313c2d43.7163916515288771052465-removebg-preview.png");
+  background-image: url("../images/kisspng-premier-league-uefa-champions-league-manchester-ci-premier-league-trophy-5b20d0313c2d43.7163916515288771052465-removebg-preview.png");
 }
 
 .u-section-4-1 .u-container-layout-2 {
@@ -598,7 +593,7 @@
 }
 
 .u-section-4-1 .u-image-3 {
-  background-image: url("images/COPA_Amrica_Trophy__1_-removebg-preview.png");
+  background-image: url("../images/COPA_Amrica_Trophy__1_-removebg-preview.png");
 }
 
 .u-section-4-1 .u-container-layout-3 {
@@ -606,7 +601,7 @@
 }
 
 .u-section-4-1 .u-image-4 {
-  background-image: url("images/trofeu-taca-media-970436-top-trofeus-premiacao-trophy-mixer-appliance-transparent-png-370920.png");
+  background-image: url("../images/trofeu-taca-media-970436-top-trofeus-premiacao-trophy-mixer-appliance-transparent-png-370920.png");
 }
 
 .u-section-4-1 .u-container-layout-4 {
@@ -614,7 +609,7 @@
 }
 
 .u-section-4-1 .u-image-5 {
-  background-image: url("images/trophy-png-25070.png");
+  background-image: url("../images/trophy-png-25070.png");
   background-position: 50% 93.81%;
 }
 
@@ -643,6 +638,10 @@
 }
 
 @media (max-width: 575px) {
+  .u-section-4-1 .u-text-1 {
+    font-size: 1.5rem;
+  }
+
   .u-section-4-1 .u-repeater-1 {
     grid-template-columns: 100%;
   }
@@ -653,7 +652,7 @@
 }
 
 .u-section-4-2 .u-sheet-1 {
-  min-height: 500px;
+  min-height: 520px;
 }
 
 .u-section-4-2 .u-text-1 {
@@ -662,13 +661,13 @@
 }
 
 .u-section-4-2 .u-layout-wrap-1 {
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 14px;
+  margin-bottom: 59px;
 }
 
 .u-section-4-2 .u-image-1 {
-  min-height: 400px;
-  background-image: url("images/136-1367739_nba-trophy-nba-championship-trophy-png-transparent-png-removebg-preview.png");
+  min-height: 374px;
+  background-image: url("../images/136-1367739_nba-trophy-nba-championship-trophy-png-transparent-png-removebg-preview.png");
   background-position: 50% 50%;
 }
 
@@ -677,8 +676,8 @@
 }
 
 .u-section-4-2 .u-image-2 {
-  min-height: 400px;
-  background-image: url("images/image__1_-removebg-preview.png");
+  min-height: 374px;
+  background-image: url("../images/image__1_-removebg-preview.png");
   background-position: 50% 50%;
 }
 
@@ -687,8 +686,8 @@
 }
 
 .u-section-4-2 .u-image-3 {
-  min-height: 400px;
-  background-image: url("images/fiba2-removebg-preview.png");
+  min-height: 374px;
+  background-image: url("../images/fiba2-removebg-preview.png");
   background-position: 50% 50%;
 }
 
@@ -697,8 +696,8 @@
 }
 
 .u-section-4-2 .u-image-4 {
-  min-height: 400px;
-  background-image: url("images/product_e_n_encore_basketball_trophies_1-removebg-preview.png");
+  min-height: 374px;
+  background-image: url("../images/product_e_n_encore_basketball_trophies_1-removebg-preview.png");
   background-position: 50% 50%;
 }
 
@@ -707,8 +706,8 @@
 }
 
 .u-section-4-2 .u-image-5 {
-  min-height: 400px;
-  background-image: url("images/image-removebg-preview.png");
+  min-height: 374px;
+  background-image: url("../images/image-removebg-preview.png");
   background-position: 50% 50%;
 }
 
@@ -718,63 +717,63 @@
 
 @media (max-width: 1199px) {
   .u-section-4-2 .u-sheet-1 {
-    min-height: 430px;
+    min-height: 450px;
   }
 
   .u-section-4-2 .u-image-1 {
-    min-height: 330px;
+    min-height: 308px;
   }
 
   .u-section-4-2 .u-image-2 {
-    min-height: 330px;
+    min-height: 308px;
   }
 
   .u-section-4-2 .u-image-3 {
-    min-height: 330px;
+    min-height: 308px;
   }
 
   .u-section-4-2 .u-image-4 {
-    min-height: 330px;
+    min-height: 308px;
   }
 
   .u-section-4-2 .u-image-5 {
-    min-height: 330px;
+    min-height: 308px;
   }
 }
 
 @media (max-width: 991px) {
   .u-section-4-2 .u-sheet-1 {
-    min-height: 1132px;
+    min-height: 1384px;
   }
 
   .u-section-4-2 .u-image-1 {
-    min-height: 632px;
+    min-height: 590px;
   }
 
   .u-section-4-2 .u-image-2 {
-    min-height: 632px;
+    min-height: 590px;
   }
 
   .u-section-4-2 .u-image-3 {
-    min-height: 253px;
+    min-height: 236px;
   }
 
   .u-section-4-2 .u-image-4 {
-    min-height: 632px;
+    min-height: 590px;
   }
 
   .u-section-4-2 .u-image-5 {
-    min-height: 632px;
+    min-height: 590px;
   }
 }
 
 @media (max-width: 767px) {
   .u-section-4-2 .u-sheet-1 {
-    min-height: 2397px;
+    min-height: 2965px;
   }
 
   .u-section-4-2 .u-image-1 {
-    min-height: 948px;
+    min-height: 885px;
   }
 
   .u-section-4-2 .u-container-layout-1 {
@@ -783,7 +782,7 @@
   }
 
   .u-section-4-2 .u-image-2 {
-    min-height: 948px;
+    min-height: 885px;
   }
 
   .u-section-4-2 .u-container-layout-2 {
@@ -792,7 +791,7 @@
   }
 
   .u-section-4-2 .u-image-3 {
-    min-height: 949px;
+    min-height: 885px;
   }
 
   .u-section-4-2 .u-container-layout-3 {
@@ -801,7 +800,7 @@
   }
 
   .u-section-4-2 .u-image-4 {
-    min-height: 948px;
+    min-height: 885px;
   }
 
   .u-section-4-2 .u-container-layout-4 {
@@ -810,7 +809,7 @@
   }
 
   .u-section-4-2 .u-image-5 {
-    min-height: 948px;
+    min-height: 885px;
   }
 
   .u-section-4-2 .u-container-layout-5 {
@@ -821,26 +820,30 @@
 
 @media (max-width: 575px) {
   .u-section-4-2 .u-sheet-1 {
-    min-height: 1554px;
+    min-height: 1912px;
+  }
+
+  .u-section-4-2 .u-text-1 {
+    font-size: 1.5rem;
   }
 
   .u-section-4-2 .u-image-1 {
-    min-height: 597px;
+    min-height: 557px;
   }
 
   .u-section-4-2 .u-image-2 {
-    min-height: 597px;
+    min-height: 557px;
   }
 
   .u-section-4-2 .u-image-3 {
-    min-height: 598px;
+    min-height: 557px;
   }
 
   .u-section-4-2 .u-image-4 {
-    min-height: 597px;
+    min-height: 557px;
   }
 
   .u-section-4-2 .u-image-5 {
-    min-height: 597px;
+    min-height: 557px;
   }
 }
