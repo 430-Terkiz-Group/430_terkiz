@@ -157,9 +157,9 @@ def add_item():
     pri = request.json['price']
     stock = request.json['stockleft']
     kind = request.json['kind']
-    if request.json['sale']=="True": 
+    if request.json['sale']=="True" or request.json['sale']=="true": 
        sale=True
-    else: 
+    elif request.json['sale']=="False" or request.json['sale']=="false":
        sale=False
     size = request.json['size']
     if not pri or not stock or not kind or not sale or not size:
