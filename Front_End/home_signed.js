@@ -42,5 +42,15 @@ function checkStaff(){
 })
             
 }
+
+function saveUserToken(userToken) {
+    localStorage.setItem("TOKEN", userToken);
+}
+function getUserToken() {
+    return localStorage.getItem("TOKEN");
+}
+function clearUserToken() {
+    return localStorage.removeItem("TOKEN");
+}
 //checkStaff();
 

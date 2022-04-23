@@ -57,6 +57,15 @@ function GenerateTable() {
         dvTable.innerHTML = "";
         dvTable.appendChild(table);
         var submit = document.createElement("button")
+        submit.classList.add("confirm")
+        submit.classList.add("u-border-none")
+        submit.classList.add("u-btn")
+        submit.classList.add("u-btn-round")
+        submit.classList.add("u-button-style")
+        submit.classList.add("u-hover-palette-1-light-2")
+        submit.classList.add("u-palette-1-base")
+        submit.classList.add("u-radius-8")
+        submit.classList.add("u-btn-2")
         submit.innerHTML="Confirm Order"
         submit.onclick= function(){send_order()}
         dvTable.appendChild(submit)

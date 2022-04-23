@@ -82,15 +82,6 @@ function log_out() {
         body: JSON.stringify({ "test": "test" }),
     })
 }
-function saveUserToken(userToken) {
-    localStorage.setItem("TOKEN", userToken);
-}
-function getUserToken() {
-    return localStorage.getItem("TOKEN");
-}
-function clearUserToken() {
-    return localStorage.removeItem("TOKEN");
-}
 
 function sign_in_staff() {
     var username = document.getElementById("Staff_username").value

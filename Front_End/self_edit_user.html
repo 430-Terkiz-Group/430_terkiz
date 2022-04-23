@@ -203,10 +203,13 @@
               <div class="u-form u-form-2">
                 <td>
                   <form action="self_edit_user.html" , method="POST">
-                    <b>
-                      Warning: By deleting this user, you will be deleting all save data associated to the account. Save
+                    <h1>Warning:</h1>
+                    <h3>
+                      By deleting your account, you will be deleting all save data associated to the account. Save
                       data cannot be restored once it is deleted.
-                    </b>
+                    </h3>
+                    <input type="checkbox" id="check_input" name="agree" class="u-agree-checkbox" required="">
+                    <label for="agree-95f3" class="u-label" style="color: red;">I understand and wish to delete my account</label>
                     <a id="Edit" onclick="delete_user()"
                       class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Submit</a>
                 </td>

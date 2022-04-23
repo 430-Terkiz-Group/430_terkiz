@@ -431,14 +431,16 @@ def add_order():
         msg = Message(subject, sender=sender, recipients=recipients)
         name = User
         body=""
-        body += "Thank you for you purhcase " + user.username+ ", \n" + "You have ordered: \n"
+        body += "Thank you for your purhcase " + user.username+ ", \n\n" + "You have ordered: \n"
         summary =''
+        grand_total=0
         for itemid in request.json:
             item = Item.query.filter_by(id=itemid).first()
             order = "    -"+str(request.json[itemid]) + " " + item.name + " for " + str(item.price) +"$ each"+" for a total of "+ str(int(request.json[itemid])*int(item.price)) +"$ \n"
+            grand_total+=int(request.json[itemid])*int(item.price)
             summary +=order
-        body+= summary
-        body+="We Hope you Like it! \n" + "Best, \n"+"The Terkiz Team."
+        body += summary + "For a grand total of " + str(grand_total) + "$ \n\n"
+        body += "We Hope you Like it! \n" + "Best, \n"+"The Terkiz Team."
         msg.body=body
         Email.send(msg)
 

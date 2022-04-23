@@ -70,6 +70,10 @@ function edit_user() {
         })
 }
 function delete_user() {
+    var check = document.getElementById("check_input").value
+    if (!check) {
+        alert("Please check field")
+    }
     var username = document.getElementById("all_users").value
     var data = { "username": username }
     fetch(`${SERVER_URL}/delete_user`, {
