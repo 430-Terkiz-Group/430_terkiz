@@ -32,11 +32,15 @@ function checkStaff(){
 .then(response => response.json())
     .then(data => {
         if (data["staffCheck"] == true){
-            document.getElementById("ProfileIcon").setAttribute("data-href" , "About.html");  
+            document.getElementById("ProfileIcon").setAttribute("data-href" , "About.html");
+            document.getElementById("Account").setAttribute("href" , "About.html"); 
+            document.getElementById("Account1").setAttribute("href" , "About.html"); 
 
         }
         else{
             document.getElementById("ProfileIcon").setAttribute("data-href" , "About_User.html");  
+            document.getElementById("Account").setAttribute("href" , "About_User.html");
+            document.getElementById("Account1").setAttribute("href" , "About_User.html");
         }
         console.log(data["staffCheck"]);
 })
