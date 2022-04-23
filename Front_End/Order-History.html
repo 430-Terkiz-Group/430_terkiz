@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html style="font-size: 16px;">
-
+<Script src ="Order-History.js"></Script>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
@@ -190,60 +190,9 @@ c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path>
       <h4 class="u-text u-text-default u-text-4">Male</h4>
       <h4 class="u-text u-text-default u-text-7">Date Of Birth:</h4>
       <h4 class="u-text u-text-default u-text-8">2000-10-08</h4>
-      <div class="u-table u-table-responsive u-table-1">
-        <table class="u-table-entity">
-          <colgroup>
-            <col width="20%">
-            <col width="20%">
-            <col width="20%">
-            <col width="20%">
-            <col width="20%">
-          </colgroup>
-          <thead class="u-custom-font u-font-courier-new u-palette-4-base u-table-header u-table-header-1">
-            <tr style="height: 80px;">
-              <th class="u-table-cell">Item Name</th>
-              <th class="u-table-cell">Quantity</th>
-              <th class="u-table-cell">Price per unit ($)</th>
-              <th class="u-table-cell">Date</th>
-              <th class="u-table-cell">&nbsp;Total ($)</th>
-            </tr>
-          </thead>
-          <tbody class="u-table-body">
-            <tr style="height: 38px;">
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">Jersey</td>
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">1</td>
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">20</td>
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">04/04/2020</td>
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">20</td>
-            </tr>
-            <tr style="height: 38px;">
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">Shorts</td>
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">2</td>
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">60</td>
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">04/05/2020</td>
-              <td class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-table-cell">120</td>
-            </tr>
-          </tbody>
-          <tfoot class="u-table-footer u-table-footer-1">
-            <tr style="height: 38px;">
-              <td
-                class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-border-no-top u-table-cell u-table-cell-16">
-                Key Chain</td>
-              <td
-                class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-border-no-top u-table-cell u-table-cell-17">
-                3</td>
-              <td
-                class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-border-no-top u-table-cell u-table-cell-18">
-                40</td>
-              <td
-                class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-border-no-top u-table-cell u-table-cell-19">
-                08/07/2020</td>
-              <td
-                class="u-border-1 u-border-grey-30 u-border-no-left u-border-no-right u-border-no-top u-table-cell u-table-cell-20">
-                120</td>
-            </tr>
-          </tfoot>
-        </table>
+      <div  id = "history_table">
+        <body onload="GenerateTable()">
+        
       </div>
       <a href="About_User.html"
         class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-1">About</a>

@@ -1,4 +1,4 @@
-from ..app import db
+from ..app import db,ma
 import datetime
 
 
@@ -21,3 +21,8 @@ class Orders(db.Model):
         self.item_id=item_id
         self.amount=amount
         self.order_date = datetime.datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S")
+
+class OrdersSchema(ma.Schema):
+    class Meta:
+        fields = ("user_id", "item_id", "order_date", "amount", "order_id")
+        model = Orders

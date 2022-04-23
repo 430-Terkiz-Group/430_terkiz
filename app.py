@@ -40,7 +40,7 @@ from .model.user import User, UserSchema
 from .model.ticket import Ticket
 from .model.match import Match, MatchSchema
 from .model.staff import Staff, StaffSchema
-from .model.order import Orders
+from .model.order import Orders,OrdersSchema
 CORS(app, supports_credentials=True, withCredentials=True)
 Session(app)
 
@@ -74,6 +74,7 @@ matches_schema = MatchSchema(many=True)
 user_schema = UserSchema(many=True)
 staff_schema = StaffSchema(many=True)
 item_schema = ItemSchema(many=True)
+orders_schema= OrdersSchema(many=True)
 
 
 # api to add item to db
@@ -443,7 +444,7 @@ def add_order():
         msg = Message(subject, sender=sender, recipients=recipients)
         name = User
         body=""
-        body += "Thank you for your purhcase " + user.username+ ", \n\n" + "You have ordered: \n"
+        body += "Thank you for your purchase " + user.username+ ", \n\n" + "You have ordered: \n"
         summary =''
         grand_total=0
         for itemid in request.json:
@@ -483,3 +484,29 @@ def add_staff():
         msg.body = "Thank you for joining TerkizFC, " + name + " \n We hope that you will like it here! \n Feel free to look through the site and don't forget to visit our shop! \n Best,\n The Terkiz Team. "
         Email.send(msg)
         return "success"
+@app.route('/get_order_history',methods=['GET'])
+def get_order_history():
+    token = extract_auth_token(request)
+    if not token or token == None:
+        abort(403)
+    else:
+
+        id = decode_token(token)
+        #get all orders
+        orders= Orders.query.filter_by(user_id=id).all()
+        #need to now get info about each item ordered
+        ods={}
+        for order in orders:
+            item = Item.query.filter_by(id=order.item_id).first()
+            od={}
+            od["name"]=item.name
+            od["kind"]=item.kind
+            od["size"]=item.size
+            od["price"]=item.price
+            od["amount"]=order.amount
+            od["date"]=order.order_date
+            ods[order.order_id]=od
+        return jsonify(ods)
+        #we now have item descritption for each order
+
+
