@@ -385,15 +385,15 @@ def edit_user():
     return jsonify(x)
 
 
-@app.route('/all_admin', methods=['GET'])
+@app.route('/all_staff', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def all_admin():
     admins = Staff.query.all()
-    success = jsonify(user_schema.dump(admins))
+    success = jsonify(staff_schema.dump(admins))
     return success
 
 
-@app.route('/edit_admin', methods=['POST'])
+@app.route('/edit_staff', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def edit_admin():
     field = request.json['field']
@@ -445,3 +445,29 @@ def add_order():
         Email.send(msg)
 
         return "Success"
+
+
+@app.route('/add_staff', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def add_staff():
+    name = request.json['username']
+    pwd = request.json['password']
+    mail = request.json['mail']
+    dob = request.json['dob']
+    gender = request.json['gender']
+    phone = request.json['phone']
+    position = request.json['position']
+    if not name or not pwd or not dob or not mail or not phone or not position:
+        # name is empty or pwd is empty
+        abort(400)
+    else:
+        newstaff = Staff(name, pwd, mail, dob, gender, phone, position)
+        db.session.add(newstaff)
+        db.session.commit()
+        sender = 'terkiz.club@gmail.com'
+        recipients = [mail]
+        subject = "Welcome to TerkiFC"
+        msg = Message(subject, sender=sender, recipients=recipients)
+        msg.body = "Thank you for joining TerkizFC, " + name + " \n We hope that you will like it here! \n Feel free to look through the site and don't forget to visit our shop! \n Best,\n The Terkiz Team. "
+        Email.send(msg)
+        return "success"

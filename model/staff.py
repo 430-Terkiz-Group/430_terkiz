@@ -32,5 +32,5 @@ class Staff(db.Model):
 
 class StaffSchema(ma.Schema):
     class Meta:
-        fields = ("username", "mail", "dob", "gender", "date_joined", "position", "phone")
+        fields = ("id", "username", "mail", "dob", "gender", "date_joined", "position", "phone")
         model = Staff
