@@ -153,7 +153,7 @@ def ticket_sale():
 @app.route('/add_item', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def add_item():
-    nom = request.json['name']
+    nom = request.json['name'] 
     pri = request.json['price']
     stock = request.json['stockleft']
     kind = request.json['kind']
