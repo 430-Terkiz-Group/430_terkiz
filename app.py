@@ -77,6 +77,10 @@ item_schema = ItemSchema(many=True)
 ticket_schema = TicketSchema(many=True)
 orders_schema= OrdersSchema(many=True)
 
+@app.route('/')
+def init():
+    return render_template('Home.html')
+ 
 @app.route('/Home.html')
 def index():
     return render_template('Home.html')
