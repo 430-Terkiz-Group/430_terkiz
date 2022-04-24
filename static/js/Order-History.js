@@ -91,3 +91,21 @@ function GenerateTable(){
   function getUserToken() {
     return localStorage.getItem("TOKEN");
   }
+
+
+function view_user(){
+      
+    fetch(`${SERVER_URL}/view_info`,{method:'POST',headers: {
+      'Content-Type': 'application/json'},body: JSON.stringify({"token":getUserToken()})}
+)
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("username").innerHTML=data["username"]
+      document.getElementById("mail").innerHTML=data["mail"]
+      document.getElementById("date_joined").innerHTML=data["date_joined"]
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+view_user();
