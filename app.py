@@ -37,7 +37,7 @@ Email = Mail(app)
 
 from .model.item import Item, ItemSchema
 from .model.user import User, UserSchema
-from .model.ticket import Ticket
+from .model.ticket import Ticket, TicketSchema
 from .model.match import Match, MatchSchema
 from .model.staff import Staff, StaffSchema
 from .model.order import Orders,OrdersSchema
@@ -74,6 +74,7 @@ matches_schema = MatchSchema(many=True)
 user_schema = UserSchema(many=True)
 staff_schema = StaffSchema(many=True)
 item_schema = ItemSchema(many=True)
+ticket_schema = TicketSchema(many=True)
 orders_schema= OrdersSchema(many=True)
 
 @app.route('/Home.html')
@@ -148,6 +149,10 @@ def staff_calendar():
 def ticket_sale():
     return render_template('/Ticket-Sale.html')
 
+@app.route('/edit_ticket.html')
+def edit_ticket():
+    return render_template('/edit_ticket.html')
+
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size
 @app.route('/add_item', methods=['POST'])
@@ -171,7 +176,23 @@ def add_item():
     return "Item Added"
 
 
-
+@app.route('/add_ticket', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def add_ticket():
+    price = request.json['price']
+    ticketsleft = request.json['ticketsleft']
+    sector = request.json['sector']
+    match = request.json['match']
+    competition = request.json['competition']
+    date = request.json['date']
+    passed = request.json['passed']
+    if not price or not ticketsleft or not sector or not match or not competition or not date or not passed:
+        # empty fields
+        abort(400)
+    newticket = Ticket(price, ticketsleft, sector, match, competition, date, passed)
+    db.session.add(newticket)
+    db.session.commit()
+    return "Ticket Added"
 
 @app.route('/get_all_items', methods=['GET'])
 def get_all_items():
@@ -194,27 +215,12 @@ def view_tickets():
         "price": ticket.price,
         "ticketsleft": ticket.ticketsleft,
         "sector": ticket.sector,
-        "id": ticket.id,
-        "vip": ticket.vip,
         "match": ticket.match,
-        "competition": ticket.competition
+        "competition": ticket.competition,
+        "date": ticket.date,
+        "passed": ticket.passed
     }
     return jsonify(x)
-
-
-@app.route('/add_ticket', methods=['POST'])
-def add_ticket():  # t_index,price,ticketsleft,sector,vip,match,competition
-
-    pri = request.json['price']
-    ticks = request.json['ticketsleft']
-    sector = request.json['sector']
-    vip = request.json['vip']
-    match = request.json['match']
-    compete = request.json['competition']
-    newticket = Ticket(pri, ticks, sector, vip, match, compete)
-    db.session.add(newticket)
-    db.session.commit()
-    return "Ticket Added"
 
 
 # api to add user to db
@@ -440,6 +446,13 @@ def all_item():
     success = jsonify(item_schema.dump(items))
     return success
 
+@app.route('/all_tickets', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def all_tickets():
+    tickets = Ticket.query.all()
+    success = jsonify(ticket_schema.dump(tickets))
+    return success
+
 @app.route('/edit_user', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def edit_user():
@@ -478,6 +491,21 @@ def delete_item():
     item_delete = Item.query.filter_by(name=name).first()
     db.session.delete(item_delete)
     db.session.commit()
+    x = {
+        "success": "Success"
+    }
+    return jsonify(x)
+
+@app.route('/delete_ticket', methods=['POST'])
+def delete_ticket():
+    match = request.json["match"]
+    ticket_delete = Ticket.query.filter_by(match=match).first()
+    if ticket_delete.ticketsleft == 1:
+        db.session.delete(ticket_delete)
+        db.session.commit()
+    else:
+        ticket_delete.ticketsleft -= 1
+        db.session.commit()
     x = {
         "success": "Success"
     }
@@ -530,6 +558,24 @@ def edit_item():
     }
     return jsonify(x)
 
+@app.route('/edit_tickets', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def edit_tickets():
+    match = request.json['match']
+    field = request.json['field']
+    value = request.json['value']
+    field = str(field)
+    # if request.json["token"] is None:
+    #    abort(403)
+    ticket = Ticket.query.filter_by(match=match).first()
+    setattr(ticket, field, value)
+    db.session.add(ticket)
+    db.session.commit()
+    x = {
+        "match": ticket.match,
+        "field": getattr(ticket, field)
+    }
+    return jsonify(x)
 
 @app.route('/add_order',methods=['POST'])
 def add_order():
