@@ -1,7 +1,7 @@
 var SERVER_URL = "http://127.0.0.1:5000"
 let ticket_list = []
 var select = document.getElementById("all_tickets");
-var select1 = document.getElementById("all_tickets");
+var select1 = document.getElementById("all_tickets1");
 var newOption;
 var newOption1;
 function get_all_tickets() {
@@ -56,7 +56,7 @@ function del_view_tickets() {
         .then(response => response.json())
         .then(data => {
             for (x in data){
-                if(data[x]["match"] == document.getElementById("all_tickets").value){
+                if(data[x]["match"] == document.getElementById("all_tickets1").value){
                 document.getElementById("id1").innerHTML = data[x]["id"]
                 document.getElementById("price1").innerHTML = data[x]["price"]
                 document.getElementById("ticketsleft1").innerHTML = data[x]["ticketsleft"]
@@ -129,3 +129,43 @@ function add_ticket() {
     }
 
 }
+function checkStaff(){
+    fetch(`${SERVER_URL}/check_staff`,{method:'POST',headers: {
+        'Content-Type': 'application/json'},body: JSON.stringify({"token":localStorage.getItem("TOKEN")})}
+)
+.then(response => response.json())
+    .then(data => {
+        if (data["staffCheck"] == true){
+            document.getElementById("ProfileIcon").setAttribute("data-href" , "About.html");
+            document.getElementById("Account").setAttribute("href" , "About.html"); 
+            document.getElementById("Account1").setAttribute("href" , "About.html"); 
+
+        }
+        else{
+            document.getElementById("ProfileIcon").setAttribute("data-href" , "About_User.html");  
+            document.getElementById("Account").setAttribute("href" , "About_User.html");
+            document.getElementById("Account1").setAttribute("href" , "About_User.html");
+        }
+        console.log(data["staffCheck"]);
+})       
+}
+
+function checkadmin(){
+    fetch(`${SERVER_URL}/check_admin`,{method:'POST',headers: {
+        'Content-Type': 'application/json'},body: JSON.stringify({"token":localStorage.getItem("TOKEN")})}
+)
+    .then(response => response.json())
+        .then(data => {
+            if (data["adminCheck"] == true){
+                adminLoggedIn = true;   
+                document.getElementById("edit").style.visibility="visible";  
+            }
+            else{
+                adminLoggedIn = false;
+                document.getElementById("edit").style.visibility="hidden";  
+            }
+        })
+            
+}
+checkStaff()
+checkadmin()
