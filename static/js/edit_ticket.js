@@ -90,7 +90,7 @@ function edit_ticket() {
         })
 }
 function delete_ticket() {
-    var match = document.getElementById("all_tickets").value
+    var match = document.getElementById("all_tickets1").value
     var data = { "match": match }
     fetch(`${SERVER_URL}/delete_ticket`, {
         method: 'POST',
