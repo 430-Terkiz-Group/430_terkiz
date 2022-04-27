@@ -8,8 +8,7 @@ var SERVER_URL = "http://127.0.0.1:5000"
 
 //storing all items in the list
 
-
-var changed = false
+let item_count = 0
 
 
 fetch(`${SERVER_URL}/get_all_items`, { method: 'GET' })
@@ -36,14 +35,25 @@ fetch(`${SERVER_URL}/get_all_items`, { method: 'GET' })
     })
 
 var ite = get_items()
-console.log(ite)
+let item_list=[]
+for (var item in ite){
+    item_list.push(ite[item])
 
+}
+console.log(item_list)
+
+
+console.log(get_cart())
 function GenerateShop() {
+    if (item_count>item_list.length-1){
+        alert("No more items in Store!")
+    }
+    else{
     var items = document.getElementById("items")
     var row = document.createElement("div");
     row.classList.add("row")
-
-    for (var i = 0; i < 3; i++) {
+    user_cart=get_cart()
+    for (var i = item_count; i < item_count+3; i++) {
         var block = document.createElement("div");
         block.classList.add("block")
 
@@ -56,17 +66,19 @@ function GenerateShop() {
         img.alt = "Item";
         var name = document.createElement("h2");
         name.classList.add("name");
-        name.innerHTML = "Name";
+        name.innerHTML = item_list[i].name;
         var price = document.createElement("p");
         price.classList.add("price");
-        price.innerHTML = "$400";
+        price.innerHTML = "Price: " +"$"+item_list[i].price;
         var amount = document.createElement("p");
         amount.classList.add("amount");
-        amount.innerHTML = "0";
+        amount.innerHTML = "Amount in cart: "+ (item_list[i].id in user_cart )? user_cart[item_list[i].id]:"0";
         var add = document.createElement("button");
         add.classList.add("add-button");
         add.innerHTML = "ADD TO CART";
+        add.onclick=function(){add_to_cart(item_list[i].id,1)}
         var remove = document.createElement("button");
+        remove.onclick=function(){remove_from_cart(item_list[i].id,1)}
         remove.classList.add("remove-button");
         remove.innerHTML = "REMOVE TO CART";
 
@@ -82,6 +94,7 @@ function GenerateShop() {
         row.appendChild(block);
     }
     items.appendChild(row);
+    item_count+=3;}
 }
 
 //this function takes in the item ID and the amount to add 
@@ -142,7 +155,7 @@ function remove_from_cart(itemID, ammount) {
 
 }
 function store_item(item) {
-    if (changed == false) { clear_items(); changed = true }
+    
     var id = item.id
 
     var items = get_items()
@@ -196,7 +209,7 @@ function get_items() {
     return JSON.parse(localStorage.getItem("items"));
 }
 
-function test() {
+/*function test() {
     clear_cart()
     add_to_cart(1, 3)
 
@@ -208,7 +221,7 @@ function test() {
 
 
 }
-test()
+test()*/
 
 function checkStaff() {
     fetch(`${SERVER_URL}/check_staff`, {
