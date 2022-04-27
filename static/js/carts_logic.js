@@ -36,7 +36,7 @@ function GenerateTable() {
         headerCell.classList.add("cartheader");
         headerCell.innerHTML = customers[0][i];
         row.appendChild(headerCell);
-    }
+    }   
     
     let item_list=get_items()
 

@@ -21,11 +21,9 @@ ma = Marshmallow(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'Project_DB.db')
 app.secret_key = "b'|\xe7\xbfU3`\xc4\xec\xa7\xa9zf:}\xb5\xc7\xb9\x139^3@Dv'"
-app.config['SESSION_TYPE'] = 'sqlalchemy'
-app.config['SESSION_REFRESH_EACH_REQUEST'] = False
+
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
-app.config['SESSION_SQLALCHEMY'] = db
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -42,7 +40,6 @@ from .model.match import Match, MatchSchema
 from .model.staff import Staff, StaffSchema
 from .model.order import Orders,OrdersSchema
 CORS(app, supports_credentials=True, withCredentials=True)
-Session(app)
 
 # metadata required for creating table in sqlite, should not use anymore since db is already created LEAVE IT
 # AS I am not sure
@@ -65,9 +62,9 @@ meta = MetaData()
 #                      Column('home', Integer), Column('match_type', String), Column('date_played', String))
 
 staffTable = Table('admins', meta, Column('id', Integer, primary_key=True, autoincrement=True),
-                    Column('username', String, unique=True), Column('password', String), Column('mail', String),
-                    Column('dob', String), Column('gender', String), Column('date_joined', String), Column('position' , String),
-                    Column('phone', String))
+            Column('username', String, unique=True), Column('password', String), Column('mail', String),
+            Column('dob', String), Column('gender', String), Column('date_joined', String), Column('position' , String),
+            Column('phone', String))
 
 
 matches_schema = MatchSchema(many=True)
@@ -296,8 +293,6 @@ def authenticate():
         abort(403)
     # create token
     token = create_token(user_db.id)
-    session["id"] = user_db.id
-    session.modified = True
     return jsonify({"token": token})
 
 
@@ -317,8 +312,6 @@ def authenticate_staff():
         abort(403)
     # create token
     token = create_token(staff_db.id)
-    session["id"] = staff_db.id
-    session.modified = True
     return jsonify({"token": token})
 
 @app.route('/check_staff' , methods=['POST'])
@@ -370,18 +363,7 @@ def check_admin():
 @app.route('/logout', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def logout():
-    session.clear()
     return "LOGOUT SUCCESSFUL"
-
-
-# method to test token at different points
-@app.route('/test', methods=['GET'])
-@cross_origin(supports_credentials=True)
-def test():
-    if "token" in session:
-        return session["token"]
-    else:
-        return "no token"
 
 
 # get token from header
