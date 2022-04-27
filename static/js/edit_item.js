@@ -74,7 +74,18 @@ function edit_item() {
     var name = document.getElementById("all_items").value
     var field = document.getElementById("field").value
     var value = document.getElementById("value").value
+    
     var data = { "name": name, "field": field, "value": value }
+    console.log(field)
+    if((field=="stockleft"  || field=="price") && parseInt(value)<0  ){
+        alert("This field Cannot be a negative Number!")
+        return ;
+    }
+    if(!name || !field || !value){
+        alert("Please fill all fields")
+        return;
+    }
+    else{
     fetch(`${SERVER_URL}/edit_item`, {
         method: 'POST',
         headers: {
@@ -85,7 +96,7 @@ function edit_item() {
         .then(response => {
             if (!response.ok) { alert("Edit failed!") }
             else { alert("The item was changed successfully"); location.reload() }
-        })
+        })}
 }
 function delete_item() {
     var name = document.getElementById("all_items1").value
@@ -103,6 +114,24 @@ function delete_item() {
         })
 }
 
+/* Shrek will help you while writing your code
+    ⢀⡴⠑⡄⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ 
+⠸⡇⠀⠿⡀⠀⠀⠀⣀⡴⢿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⠑⢄⣠⠾⠁⣀⣄⡈⠙⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⢀⡀⠁⠀⠀⠈⠙⠛⠂⠈⣿⣿⣿⣿⣿⠿⡿⢿⣆⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⢀⡾⣁⣀⠀⠴⠂⠙⣗⡀⠀⢻⣿⣿⠭⢤⣴⣦⣤⣹⠀⠀⠀⢀⢴⣶⣆ 
+⠀⠀⢀⣾⣿⣿⣿⣷⣮⣽⣾⣿⣥⣴⣿⣿⡿⢂⠔⢚⡿⢿⣿⣦⣴⣾⠁⠸⣼⡿ 
+⠀⢀⡞⠁⠙⠻⠿⠟⠉⠀⠛⢹⣿⣿⣿⣿⣿⣌⢤⣼⣿⣾⣿⡟⠉⠀⠀⠀⠀⠀ 
+⠀⣾⣷⣶⠇⠀⠀⣤⣄⣀⡀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀ 
+⠀⠉⠈⠉⠀⠀⢦⡈⢻⣿⣿⣿⣶⣶⣶⣶⣤⣽⡹⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⠀⠀⠀⠉⠲⣽⡻⢿⣿⣿⣿⣿⣿⣿⣷⣜⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣷⣶⣮⣭⣽⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⠀⠀⣀⣀⣈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠻⠿⠿⠿⠿⠛⠉
+*/
+
 function add_item() {
     var itname = document.getElementById("itemname_input").value
     var pri = document.getElementById("itemprice_input").value
@@ -112,7 +141,20 @@ function add_item() {
     var sz = document.getElementById("itemsize_input").value
     if (!itname || !pri || !stk || !knd || !sal || !sz ) {
         alert("Please fill all the fields")
-    }  else {
+        return;
+    }  
+    if(parseInt(stk)<0 || parseInt(pri)<0){
+        alert("The number(s) you have entered cannot be negative!")
+        return;
+    }
+    
+    if(sal!='True' || sal!= 'true' || sal!= 'False' || sal!= 'false' ){
+        alert("The values of Sale field can be: True or False")
+        return;
+    }
+    
+    
+    else {
         var data = { "name": itname, "price": pri, "stockleft": stk, "kind": knd, "sale": sal, "size": sz }
         fetch(`${SERVER_URL}/add_item`, {
             method: 'POST',

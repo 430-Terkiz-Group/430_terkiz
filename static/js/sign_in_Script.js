@@ -73,14 +73,7 @@ function sign_in() {
 }
 function log_out() {
 
-    fetch(`${SERVER_URL}/logout`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ "test": "test" }),
-    })
+    clearUserToken()
 }
 
 function sign_in_staff() {

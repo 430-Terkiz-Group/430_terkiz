@@ -45,6 +45,7 @@ console.log(item_list)
 
 console.log(get_cart())
 function GenerateShop() {
+
     if (item_count>item_list.length-1){
         alert("No more items in Store!")
     }
@@ -54,6 +55,7 @@ function GenerateShop() {
     row.classList.add("row")
     user_cart=get_cart()
     for (var i = item_count; i < item_count+3; i++) {
+        
         var block = document.createElement("div");
         block.classList.add("block")
 
@@ -71,14 +73,25 @@ function GenerateShop() {
         price.classList.add("price");
         price.innerHTML = "Price: " +"$"+item_list[i].price;
         var amount = document.createElement("p");
+
+        amount.id="amount"+item_list[i].id
+        console.log(amount.id)
         amount.classList.add("amount");
-        amount.innerHTML = "Amount in cart: "+ (item_list[i].id in user_cart )? user_cart[item_list[i].id]:"0";
+        if(item_list[i].stockleft<=0){amount.innerHTML ="OUT OF STOCK";amount.style.color='#d00'}
+        else{
+        if(item_list[i].id in user_cart  ){amount.innerHTML ="Amount in cart: "+user_cart[item_list[i].id]
+                                            }
+        else{amount.innerHTML = 'Amount in cart : 0'}
+        }
         var add = document.createElement("button");
         add.classList.add("add-button");
         add.innerHTML = "ADD TO CART";
-        add.onclick=function(){add_to_cart(item_list[i].id,1)}
+        let curr=item_list[i].id
+        add.onclick=function()            
+        {  
+            add_to_cart(curr,1)}
         var remove = document.createElement("button");
-        remove.onclick=function(){remove_from_cart(item_list[i].id,1)}
+        remove.onclick=function(){remove_from_cart(curr,1)}
         remove.classList.add("remove-button");
         remove.innerHTML = "REMOVE TO CART";
 
@@ -100,7 +113,12 @@ function GenerateShop() {
 //this function takes in the item ID and the amount to add 
 //stored in local storage
 function add_to_cart(itemID, ammount) {
-
+    console.log(itemID)
+    let amm = document.getElementById("amount"+itemID)
+    if(amm.innerHTML=="OUT OF STOCK"){
+        alert("Item out of stock!")
+        return;
+    }
     var cart = get_cart()
     console.log("cart before adding", cart)
     if (cart == null) {//if no item in cart then create cart put key-value and save it in local storage 
@@ -110,6 +128,12 @@ function add_to_cart(itemID, ammount) {
     else {//here item already in cart, need to check if we are adding same item or not, update accordingly
         if (itemID in cart) {//update amount
             var oldAmount = cart[itemID]
+            curr_it=get_items()
+            if(oldAmount+ammount>curr_it[itemID].stockleft){
+                alert("No more items of this kind available in stock!")
+                return;
+
+            }
             cart[itemID] = oldAmount + ammount
         }
         else {//save new key value pair
@@ -118,6 +142,8 @@ function add_to_cart(itemID, ammount) {
         put_dict(cart)//overwrite old cart
 
     }
+    
+    amm.innerHTML= 'Amount in cart: '+cart[itemID]
 
 
     console.log("new cart", cart)
@@ -127,28 +153,48 @@ function add_to_cart(itemID, ammount) {
 //this function takes in the item ID and the amount to add 
 //stored in local storage
 function remove_from_cart(itemID, ammount) {
-
+    let amm = document.getElementById("amount"+itemID)
+    if(amm.innerHTML=="OUT OF STOCK"){
+        alert("Item out of stock!")
+        return;
+    }
     var cart = get_cart()
     console.log("cart before removing", cart)
-    if (cart == null) {//if no item in cart nothing to do 
+    let edge=0
 
+    if (cart == null) {//if no item in cart nothing to do 
+        alert("No such item in Cart!")
     }
     else {//here item already in cart
         if (itemID in cart) {//update amount
-            var oldAmount = cart[itemID]
-            newAmount = oldAmount - ammount
-            if (newAmount <= 0) {//can remove the current selection since no more of this item held in cart
-                delete cart[itemID]
-            }
-            else {
-                cart[itemID] = newAmount
-            }
+
+            
+                var oldAmount = cart[itemID]
+                if(oldAmount==0){
+                    alert("No such item in Cart!")
+                }
+
+
+                newAmount = oldAmount - ammount
+                
+                if (newAmount <= 0) {//can remove the current selection since no more of this item held in cart
+                    delete cart[itemID]
+                    edge=0
+                }
+                else {
+                    cart[itemID] = newAmount
+                    edge=newAmount
+                }
 
         }
+        else{alert("No such item in Cart!")}
 
         put_dict(cart)//overwrite old cart
 
     }
+    
+    amm.innerHTML= 'Amount in cart: '+edge
+
     console.log("new cart", cart)
 
 

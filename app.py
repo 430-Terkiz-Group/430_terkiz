@@ -163,6 +163,7 @@ def add_item():
     pri = request.json['price']
     stock = request.json['stockleft']
     kind = request.json['kind']
+    sale=''
     if request.json['sale']=="True" or request.json['sale']=="true": 
        sale=True
     elif request.json['sale']=="False" or request.json['sale']=="false":
@@ -572,8 +573,10 @@ def add_order():
 
         id =decode_token(token)
         for itemid in request.json:
-            item=Orders(id,itemid,request.json[itemid])
-            db.session.add(item)
+            order=Orders(id,itemid,request.json[itemid])
+            db.session.add(order)
+            item=Item.query.filter_by(id=itemid).first()
+            item.stockleft-=request.json[itemid]
             db.session.commit()
         sender = 'terkiz.club@gmail.com'
 
