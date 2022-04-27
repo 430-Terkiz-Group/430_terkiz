@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Flask, abort, session , render_template
+from flask import Flask, abort, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from flask_bcrypt import Bcrypt
@@ -38,7 +38,9 @@ from .model.user import User, UserSchema
 from .model.ticket import Ticket, TicketSchema
 from .model.match import Match, MatchSchema
 from .model.staff import Staff, StaffSchema
-from .model.order import Orders,OrdersSchema
+from .model.order import Orders, OrdersSchema
+from .model.calendar import Calendar, CalendarSchema, CalendarSchemaFan
+
 CORS(app, supports_credentials=True, withCredentials=True)
 
 # metadata required for creating table in sqlite, should not use anymore since db is already created LEAVE IT
@@ -62,97 +64,120 @@ meta = MetaData()
 #                      Column('home', Integer), Column('match_type', String), Column('date_played', String))
 
 staffTable = Table('admins', meta, Column('id', Integer, primary_key=True, autoincrement=True),
-            Column('username', String, unique=True), Column('password', String), Column('mail', String),
-            Column('dob', String), Column('gender', String), Column('date_joined', String), Column('position' , String),
-            Column('phone', String))
-
+                   Column('username', String, unique=True), Column('password', String), Column('mail', String),
+                   Column('dob', String), Column('gender', String), Column('date_joined', String),
+                   Column('position', String),
+                   Column('phone', String))
 
 matches_schema = MatchSchema(many=True)
 user_schema = UserSchema(many=True)
 staff_schema = StaffSchema(many=True)
 item_schema = ItemSchema(many=True)
 ticket_schema = TicketSchema(many=True)
-orders_schema= OrdersSchema(many=True)
+orders_schema = OrdersSchema(many=True)
+calendar_schema = CalendarSchema(many=True)
+calendar_schema1 = CalendarSchemaFan(many=True)
+
 
 @app.route('/')
 def init():
     return render_template('Home.html')
- 
+
+
 @app.route('/Home.html')
 def index():
     return render_template('Home.html')
+
 
 @app.route('/About_User.html')
 def about_user():
     return render_template('About_User.html')
 
+
 @app.route('/About.html')
 def about():
     return render_template('About.html')
+
 
 @app.route('/Bookings.html')
 def bookings():
     return render_template('Bookings.html')
 
+
 @app.route('/Cart.html')
 def cart():
     return render_template('Cart.html')
+
 
 @app.route('/edit_item.html')
 def edit_item_():
     return render_template('edit_item.html')
 
+
 @app.route('/edit_staff.html')
 def edit_staff():
     return render_template('edit_staff.html')
+
 
 @app.route('/edit_user.html')
 def edit_user_():
     return render_template('edit_user.html')
 
+
 @app.route('/edit.html')
 def edit():
     return render_template('edit.html')
+
 
 @app.route('/Home_signed.html')
 def home_signed():
     return render_template('Home_signed.html')
 
+
 @app.route('/Mailing-.html')
 def mailing():
     return render_template('Mailing-.html')
+
 
 @app.route('/Order-History.html')
 def order_history():
     return render_template('Order-History.html')
 
+
 @app.route('/self_edit_user.html')
 def self_edit_user():
     return render_template('self_edit_user.html')
+
 
 @app.route('/Shop_unsigned.html')
 def shop_unsigned():
     return render_template('Shop_unsigned.html')
 
+
 @app.route('/Shop.html')
 def shop():
     return render_template('Shop.html')
+
 
 @app.route('/Sign-In.html')
 def sign_in():
     return render_template('Sign-In.html')
 
+
 @app.route('/Staff-Calendar.html')
 def staff_calendar():
     return render_template('Staff-Calendar.html')
+
 
 @app.route('/Ticket-Sale.html')
 def ticket_sale():
     return render_template('/Ticket-Sale.html')
 
+
 @app.route('/edit_ticket.html')
 def edit_ticket():
     return render_template('/edit_ticket.html')
+
 
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size
@@ -163,11 +188,11 @@ def add_item():
     pri = request.json['price']
     stock = request.json['stockleft']
     kind = request.json['kind']
-    sale=''
-    if request.json['sale']=="True" or request.json['sale']=="true": 
-       sale=True
-    elif request.json['sale']=="False" or request.json['sale']=="false":
-       sale=False
+    sale = ''
+    if request.json['sale'] == "True" or request.json['sale'] == "true":
+        sale = True
+    elif request.json['sale'] == "False" or request.json['sale'] == "false":
+        sale = False
     size = request.json['size']
     if not pri or not stock or not kind or not sale or not size:
         # empty fields
@@ -195,6 +220,7 @@ def add_ticket():
     db.session.add(newticket)
     db.session.commit()
     return "Ticket Added"
+
 
 @app.route('/get_all_items', methods=['GET'])
 def get_all_items():
@@ -249,9 +275,9 @@ def add_user():
         db.session.commit()
         sender = 'terkiz.club@gmail.com'
         recipients = [mail]
-        subject ="Welcome to TerkiFC"
+        subject = "Welcome to TerkiFC"
         msg = Message(subject, sender=sender, recipients=recipients)
-        msg.body = "Thank you for joining TerkizFC, " + name+ " \n We hope that you will like it here! \n Feel free to look through the site and don't forget to visit our shop! \n Best,\n The Terkiz Team. "
+        msg.body = "Thank you for joining TerkizFC, " + name + " \n We hope that you will like it here! \n Feel free to look through the site and don't forget to visit our shop! \n Best,\n The Terkiz Team. "
         Email.send(msg)
 
         return "success"
@@ -315,19 +341,19 @@ def authenticate_staff():
     token = create_token(staff_db.id)
     return jsonify({"token": token})
 
-@app.route('/check_staff' , methods=['POST'])
+
+@app.route('/check_staff', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def check_staff():
     if request.json["token"] is None:
         abort(403)
     signed_in_ID = decode_token(request.json["token"])
 
-    staff = Staff.query.filter_by(id=signed_in_ID ).first()
+    staff = Staff.query.filter_by(id=signed_in_ID).first()
     user = User.query.filter_by(id=signed_in_ID).first()
 
+    return jsonify({'staffCheck': staff is not None})
 
-
-    return jsonify( { 'staffCheck' : staff is not None })
 
 @app.route('/view_info_staff', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -349,16 +375,16 @@ def view_info_admin():
 
     return jsonify(x)
 
-@app.route('/check_admin' , methods=['POST'])
+
+@app.route('/check_admin', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def check_admin():
     if request.json["token"] is None:
         abort(403)
     signed_in_ID = decode_token(request.json["token"])
-    admin = Staff.query.filter_by(id=signed_in_ID , position='Admin' ).first()
+    admin = Staff.query.filter_by(id=signed_in_ID, position='Admin').first()
 
-
-    return jsonify( { 'adminCheck' : admin is not None })
+    return jsonify({'adminCheck': admin is not None})
 
 
 @app.route('/logout', methods=['POST'])
@@ -426,12 +452,14 @@ def all_user():
     success = jsonify(user_schema.dump(users))
     return success
 
+
 @app.route('/all_item', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def all_item():
     items = Item.query.all()
     success = jsonify(item_schema.dump(items))
     return success
+
 
 @app.route('/all_tickets', methods=['GET'])
 @cross_origin(supports_credentials=True)
@@ -440,6 +468,7 @@ def all_tickets():
     success = jsonify(ticket_schema.dump(tickets))
     return success
 
+
 @app.route('/edit_user', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def edit_user():
@@ -447,7 +476,7 @@ def edit_user():
     field = request.json['field']
     value = request.json['value']
     field = str(field)
-    #if request.json["token"] is None:
+    # if request.json["token"] is None:
     #    abort(403)
     user = User.query.filter_by(username=username).first()
     setattr(user, field, value)
@@ -483,6 +512,7 @@ def delete_item():
     }
     return jsonify(x)
 
+
 @app.route('/delete_ticket', methods=['POST'])
 def delete_ticket():
     match = request.json["match"]
@@ -514,7 +544,7 @@ def edit_admin():
     field = request.json['field']
     value = request.json['value']
     field = str(field)
-    #if request.json["token"] is None:
+    # if request.json["token"] is None:
     #    abort(403)
     admin = Staff.query.filter_by(username=username).first()
     setattr(admin, field, value)
@@ -526,6 +556,7 @@ def edit_admin():
     }
     return jsonify(x)
 
+
 @app.route('/edit_item', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def edit_item():
@@ -533,7 +564,7 @@ def edit_item():
     field = request.json['field']
     value = request.json['value']
     field = str(field)
-    #if request.json["token"] is None:
+    # if request.json["token"] is None:
     #    abort(403)
     item = Item.query.filter_by(name=name).first()
     setattr(item, field, value)
@@ -544,6 +575,7 @@ def edit_item():
         "field": getattr(item, field)
     }
     return jsonify(x)
+
 
 @app.route('/edit_tickets', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -564,19 +596,20 @@ def edit_tickets():
     }
     return jsonify(x)
 
-@app.route('/add_order',methods=['POST'])
+
+@app.route('/add_order', methods=['POST'])
 def add_order():
-    token =extract_auth_token(request)
-    if not token or token ==None:
+    token = extract_auth_token(request)
+    if not token or token == None:
         abort(403)
     else:
 
-        id =decode_token(token)
+        id = decode_token(token)
         for itemid in request.json:
-            order=Orders(id,itemid,request.json[itemid])
+            order = Orders(id, itemid, request.json[itemid])
             db.session.add(order)
-            item=Item.query.filter_by(id=itemid).first()
-            item.stockleft-=request.json[itemid]
+            item = Item.query.filter_by(id=itemid).first()
+            item.stockleft -= request.json[itemid]
             db.session.commit()
         sender = 'terkiz.club@gmail.com'
 
@@ -585,18 +618,19 @@ def add_order():
         recipients = [user.mail]
         msg = Message(subject, sender=sender, recipients=recipients)
         name = User
-        body=""
-        body += "Thank you for your purchase " + user.username+ ", \n\n" + "You have ordered: \n"
-        summary =''
-        grand_total=0
+        body = ""
+        body += "Thank you for your purchase " + user.username + ", \n\n" + "You have ordered: \n"
+        summary = ''
+        grand_total = 0
         for itemid in request.json:
             item = Item.query.filter_by(id=itemid).first()
-            order = "    -"+str(request.json[itemid]) + " " + item.name + " for " + str(item.price) +"$ each"+" for a total of "+ str(int(request.json[itemid])*int(item.price)) +"$ \n"
-            grand_total+=int(request.json[itemid])*int(item.price)
-            summary +=order
+            order = "    -" + str(request.json[itemid]) + " " + item.name + " for " + str(
+                item.price) + "$ each" + " for a total of " + str(int(request.json[itemid]) * int(item.price)) + "$ \n"
+            grand_total += int(request.json[itemid]) * int(item.price)
+            summary += order
         body += summary + "For a grand total of " + str(grand_total) + "$ \n\n"
-        body += "We Hope you Like it! \n" + "Best, \n"+"The Terkiz Team."
-        msg.body=body
+        body += "We Hope you Like it! \n" + "Best, \n" + "The Terkiz Team."
+        msg.body = body
         Email.send(msg)
 
         return "Success"
@@ -626,7 +660,9 @@ def add_staff():
         msg.body = "Thank you for joining TerkizFC, " + name + " \n We hope that you will like it here! \n Feel free to look through the site and don't forget to visit our shop! \n Best,\n The Terkiz Team. "
         Email.send(msg)
         return "success"
-@app.route('/get_order_history',methods=['GET'])
+
+
+@app.route('/get_order_history', methods=['GET'])
 def get_order_history():
     token = extract_auth_token(request)
     if not token or token == None:
@@ -634,21 +670,93 @@ def get_order_history():
     else:
 
         id = decode_token(token)
-        #get all orders
-        orders= Orders.query.filter_by(user_id=id).all()
-        #need to now get info about each item ordered
-        ods={}
+        # get all orders
+        orders = Orders.query.filter_by(user_id=id).all()
+        # need to now get info about each item ordered
+        ods = {}
         for order in orders:
             item = Item.query.filter_by(id=order.item_id).first()
-            od={}
-            od["name"]=item.name
-            od["kind"]=item.kind
-            od["size"]=item.size
-            od["price"]=item.price
-            od["amount"]=order.amount
-            od["date"]=order.order_date
-            ods[order.order_id]=od
+            od = {}
+            od["name"] = item.name
+            od["kind"] = item.kind
+            od["size"] = item.size
+            od["price"] = item.price
+            od["amount"] = order.amount
+            od["date"] = order.order_date
+            ods[order.order_id] = od
         return jsonify(ods)
-        #we now have item descritption for each order
+        # we now have item descritption for each order
 
 
+@app.route('/add_event', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def add_event():
+    if request.json["token"] is None:
+        abort(403)
+    my_id = decode_token(request.json["token"])
+    admin = Staff.query.filter_by(id=my_id).first()
+    title = request.json['title']
+    event_type = request.json['event_type']
+    description = request.json['description']
+    time_begin = request.json['time_begin']
+    time_end = request.json['time_end']
+    privacy = ''
+    if request.json["privacy"] == "True":
+        privacy = True
+    elif request.json["privacy"] == "False":
+        privacy = False
+    else:
+        abort(400)
+    added_by = str(admin.username)
+    last_modify = str(admin.username)
+    if not title or not event_type or not added_by or not time_end or not last_modify or not time_begin:
+        # name is empty or pwd is empty
+        abort(400)
+    else:
+        event = Calendar(title, event_type, description, added_by, time_begin, time_end, last_modify, privacy)
+        db.session.add(event)
+        db.session.commit()
+        return "success"
+
+
+@app.route('/edit_event', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def edit_event():
+    if request.json["token"] is None:
+        abort(403)
+    my_id = decode_token(request.json["token"])
+    admin = Staff.query.filter_by(id=my_id).first()
+    title = request.json['title']
+    field = request.json['field']
+    value = request.json['value']
+    field = str(field)
+    # if request.json["token"] is None:
+    #    abort(403)
+    event = Calendar.query.filter_by(title=title).first()
+    setattr(event, field, value)
+    event.last_modify_by = admin.username
+    db.session.add(event)
+    db.session.commit()
+    x = {
+        "title": event.title,
+        "field": getattr(event, field),
+        "last_modify_by": event.last_modify_by
+    }
+    return jsonify(x)
+
+
+@app.route('/all_events_staff', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def all_events_staff():
+    events = Calendar.query.all()
+    success = jsonify(calendar_schema.dump(events))
+    return success
+
+
+@app.route('/all_events', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def all_events():
+    events = Calendar.query.with_entities(Calendar.id, Calendar.title, Calendar.event_type, Calendar.description,
+                                          Calendar.time_begin, Calendar.time_end).filter_by(privacy=0)
+    success = jsonify(calendar_schema1.dump(events))
+    return success
