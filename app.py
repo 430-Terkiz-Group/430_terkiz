@@ -179,6 +179,15 @@ def edit_ticket():
     return render_template('/edit_ticket.html')
 
 
+@app.route('/Calendar.html')
+def view_calendar():
+    return render_template('/Calendar.html')
+
+@app.route('/Calendar_staff.html')
+def view_calendar_staff():
+    return render_template('/Calendar_staff.html')
+
+
 # api to add item to db
 # expects json file with price, stockleft, kind, sale, size
 @app.route('/add_item', methods=['POST'])

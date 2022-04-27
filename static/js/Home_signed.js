@@ -35,12 +35,13 @@ function checkStaff(){
             document.getElementById("ProfileIcon").setAttribute("data-href" , "About.html");
             document.getElementById("Account").setAttribute("href" , "About.html"); 
             document.getElementById("Account1").setAttribute("href" , "About.html"); 
-
+            document.getElementById("Calendar").setAttribute("href" , "Calendar_staff.html"); 
         }
         else{
             document.getElementById("ProfileIcon").setAttribute("data-href" , "About_User.html");  
             document.getElementById("Account").setAttribute("href" , "About_User.html");
             document.getElementById("Account1").setAttribute("href" , "About_User.html");
+            document.getElementById("Calendar").setAttribute("href" , "Calendar.html"); 
         }
         console.log(data["staffCheck"]);
 })
@@ -56,5 +57,4 @@ function getUserToken() {
 function clearUserToken() {
     return localStorage.removeItem("TOKEN");
 }
-//checkStaff();
 
