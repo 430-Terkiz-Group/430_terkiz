@@ -78,13 +78,18 @@ function edit_item() {
     var data = { "name": name, "field": field, "value": value }
     console.log(field)
     if((field=="stockleft"  || field=="price") && parseInt(value)<0  ){
-        alert("This field Cannot be a negative Number!")
+        alert("stock left and price Cannot be a negative Number!")
         return ;
     }
     if(!name || !field || !value){
         alert("Please fill all fields")
         return;
     }
+    if ((field=="stockleft"  || field=="price") && isNaN(parseInt(value)) )
+        {
+            alert("stock left and price must be pure integers!");
+            return;
+        }
     else{
     fetch(`${SERVER_URL}/edit_item`, {
         method: 'POST',
