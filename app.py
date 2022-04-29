@@ -128,6 +128,10 @@ def edit_user_():
 def edit():
     return render_template('edit.html')
 
+@app.route('/edit_calendar.html')
+def edit_cal():
+    return render_template('edit_calendar.html')
+
 
 @app.route('/Home_signed.html')
 def home_signed():
