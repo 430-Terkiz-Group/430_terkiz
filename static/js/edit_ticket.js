@@ -77,6 +77,58 @@ function edit_ticket() {
     var field = document.getElementById("field").value
     var value = document.getElementById("value").value
     var data = { "match": match, "field": field, "value": value }
+    if ((field === "price")||field === "ticketsleft") {
+        if ((typeof(value) != "number")||(value < 0)) {
+            alert("Invalid Input!")
+            return
+        }
+    }
+    else if ((field === "sector")) {
+        if ((typeof(value) != "number")||(value < 0)||(value > 4)) {
+            alert("Invalid Input!")
+            return
+        }
+    }
+    else if ((field === "match")||(field === "competition")) {
+        if (typeof(value) != "string") {
+            alert("Invalid Input!")
+            return
+        }
+    }
+    else if (field === "date") {
+        var string_dob = value;
+        year = string_dob.substring(0,4);
+        string_dob = dob;
+        month = string_dob.substring(5,7);
+        string_dob = dob;
+        day = string_dob.substring(8,10);
+        console.log(parseInt(year))
+        console.log(parseInt(month))
+        console.log(parseInt(day))
+        if(parseInt(year)<2022){
+            alert("Invalid Date")
+            return
+        }
+        if(parseInt(year)==2022){
+            if(parseInt(month)<4){
+                alert("Invalid Date")
+                return
+            }
+            else if (parseInt(month)==4)
+            {
+                if(parseInt(day)<29){
+                    alert("Invalid Date")
+                    return
+                }
+            }
+        }
+    }
+    else if (field === "passed") {
+        if (typeof(value) != "boolean") {
+            alert("Edit Invalid!")
+            return
+        }
+    }
     fetch(`${SERVER_URL}/edit_tickets`, {
         method: 'POST',
         headers: {
