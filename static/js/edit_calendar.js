@@ -5,7 +5,7 @@ var select1 = document.getElementById("all_calendar1");
 var newOption;
 var newOption1;
 function get_all_calendar() {
-    fetch(`${SERVER_URL}/all_calendar`, { method: 'GET' })
+    fetch(`${SERVER_URL}/get_all_calendar`, { method: 'GET' })
         .then(response => response.json())
         .then(data => {
             for (x in data) {
@@ -31,7 +31,7 @@ get_all_calendar()
 
 function view_calendar() {
 
-    fetch(`${SERVER_URL}/all_calendar`, { method: 'GET' })
+    fetch(`${SERVER_URL}/get_all_calendar`, { method: 'GET' })
         .then(response => response.json())
         .then(data => {
             for (x in data) {
@@ -41,7 +41,7 @@ function view_calendar() {
                     document.getElementById("description").innerHTML = data[x]["description"]
                     document.getElementById("time_begin").innerHTML = data[x]["time_begin"]
                     document.getElementById("time_end").innerHTML = data[x]["time_end"]
-                    document.getElementById("last_modify").innerHTML = data[x]["last_modify"]
+                    document.getElementById("last_modify").innerHTML = data[x]["last_modified_by"]
                     document.getElementById("privacy").innerHTML = data[x]["privacy"]
 
                 }
@@ -55,19 +55,18 @@ view_calendar()
 
 function del_view_calendar() {
 
-    fetch(`${SERVER_URL}/all_calendar`, { method: 'GET' })     ////////////////////////////
+    fetch(`${SERVER_URL}/get_all_calendar`, { method: 'GET' })     ////////////////////////////
         .then(response => response.json())
         .then(data => {
             for (x in data) {
                 if (data[x]["title"] == document.getElementById("all_calendar1").value) {
-                    document.getElementById("event_id1").innerHTML = data[x]["event_id1"]
-                    document.getElementById("title1").innerHTML = data[x]["title1"]
-                    document.getElementById("event_type1").innerHTML = data[x]["event_type1"]
-                    document.getElementById("description1").innerHTML = data[x]["description1"]
-                    document.getElementById("time_begin1").innerHTML = data[x]["time_begin1"]
-                    document.getElementById("time_end1").innerHTML = data[x]["time_end1"]
-                    document.getElementById("last_modify1").innerHTML = data[x]["last_modify1"]
-                    document.getElementById("privacy1").innerHTML = data[x]["privacy1"]
+                    document.getElementById("title1").innerHTML = data[x]["title"]
+                    document.getElementById("event_type1").innerHTML = data[x]["event_type"]
+                    document.getElementById("description1").innerHTML = data[x]["description"]
+                    document.getElementById("time_begin1").innerHTML = data[x]["time_begin"]
+                    document.getElementById("time_end1").innerHTML = data[x]["time_end"]
+                    document.getElementById("last_modify1").innerHTML = data[x]["last_modified_by"]
+                    document.getElementById("privacy1").innerHTML = data[x]["privacy"]
                 }
 
             }
