@@ -157,6 +157,84 @@ function add_calendar() {
         priv = false
     }
 
+    var string_dob = tbgn;
+    year = string_dob.substring(0, 4);
+    string_dob = tbgn;
+    month = string_dob.substring(5, 7);
+    string_dob = tbgn;
+    day = string_dob.substring(8, 10);
+    console.log(parseInt(year))
+    console.log(parseInt(month))
+    console.log(parseInt(day))
+    if (parseInt(year) < 2022) {
+        alert("Invalid Date")
+        return
+    }
+    if (parseInt(year) == 2022) {
+        if (parseInt(month) < 4) {
+            alert("Invalid Date")
+            return
+        }
+        else if (parseInt(month) == 4) {
+            if (parseInt(day) < 29) {
+                alert("Invalid Date")
+                return
+            }
+        }
+    }
+
+    var string_dob2 = tend;
+    year1 = string_dob2.substring(0, 4);
+    string_dob2 = tend;
+    month1 = string_dob2.substring(5, 7);
+    string_dob2 = tend;
+    day1 = string_dob2.substring(8, 10);
+    if (parseInt(year) > parseInt(year1)) {
+        alert("Invalid Date")
+        return
+    }
+    if (parseInt(year) == parseInt(year1)) {
+        console.log("aziz")
+        if (parseInt(month) > parseInt(month1)) {
+            alert("Invalid Date")
+            return
+        }
+        else if (parseInt(month) == parseInt(month1)) {
+            if (parseInt(day) > parseInt(day1)) {
+                alert("Invalid Date")
+                return
+            }
+        }
+    }
+
+    var string_dob = lmod;
+        year = string_dob.substring(0,4);
+        string_dob = dob;
+        month = string_dob.substring(5,7);
+        string_dob = dob;
+        day = string_dob.substring(8,10);
+        console.log(parseInt(year))
+        console.log(parseInt(month))
+        console.log(parseInt(day))
+        if(parseInt(year)>2022){
+            alert("Invalid Date of Birth")
+            return
+        }
+        if(parseInt(year)==2022){
+            if(parseInt(month)>4){
+                alert("Invalid Date of Birth")
+                return
+            }
+            else if (parseInt(month)==4)
+            {
+                if(parseInt(day)>=29){
+                    alert("Invalid Date of Birth")
+                    return
+                }
+            }
+        }
+
+
 
     var data = { "title": titl, "event_type": eve, "description": desc, "time_begin": tbgn, "time_end": tend, "last_modify": lmod, "privacy": priv }
     fetch(`${SERVER_URL}/add_calendar`, {
