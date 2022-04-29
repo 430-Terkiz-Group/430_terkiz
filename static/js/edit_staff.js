@@ -107,6 +107,10 @@ function edit_staff() {
             }
         }
     }
+
+    if (field == "mail" && !ValidateEmail(value)){
+        return;
+    }
     fetch(`${SERVER_URL}/edit_staff`, {
         method: 'POST',
         headers: {
@@ -118,6 +122,16 @@ function edit_staff() {
             if (!response.ok) { alert("Edit failed!") }
             else { alert("The staff member was changed successfully"); location.reload() }
         })
+}
+
+function ValidateEmail(mail) 
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+  {
+    return (true)
+  }
+    alert("You have entered an invalid email address!")
+    return (false)
 }
 function delete_staff() {
     var username = document.getElementById("all_staff1").value
@@ -170,6 +184,16 @@ function add_staff() {
             }
         }
     }
+
+    if (!ValidateEmail(email))
+        return;
+
+    if (isNaN(parseInt(phone)) ||  phone.length != 8){
+        alert("please enter a valid number!");
+        return;
+    }
+
+
     if (document.getElementById('gender_Male').checked) {
         gender = "Male"
     } else if (document.getElementById('gender_Female').checked) {
