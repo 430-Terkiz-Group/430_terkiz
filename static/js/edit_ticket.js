@@ -168,8 +168,7 @@ function add_ticket() {
     if (!pri || !tl || !sec || !mtch || !comp || !dt || !psd ) {
         alert("Please fill all the fields")
     }
-    else if ((typeof(pri) != "number")||(pri < 0)||(typeof(tl) != "number")||(tl < 0)||(typeof(sec) != "number")||(sec < 0)||
-        (sec > 4)) {
+    else if ((pri < 0)||(tl < 0)||(sec < 0)||(sec > 4)) {
         alert("Please enter valid ticket info")
     }
 
