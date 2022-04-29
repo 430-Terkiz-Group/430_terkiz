@@ -190,6 +190,9 @@ def view_calendar():
 @app.route('/Calendar_staff.html')
 def view_calendar_staff():
     return render_template('/Calendar_staff.html')
+@app.rout('/edit_orders.html')
+def view_edit_orders():
+    return render_template("edit_orders.html")
 
 
 # api to add item to db
@@ -773,3 +776,23 @@ def all_events():
                                           Calendar.time_begin, Calendar.time_end).filter_by(privacy=0)
     success = jsonify(calendar_schema1.dump(events))
     return success
+@app.route('/all_order',methods=['GET'])
+def all_orders():
+    orders =Orders.query.all()
+    return OrdersSchema.dump(orders)
+
+@app.route('/edit_order',methods=['POST'])
+def edit_order():
+    order_id = request.json['order_id']
+    field=request.json['field']
+    value =request.json['value']
+    order= Orders.query.filter_by(order_id=order_id)
+    setattr(order,field,value)
+    db.sesion.commit()
+    return 'Success'
+@app.route('/delete_order',methods=['POST'])
+def delete_order():
+    order=Orders.query.filter_by(order_id=request.json['order_id'])
+    db.session.delete(order)
+    db.session.commit()
+    return "Success"
