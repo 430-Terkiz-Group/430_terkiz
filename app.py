@@ -226,7 +226,7 @@ def add_calendar():
     lmod = request.json['last_modify']
     priv = request.json['privacy']
 
-    if not titl or not eve or not desc or not tbgn or not tend or not lmod or not priv:
+    if not titl or not eve or not desc or not tbgn or not tend or not lmod:
         # empty fields
         abort(400)
     newevent = Calendar(titl, eve, desc, tbgn, tend, lmod,priv)
