@@ -216,21 +216,15 @@
                     <input type="text" id="user_id" name="name"
                       class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                   </div>
-                  <div class="u-form-email u-form-group">
-                    <label for="email-3a55" class="u-label">Order Date</label>
-                    <input type="password" id="order_date" name="email"
-                      class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
-                  </div>
                   <div class="u-form-group u-form-group-6">
                     <label for="text-6f2f" class="u-label">Amount</label>
-                    <input type="password" id="amount" name="text"
+                    <input type="text" id="amount" name="text"
                       class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
                   </div>
                   <div class="u-form-date u-form-group u-form-group-7">
                     <label for="date-51ad" class="u-label">Item ID</label>
-                    <input type="date" id="item_id" name="date"
+                    <input type="text" id="item_id" name="date"
                       class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
-                  </div>
                   </div>
                 </form>
               </div>
@@ -247,7 +241,7 @@
               <div class="u-form u-form-2">
                 <td>
                   <form action="edit_user.html" , method="POST" onsubmit="edit_order()">
-                    <label for="type">Choose the username of the user you want to edit:</label><br><br>
+                    <label for="type">Choose the id of the order you want to edit:</label><br><br>
                     <select id="all_staff" onchange="view_order()">
                     </select>
                     <br><br>
@@ -259,11 +253,10 @@
                     <h5>User id: <span id="mail"></span></h5>
                     <label for="type">Choose the field you want to edit</label><br><br>
                     <select id="field">
-                      <option value="username">Order id</option>
-                      <option value="password">Item id</option>
-                      <option value="mail">Order Date</option>
-                      <option value="dob">Amount</option>
-                      <option value="gender">User id</option>
+                      <option value="item_id">Item id</option>
+                      <option value="order_date">Order Date</option>
+                      <option value="amount">Amount</option>
+                      <option value="user_id">User id</option>
                     </select>
                     <br><br>
                     Enter the new value:<br><br>
@@ -276,7 +269,7 @@
             </div>
           </div>
 
-          <!--delete staff -->
+          <!--delete order -->
           <div class="u-container-style u-tab-pane u-white u-tab-pane-3" id="tab-2917" role="tabpanel"
             aria-labelledby="link-tab-2917">
             <div class="u-container-layout u-container-layout-3">
@@ -288,11 +281,11 @@
                     </select>
                     <br><br>
                     <label for="type">Current User Information:</label><br>
-                    <h5>Order id: <span id="id"></span></h5>
-                    <h5>Item id: <span id="username"></span></h5>
-                    <h5>Order Date: <span id="gender"></span></h5>
-                    <h5>Amount: <span id="dob"></span></h5>
-                    <h5>User id: <span id="mail"></span></h5>
+                    <h5>Order id: <span id="id1"></span></h5>
+                    <h5>Item id: <span id="username1"></span></h5>
+                    <h5>Order Date: <span id="gender1"></span></h5>
+                    <h5>Amount: <span id="dob1"></span></h5>
+                    <h5>User id: <span id="mail1"></span></h5>
                     <a id="Edit" onclick="delete_order()"
                       class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Submit</a>
                     <p style="margin-top: 20px;">
