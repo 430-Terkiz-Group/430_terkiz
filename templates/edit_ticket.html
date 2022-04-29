@@ -286,7 +286,7 @@
                         <br><br>
                         Enter the new value:<br><br>
                         <input type="text" name="id" id="value"
-                          class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white"><br><br><br>
+                          class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white"><br>
                         <a id="edit_ticket" onclick="edit_ticket()"
                           class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Submit</a>
                       </form>
@@ -302,7 +302,7 @@
                   <div class="u-form u-form-3">
                     <td>
                       <form action="edit_ticket.html" , method="POST">
-                        <label for="type">Choose the match ticket you want to delete:</label>
+                        <label for="type">Choose the match ticket you want to delete:</label><br><br>
                         <select id="all_tickets1" onchange="del_view_tickets()">
                         </select>
                         <br><br>
@@ -317,11 +317,10 @@
                         <h5>Passed: <span id="passed1"></span></h5>
                         <a id="delete" onclick="delete_ticket()"
                           class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Submit</a>
-                        <b>
-                          Warning: By deleting this item, you will be deleting all save data associated to this item.
-                          Save
-                          data cannot be restored once it is deleted.
-                        </b>
+                          <p style="margin-top: 20px;">
+                            Warning: By deleting this ticket, you will be deleting all save data associated to the account. Save
+                            data cannot be restored once it is deleted.
+                          </p>
                     </td>
                   </div>
                 </div>

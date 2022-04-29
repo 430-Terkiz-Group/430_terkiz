@@ -114,7 +114,6 @@ function add_staff() {
     var dob = document.getElementById("dob_input").value
     var phone = document.getElementById("phone_input").value
     var position = document.getElementById("position_input").value
-    var tos = document.getElementById("tos_input").value
     var gender
     if (document.getElementById('gender_Male').checked) {
         gender = "Male"
@@ -123,7 +122,7 @@ function add_staff() {
     } else if (document.getElementById('gender_Other').checked) {
         gender = "Other"
     }
-    if (!usn || !pwd || !repwd || !email || !dob || !tos || !gender || !phone || !position) {
+    if (!usn || !pwd || !repwd || !email || !dob || !gender || !phone || !position) {
         alert("Please fill all the fields")
     } else if (pwd != repwd) {
         alert("Please make sure your paswword and confirmed password match")

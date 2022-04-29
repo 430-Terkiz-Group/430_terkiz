@@ -86,7 +86,7 @@ function edit_user() {
         })
 }
 function delete_user() {
-    var username = document.getElementById("all_users").value
+    var username = document.getElementById("all_user1").value
     var data = { "username": username }
     fetch(`${SERVER_URL}/delete_user`, {
         method: 'POST',
