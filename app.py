@@ -845,3 +845,35 @@ def all_events():
 def all_orders():
     od = Orders.query.all()
     return jsonify(orders_schema.dump(od))
+  
+  
+@app.route('/edit_order',methods=['POST'])
+def edit_order():
+    order_id = request.json['order_id']
+    field=request.json['field']
+    value =request.json['value']
+    order= Orders.query.filter_by(order_id=order_id).first()
+    setattr(order,field,value)
+    db.session.add(order)
+    db.session.commit()
+    return 'Success'
+
+
+@app.route('/delete_order',methods=['POST'])
+def delete_order():
+    order = Orders.query.filter_by(order_id=request.json['order_id']).first()
+    db.session.delete(order)
+    db.session.commit()
+    return "Success"
+
+  
+@app.route('/admin_add_order',methods=['POST'])
+def admin_add_order():
+    user_id=request.json['user_id']
+    item_id=request.json['item_id']
+    amount = request.json['amount']
+    order=Orders(user_id,item_id,amount)
+    db.session.add(order)
+    db.session.commit()
+    return "success"
+ 
