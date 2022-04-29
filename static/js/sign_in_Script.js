@@ -13,29 +13,6 @@ function create_user() {
     var dob = document.getElementById("dob_input").value
     var tos = document.getElementById("tos_input").value
     var gender
-    var string_dob = dob;
-    year = string_dob.substring(0,4);
-    string_dob = dob;
-    month = string_dob.substring(5,7);
-    string_dob = dob;
-    day = string_dob.substring(8,10);
-    console.log(parseInt(year))
-    console.log(parseInt(month))
-    console.log(parseInt(day))
-    if(parseInt(year)>2022){
-        alert("Invalid Date of Birth")
-    }
-    if(parseInt(year)==2022){
-        if(parseInt(month)>4){
-            alert("Invalid Date of Birth")
-        }
-        else if (parseInt(month)==4)
-        {
-            if(parseInt(day)>=29){
-                alert("Invalid Date of Birth")
-            }
-        }
-    }
     if (document.getElementById('gender_Male').checked) {
         gender = "Male"
     } else if (document.getElementById('gender_Female').checked) {
@@ -59,7 +36,7 @@ function create_user() {
         })
             .then(response => {
                 if (!response.ok) { alert("Username already in use!") }
-                else { alert("Sign up Successful!"); window.location.replace("Home_signed.html"); }
+                else { sign_in_up(); }
             })
     }
 
@@ -93,6 +70,29 @@ function sign_in() {
 
 
     }
+}
+
+function sign_in_up() {
+    var usn = document.getElementById("username_input").value
+    var pwd = document.getElementById("password_input").value
+        data = { "username": usn, "password": pwd }
+        fetch(`${SERVER_URL}/authentication`, {
+            
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        }).then(response => {
+            if (!response.ok) {
+                alert("Wrong username or password!")
+            }
+            return response.json();
+        })
+        .then(data => {
+            saveUserToken(data.token)
+            window.location.replace("Home_signed.html")
+        })
 }
 function log_out() {
 
