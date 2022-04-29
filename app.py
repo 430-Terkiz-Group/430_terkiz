@@ -190,9 +190,6 @@ def view_calendar():
 @app.route('/Calendar_staff.html')
 def view_calendar_staff():
     return render_template('/Calendar_staff.html')
-@app.route('/edit_orders.html')
-def view_edit_orders():
-    return render_template("edit_orders.html")
 
 
 # api to add item to db
@@ -218,6 +215,30 @@ def add_item():
     db.session.commit()
     return "Item Added"
 
+@app.route('/add_calendar', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def add_calendar():
+    titl = request.json['title']
+    eve = request.json['event_type']
+    desc = request.json['description']
+    tbgn = request.json['time_begin']
+    tend = request.json['time_end']
+    lmod = request.json['last_modify']
+    priv = request.json['privacy']
+
+
+    if request.json['privacy'] == "True" or request.json['privacy'] == "true":
+        priv = 1
+    elif request.json['privacy'] == "False" or request.json['privacy'] == "false":
+        priv = 0
+    size = request.json['size']
+    if not titl or not eve or not desc or not tbgn or not tend or not lmod or not priv:
+        # empty fields
+        abort(400)
+    newevent = Calendar(titl, eve, desc, tbgn, tend, lmod,priv)
+    db.session.add(newevent)
+    db.session.commit()
+    return "Event Added"
 
 @app.route('/add_ticket', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -242,6 +263,12 @@ def add_ticket():
 def get_all_items():
     items = Item.query.all()
     success = jsonify(item_schema.dump(items))
+    return success
+
+@app.route('/get_all_calendar', methods=['GET'])
+def get_all_calendar():
+    events = Calendar.query.all()
+    success = jsonify(calendar_schema.dump(events))
     return success
 
 
@@ -294,7 +321,7 @@ def add_user():
         subject = "Welcome to TerkiFC"
         msg = Message(subject, sender=sender, recipients=recipients)
         msg.body = "Thank you for joining TerkizFC, " + name + " \n We hope that you will like it here! \n Feel free to look through the site and don't forget to visit our shop! \n Best,\n The Terkiz Team. "
-        Email.send(msg)
+        #Email.send(msg)
 
         return "success"
 
@@ -476,6 +503,13 @@ def all_item():
     success = jsonify(item_schema.dump(items))
     return success
 
+@app.route('/all_calendar', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def all_calendar():
+    events = Calendar.query.all()
+    success = jsonify(item_schema.dump(events))
+    return success
+
 
 @app.route('/all_tickets', methods=['GET'])
 @cross_origin(supports_credentials=True)
@@ -527,6 +561,18 @@ def delete_item():
         "success": "Success"
     }
     return jsonify(x)
+
+@app.route('/delete_calendar', methods=['POST'])
+def delete_calendar():
+    title = request.json["title"]
+    event_delete = Calendar.query.filter_by(title=title).first()
+    db.session.delete(event_delete)
+    db.session.commit()
+    x = {
+        "success": "Success"
+    }
+    return jsonify(x)
+
 
 
 @app.route('/delete_ticket', methods=['POST'])
@@ -592,6 +638,24 @@ def edit_item():
     }
     return jsonify(x)
 
+@app.route('/edit_calendar', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def edit_calendar():
+    title = request.json['title']
+    field = request.json['field']
+    value = request.json['value']
+    field = str(field)
+    # if request.json["token"] is None:
+    #    abort(403)
+    event = Calendar.query.filter_by(title=title).first()
+    setattr(event, field, value)
+    db.session.add(event)
+    db.session.commit()
+    x = {
+        "title": event.title,
+        "field": getattr(event, field)
+    }
+    return jsonify(x)
 
 @app.route('/edit_tickets', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -776,23 +840,8 @@ def all_events():
                                           Calendar.time_begin, Calendar.time_end).filter_by(privacy=0)
     success = jsonify(calendar_schema1.dump(events))
     return success
-@app.route('/all_order',methods=['GET'])
-def all_orders():
-    orders =Orders.query.all()
-    return OrdersSchema.dump(orders)
 
-@app.route('/edit_order',methods=['POST'])
-def edit_order():
-    order_id = request.json['order_id']
-    field=request.json['field']
-    value =request.json['value']
-    order= Orders.query.filter_by(order_id=order_id)
-    setattr(order,field,value)
-    db.sesion.commit()
-    return 'Success'
-@app.route('/delete_order',methods=['POST'])
-def delete_order():
-    order=Orders.query.filter_by(order_id=request.json['order_id'])
-    db.session.delete(order)
-    db.session.commit()
-    return "Success"
+@app.route('/all_order', methods=['GET'])
+def all_orders():
+    od = Orders.query.all()
+    return jsonify(orders_schema.dump(od))
