@@ -191,53 +191,19 @@
         <ul class="u-tab-list u-unstyled" role="tablist">
           <li class="u-tab-item u-tab-item-1" role="presentation">
             <a class="active u-active-white u-button-style u-tab-link u-tab-link-1" id="link-tab-0da5" href="#tab-0da5"
-              role="tab" aria-controls="tab-0da5" aria-selected="true">Add</a>
+              role="tab" aria-controls="tab-0da5" aria-selected="true">Edit</a>
           </li>
           <li class="u-tab-item u-tab-item-2" role="presentation">
             <a class="u-active-white u-button-style u-tab-link u-tab-link-2" id="link-tab-14b7" href="#tab-14b7"
-              role="tab" aria-controls="tab-14b7" aria-selected="false">Edit</a>
-          </li>
-          <li class="u-tab-item" role="presentation">
-            <a class="u-active-white u-button-style u-tab-link u-tab-link-3" id="link-tab-2917" href="#tab-2917"
-              role="tab" aria-controls="tab-2917" aria-selected="false">Delete</a>
+              role="tab" aria-controls="tab-14b7" aria-selected="false">Delete</a>
           </li>
         </ul>
 
-        <!-- this is the section for the add order-->
+        <!-- this is the section for the edit order-->
         <div class="u-tab-content">
           <div class="u-container-style u-tab-active u-tab-pane u-white u-tab-pane-1" id="tab-0da5" role="tabpanel"
             aria-labelledby="link-tab-0da5">
             <div class="u-container-layout u-container-layout-1">
-              <div class="u-form u-form-1">
-                <form action="#" method="POST" class="u-clearfix u-form-spacing-10 u-form-vertical u-inner-form"
-                  source="custom" name="form" style="padding: 10px;">
-                  <div class="u-form-group u-form-name">
-                    <label for="name-3a55" class="u-label">User ID</label>
-                    <input type="text" id="user_id" name="name"
-                      class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
-                  </div>
-                  <div class="u-form-group u-form-group-6">
-                    <label for="text-6f2f" class="u-label">Amount</label>
-                    <input type="text" id="amount" name="text"
-                      class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
-                  </div>
-                  <div class="u-form-date u-form-group u-form-group-7">
-                    <label for="date-51ad" class="u-label">Item ID</label>
-                    <input type="text" id="item_id" name="date"
-                      class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
-                  </div>
-                </form>
-              </div>
-              <a id="sign_in_btn" onclick="add_order()"
-                class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Add<br>
-              </a>
-            </div>
-          </div>
-
-          <!-- this is the section for edit orders. -->
-          <div class="u-align-left u-container-style u-tab-pane u-white u-tab-pane-2" id="tab-14b7" role="tabpanel"
-            aria-labelledby="link-tab-14b7">
-            <div class="u-container-layout u-container-layout-2">
               <div class="u-form u-form-2">
                 <td>
                   <form action="edit_user.html" , method="POST" onsubmit="edit_order()">
@@ -252,16 +218,20 @@
                     <h5>Amount: <span id="dob"></span></h5>
                     <h5>User id: <span id="mail"></span></h5>
                     <label for="type">Choose the field you want to edit</label><br><br>
-                    <select id="field">
+                    <select id="field" onchange="SetInputFieldType()">
+                      <option value="amount">Amount</option>
                       <option value="item_id">Item id</option>
                       <option value="order_date">Order Date</option>
-                      <option value="amount">Amount</option>
                       <option value="user_id">User id</option>
                     </select>
                     <br><br>
                     Enter the new value:<br><br>
                     <input type="text" name="id" id="value"
                       class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white"><br>
+                    <select id="itemUserID" >
+
+
+                    </select>
                     <a id="Edit" onclick="edit_order()"
                       class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-2 u-palette-1-base u-radius-8 u-btn-2">Submit</a>
                 </td>
@@ -269,11 +239,11 @@
             </div>
           </div>
 
-          <!--delete order -->
-          <div class="u-container-style u-tab-pane u-white u-tab-pane-3" id="tab-2917" role="tabpanel"
-            aria-labelledby="link-tab-2917">
-            <div class="u-container-layout u-container-layout-3">
-              <div class="u-form u-form-3">
+          <!-- this is the section for delete orders. -->
+          <div class="u-align-left u-container-style u-tab-pane u-white u-tab-pane-2" id="tab-14b7" role="tabpanel"
+            aria-labelledby="link-tab-14b7">
+            <div class="u-container-layout u-container-layout-2">
+              <div class="u-form u-form-2">
                 <td>
                   <form action="edit_user.html" , method="POST">
                     <label for="type">Choose the name of the staff you want to delete:</label><br><br>
@@ -296,6 +266,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -71,8 +71,32 @@ del_view_order()
 function edit_order() {
     var order_id = document.getElementById("all_staff").value
     var field = document.getElementById("field").value
-    var value = document.getElementById("value").value
+    var value;
+    if (ItemIDIsSelected() || UserIDIsSelected())
+        value = document.getElementById("itemUserID").value;
+    else
+        value = document.getElementById("value").value;
+
+
+
+
     var data = { "order_id": order_id, "field": field, "value": value }
+
+    if (field == "amount" && (isNaN(parseInt(value)) || parseInt(value) < 0  )  ){
+        alert("amount must be a positive integer!");
+        return;
+    }
+
+    var string_date = value
+    if(field == "order_date" && !DateIsValid(  string_date)){
+        alert("please enter a valid date!");
+        return;
+    }
+
+
+
+
+
     fetch(`${SERVER_URL}/edit_order`, {
         method: 'POST',
         headers: {
@@ -162,5 +186,120 @@ function checkadmin(){
         })
             
 }
+
+function DateIsSelected(){
+    return document.getElementById("field").value == "order_date";
+} 
+
+function AmountIsSelected(){
+    return document.getElementById("field").value == "amount";
+}
+
+function ItemIDIsSelected(){
+    return document.getElementById("field").value == "item_id";
+}
+
+function UserIDIsSelected(){
+    return document.getElementById("field").value == "user_id";
+}
+
+function SetInputFieldType(){
+    if (AmountIsSelected()){
+        document.getElementById("itemUserID").style.visibility="hidden";
+        document.getElementById("value").style.visibility= "visible";
+        document.getElementById("value").setAttribute("type" , "text");
+    }
+    else if (DateIsSelected()){
+        document.getElementById("itemUserID").style.visibility="hidden";
+        document.getElementById("value").style.visibility= "visible";
+        document.getElementById("value").setAttribute("type" , "date");
+    }
+    else if (ItemIDIsSelected()){
+        document.getElementById("itemUserID").style.visibility="visible";
+        get_all_itemID();
+        document.getElementById("value").style.visibility= "hidden";
+    }
+    else if (UserIDIsSelected()){
+
+        document.getElementById("itemUserID").style.visibility="visible";
+        get_all_userID();
+        document.getElementById("value").style.visibility= "hidden";
+    }
+}
+
+//itemUserID
+var select2 = document.getElementById("itemUserID");
+var newOption2;
+function get_all_userID() {
+    fetch(`${SERVER_URL}/all_user`, { method: 'GET' })
+        .then(response => response.json())
+        .then(data => {
+            select2.options.length =0;
+
+            for (x in data) {
+                newOption2 = document.createElement("option");
+                newOption2.value = data[x]["id"];
+                newOption2.text = data[x]["id"];
+                try {
+                    select2.add(newOption2);
+                }
+                catch (e) {
+                    select2.appendChild(newOption2);
+                }
+            }
+        })
+}
+
+var select3 = document.getElementById("itemUserID");
+var newOption3;
+function get_all_itemID() {
+    fetch(`${SERVER_URL}/all_item`, { method: 'GET' })
+        .then(response => response.json())
+        .then(data => {
+            select3.options.length =0;
+
+            for (x in data) {
+                newOption3 = document.createElement("option");
+                newOption3.value = data[x]["id"];
+                newOption3.text = data[x]["id"];
+                try {
+                    select3.add(newOption3);
+                }
+                catch (e) {
+                    select3.appendChild(newOption3);
+                }
+            }
+        })
+}
+
+function DateIsValid(string_dob){
+
+    var dob = document.getElementById("value").value;
+    year = string_dob.substring(0,4);
+    string_dob = dob;
+    month = string_dob.substring(5,7);
+    string_dob = dob;
+    day = string_dob.substring(8,10);
+
+    if(parseInt(year)>2022){
+        return false;
+    }
+    if(parseInt(year)==2022){
+        if(parseInt(month)>4){
+            return false
+        }
+        else if (parseInt(month)==4)
+        {
+            if(parseInt(day)>=29){
+                return false
+            }
+        }
+}
+    return true;
+}
+
+
+
 checkStaff()
 checkadmin()
+SetInputFieldType()
