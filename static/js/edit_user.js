@@ -72,6 +72,35 @@ function edit_user() {
     var username = document.getElementById("all_user").value
     var field = document.getElementById("field").value
     var value = document.getElementById("value").value
+    if(field=="Date of Birth")
+    {
+        var string_dob = value;
+        year = string_dob.substring(0,4);
+        string_dob = dob;
+        month = string_dob.substring(5,7);
+        string_dob = dob;
+        day = string_dob.substring(8,10);
+        console.log(parseInt(year))
+        console.log(parseInt(month))
+        console.log(parseInt(day))
+        if(parseInt(year)>2022){
+            alert("Invalid Date of Birth")
+            return
+        }
+        if(parseInt(year)==2022){
+            if(parseInt(month)>4){
+                alert("Invalid Date of Birth")
+                return
+            }
+            else if (parseInt(month)==4)
+            {
+                if(parseInt(day)>=29){
+                    alert("Invalid Date of Birth")
+                    return
+                }
+            }
+        }
+    }
     var data = { "username": username, "field": field, "value": value }
     fetch(`${SERVER_URL}/edit_user`, {
         method: 'POST',

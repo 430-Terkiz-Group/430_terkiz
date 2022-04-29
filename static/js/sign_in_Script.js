@@ -24,15 +24,18 @@ function create_user() {
     console.log(parseInt(day))
     if(parseInt(year)>2022){
         alert("Invalid Date of Birth")
+        return
     }
     if(parseInt(year)==2022){
         if(parseInt(month)>4){
             alert("Invalid Date of Birth")
+            return
         }
         else if (parseInt(month)==4)
         {
             if(parseInt(day)>=29){
                 alert("Invalid Date of Birth")
+                return
             }
         }
     }

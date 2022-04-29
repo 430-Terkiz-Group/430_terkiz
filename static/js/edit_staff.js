@@ -78,6 +78,35 @@ function edit_staff() {
     var field = document.getElementById("field").value
     var value = document.getElementById("value").value
     var data = { "username": username, "field": field, "value": value }
+    if(field=="Date of Birth")
+    {
+        var string_dob = value;
+        year = string_dob.substring(0,4);
+        string_dob = dob;
+        month = string_dob.substring(5,7);
+        string_dob = dob;
+        day = string_dob.substring(8,10);
+        console.log(parseInt(year))
+        console.log(parseInt(month))
+        console.log(parseInt(day))
+        if(parseInt(year)>2022){
+            alert("Invalid Date of Birth")
+            return
+        }
+        if(parseInt(year)==2022){
+            if(parseInt(month)>4){
+                alert("Invalid Date of Birth")
+                return
+            }
+            else if (parseInt(month)==4)
+            {
+                if(parseInt(day)>=29){
+                    alert("Invalid Date of Birth")
+                    return
+                }
+            }
+        }
+    }
     fetch(`${SERVER_URL}/edit_staff`, {
         method: 'POST',
         headers: {
@@ -115,6 +144,32 @@ function add_staff() {
     var phone = document.getElementById("phone_input").value
     var position = document.getElementById("position_input").value
     var gender
+    var string_dob = dob;
+    year = string_dob.substring(0,4);
+    string_dob = dob;
+    month = string_dob.substring(5,7);
+    string_dob = dob;
+    day = string_dob.substring(8,10);
+    console.log(parseInt(year))
+    console.log(parseInt(month))
+    console.log(parseInt(day))
+    if(parseInt(year)>2022){
+        alert("Invalid Date of Birth")
+        return
+    }
+    if(parseInt(year)==2022){
+        if(parseInt(month)>4){
+            alert("Invalid Date of Birth")
+            return
+        }
+        else if (parseInt(month)==4)
+        {
+            if(parseInt(day)>=29){
+                alert("Invalid Date of Birth")
+                return
+            }
+        }
+    }
     if (document.getElementById('gender_Male').checked) {
         gender = "Male"
     } else if (document.getElementById('gender_Female').checked) {
