@@ -293,6 +293,11 @@ def view_tickets():
     }
     return jsonify(x)
 
+@app.route('/edit_orders.html')
+def view_edit_orders():
+    return render_template('edit_orders.html')
+
+
 
 # api to add user to db
 # expects json file with username , password , mail , dob and gender fields create time is automatic
