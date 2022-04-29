@@ -24,7 +24,7 @@ function checkStaff(){
 
 function loadTableData() {
     var events = new Array();
-    events.push(["Id", "Ttile" ,"Event Type","Description","Time begin","Time end"]);
+    events.push(["Id", "Title" ,"Event Type","Description","Time begin","Time end"]);
     var table = document.createElement("TABLE");
     table.classList.add('nicetable')
     table.border = "1";

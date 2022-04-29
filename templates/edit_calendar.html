@@ -8,7 +8,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
-    <title>Edit user</title>
+    <title>Edit calendar</title>
     <link rel="stylesheet" href="/static/css/nicepage.css" media="screen">
     <link rel="stylesheet" href="/static/css/edit_item.css" media="screen">
     <script class="u-script" type="text/javascript" src="static/js/jquery.js" defer=""></script>
@@ -227,26 +227,26 @@
                           class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
                       </div>
                       <div class="u-form-date u-form-group u-form-group-7">
-                        <label for="date-51ad" class="u-label">Time Begin (YYYY-MM-DD)</label>
-                        <input type="text" id="timebegin_input" name="time begin"
+                        <label for="date-51ad" class="u-label">Time Begin </label>
+                        <input type="date" id="timebegin_input" name="time begin"
                           class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                       </div>
                       <div class="u-form-email u-form-group u-form-group-8">
-                        <label for="email-3852" class="u-label">Time End (YYYY-MM-DD)</label>
-                        <input type="text" id="timeend_input" name="time end"
+                        <label for="email-3852" class="u-label">Time End </label>
+                        <input type="date" id="timeend_input" name="time end"
                           class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                       </div>
                       <div class="u-form-email u-form-group u-form-group-8">
-                        <label for="email-3852" class="u-label">Last Modify(YYYY-MM-DD)</label>
-                        <input type="text" id="lastmodify_input" name="last modify"
+                        <label for="email-3852" class="u-label">Last Modify</label>
+                        <input type="date" id="lastmodify_input" name="last modify"
                           class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
                       </div>
                       <div class="u-form-email u-form-group u-form-group-8">
-                        <label for="email-3852" class="u-label">Privacy (1 or 0)</label>
-                        <input type="boolean" id="privacy_input" name="privacy"
-                          class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+                        <select id="privacy_input">
+                          <option value="Private">Private</option>
+                          <option value="Public">Public</option>
+                        </select>
                       </div>
-                      
                     </form>
                   </div>
                   <a id="sign_in_btn" onclick="add_calendar()"
@@ -261,8 +261,8 @@
                 <div class="u-container-layout u-container-layout-2">
                   <div class="u-form u-form-2">
                     <td>
-                      <form action="edit_item.html" , method="POST" onsubmit="edit_calendar()">
-                        <label for="type">Choose the name of the event you want to edit:</label><br><br>
+                      <form action="edit_calendar.html" , method="POST" onsubmit="edit_calendar()">
+                        <label for="type">Choose the title of the event you want to edit:</label><br><br>
                         <select id="all_calendar" onchange="view_calendar()">
                         </select>
                         <br><br>
@@ -300,8 +300,8 @@
                 <div class="u-container-layout u-container-layout-3">
                   <div class="u-form u-form-3">
                     <td>
-                      <form action="edit_item.html" , method="POST">
-                        <label for="type">Choose the name of the event you want to delete:</label><br><br>
+                      <form action="edit_calendar.html" , method="POST">
+                        <label for="type">Choose the title of the event you want to delete:</label><br><br>
                         <select id="all_calendar1" onchange="del_view_calendar()">
                         </select>
                         <br><br>
@@ -386,5 +386,5 @@
         </div>
     </footer>
 </body>
-<script src="static/js/edit_item.js"></script>
+<script src="static/js/edit_calendar.js"></script>
 </html>

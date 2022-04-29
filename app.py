@@ -226,12 +226,6 @@ def add_calendar():
     lmod = request.json['last_modify']
     priv = request.json['privacy']
 
-
-    if request.json['privacy'] == "True" or request.json['privacy'] == "true":
-        priv = 1
-    elif request.json['privacy'] == "False" or request.json['privacy'] == "false":
-        priv = 0
-    size = request.json['size']
     if not titl or not eve or not desc or not tbgn or not tend or not lmod or not priv:
         # empty fields
         abort(400)
@@ -792,13 +786,12 @@ def add_event():
         privacy = False
     else:
         abort(400)
-    added_by = str(admin.username)
     last_modify = str(admin.username)
-    if not title or not event_type or not added_by or not time_end or not last_modify or not time_begin:
+    if not title or not event_type or not time_end or not last_modify or not time_begin:
         # name is empty or pwd is empty
         abort(400)
     else:
-        event = Calendar(title, event_type, description, added_by, time_begin, time_end, last_modify, privacy)
+        event = Calendar(title, event_type, description, time_begin, time_end, last_modify, privacy)
         db.session.add(event)
         db.session.commit()
         return "success"
@@ -819,7 +812,7 @@ def edit_event():
     #    abort(403)
     event = Calendar.query.filter_by(title=title).first()
     setattr(event, field, value)
-    event.last_modify_by = admin.username
+    event.last_modify_by = "2022-04-29"
     db.session.add(event)
     db.session.commit()
     x = {

@@ -24,7 +24,7 @@ function checkStaff(){
 
 function loadTableData() {
     var events = new Array();
-    events.push(["Id", "Ttile" ,"Event Type","Description","Added By","Time begin","Time end", "Last Modified By", "Privacy"]);
+    events.push(["Id", "Ttile" ,"Event Type","Description","Time begin","Time end", "Last Modified By", "Privacy"]);
     var table = document.createElement("TABLE");
     table.classList.add('nicetable')
     table.border = "1";
@@ -51,7 +51,7 @@ function loadTableData() {
         if (data[x]["privacy"]==1){
             priv="True"
         }
-        var arr = [data[x]["id"].toString(),data[x]["title"],data[x]["event_type"],data[x]["description"],data[x]["added_by"],data[x]["time_begin"],data[x]["time_end"],data[x]["last_modified_by"],priv]
+        var arr = [data[x]["id"].toString(),data[x]["title"],data[x]["event_type"],data[x]["description"],data[x]["time_begin"],data[x]["time_end"],data[x]["last_modified_by"],priv]
         for (var j = 0; j < columnCount; j++) {
             var cell = row.insertCell(-1);
             
