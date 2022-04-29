@@ -167,7 +167,13 @@ function add_ticket() {
     var psd = document.getElementById("passed_input").value
     if (!pri || !tl || !sec || !mtch || !comp || !dt || !psd ) {
         alert("Please fill all the fields")
-    }  else {
+    }
+    else if ((typeof(pri) != "number")||(pri < 0)||(typeof(tl) != "number")||(tl < 0)||(typeof(sec) != "number")||(sec < 0)||
+        (sec > 4)) {
+        alert("Please enter valid ticket info")
+    }
+
+    else {
         var data = {"price": pri, "ticketsleft": tl, "sector": sec, "match": mtch, "competition": comp, "date": dt, "passed": psd}
         fetch(`${SERVER_URL}/add_ticket`, { method: 'POST', headers: {
                 'Content-Type': 'application/json',
