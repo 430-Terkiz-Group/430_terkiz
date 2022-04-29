@@ -10,8 +10,8 @@ function get_all_orders() {
         .then(data => {
             for (x in data) {
                 newOption = document.createElement("option");
-                newOption.value = str(data[x]["user_id"]+str(data[x]["order_id"]));
-                newOption.text = data[x]["order_d"];
+                newOption.value = data[x]["order_id"];
+                newOption.text = data[x]["order_id"];
                 newOption1 = document.createElement("option");
                 newOption1.value = data[x]["order_id"];
                 newOption1.text = data[x]["order_id"];
@@ -34,12 +34,12 @@ function view_order() {
         .then(response => response.json())
         .then(data => {
             for (x in data){
-                if(data[x]["username"] == document.getElementById("all_staff").value){
+                if(data[x]["order_id"] == document.getElementById("all_staff").value){
                 document.getElementById("id").innerHTML = data[x]["order_id"]
                 document.getElementById("username").innerHTML = data[x]["item_id"]
-                document.getElementById("mail").innerHTML = data[x]["order_date"]
+                document.getElementById("gender").innerHTML = data[x]["order_date"]
                 document.getElementById("dob").innerHTML = data[x]["amount"]
-                document.getElementById("date_joined").innerHTML = data[x]["user_id"]
+                document.getElementById("mail").innerHTML = data[x]["user_id"]
             }
         }})
         .catch(error => {
@@ -54,12 +54,12 @@ function del_view_order() {
         .then(response => response.json())
         .then(data => {
             for (x in data){
-                if(data[x]["username"] == document.getElementById("all_staff1").value){
+                if(data[x]["order_id"] == document.getElementById("all_staff1").value){
                     document.getElementById("id1").innerHTML = data[x]["order_id"]
                     document.getElementById("username1").innerHTML = data[x]["item_id"]
-                    document.getElementById("mail1").innerHTML = data[x]["order_date"]
+                    document.getElementById("gender1").innerHTML = data[x]["order_date"]
                     document.getElementById("dob1").innerHTML = data[x]["amount"]
-                    document.getElementById("date_joined1").innerHTML = data[x]["user_id"]
+                    document.getElementById("mail1").innerHTML = data[x]["user_id"]
             }
         }})
         .catch(error => {
@@ -103,14 +103,13 @@ function delete_order() {
 
 function add_order() {
     var user_id = document.getElementById("user_id").value
-    var order_date = document.getElementById("order_date").value
     var amount = document.getElementById("amount").value
     var item_id = document.getElementById("item_id").value
-    if (!user_id || !order_date || !amount || !email || !item_id) {
+    if (!user_id || !amount || !item_id) {
         alert("Please fill all the fields")
     } else {
-        var data = { "user_id": user_id, "order_date": order_date, "amount": amount, "item_id": item_id}
-        fetch(`${SERVER_URL}/add_order`, {
+        var data = { "user_id": user_id, "amount": amount, "item_id": item_id}
+        fetch(`${SERVER_URL}/admin_add_order`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
