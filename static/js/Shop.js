@@ -64,7 +64,7 @@ function GenerateShop() {
 
         var img = document.createElement("img");
         img.classList.add("img")
-        img.src = "";
+        img.src = "static/images/items/" + item_list[i].id + ".png";
         img.alt = "Item";
         var name = document.createElement("h2");
         name.classList.add("name");

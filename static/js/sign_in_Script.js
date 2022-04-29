@@ -13,6 +13,29 @@ function create_user() {
     var dob = document.getElementById("dob_input").value
     var tos = document.getElementById("tos_input").value
     var gender
+    var string_dob = dob;
+    year = string_dob.substring(0,4);
+    string_dob = dob;
+    month = string_dob.substring(5,7);
+    string_dob = dob;
+    day = string_dob.substring(8,10);
+    console.log(parseInt(year))
+    console.log(parseInt(month))
+    console.log(parseInt(day))
+    if(parseInt(year)>2022){
+        alert("Invalid Date of Birth")
+    }
+    if(parseInt(year)==2022){
+        if(parseInt(month)>4){
+            alert("Invalid Date of Birth")
+        }
+        else if (parseInt(month)==4)
+        {
+            if(parseInt(day)>=29){
+                alert("Invalid Date of Birth")
+            }
+        }
+    }
     if (document.getElementById('gender_Male').checked) {
         gender = "Male"
     } else if (document.getElementById('gender_Female').checked) {
