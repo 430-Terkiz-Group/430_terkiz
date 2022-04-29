@@ -190,7 +190,7 @@ def view_calendar():
 @app.route('/Calendar_staff.html')
 def view_calendar_staff():
     return render_template('/Calendar_staff.html')
-@app.rout('/edit_orders.html')
+@app.route('/edit_orders.html')
 def view_edit_orders():
     return render_template("edit_orders.html")
 
